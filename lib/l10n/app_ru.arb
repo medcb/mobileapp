@@ -1,0 +1,8 @@
+{
+    "loginPhoneEnterWelcomeMessage": "Приветствуем вас в",
+    "loginPhoneEnterEnterPhone": "Введите номер телефона",
+    "loginPhoneEnterPhonePlaceholder": "+7 (000) 000-00-00",
+    "loginPhoneEnterContinue": "Продолжить",
+    "loginPhoneEnterPrivacyPolicyText": "Отпарвляя форму, вы соглашаетесь на хранение и обработку своих ",
+    "loginPhoneEnterPrivacyPolicyLink": "персональных данных"
+}
