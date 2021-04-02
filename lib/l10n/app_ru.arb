@@ -4,5 +4,9 @@
     "loginPhoneEnterPhonePlaceholder": "+7 (000) 000-00-00",
     "loginPhoneEnterContinue": "Продолжить",
     "loginPhoneEnterPrivacyPolicyText": "Отпарвляя форму, вы соглашаетесь на хранение и обработку своих ",
-    "loginPhoneEnterPrivacyPolicyLink": "персональных данных"
+    "loginPhoneEnterPrivacyPolicyLink": "персональных данных",
+    "loginCodeEnterTitle": "Введите код подтверждения из смс",
+    "loginCodeEnterChangeNumber": "Изменить номер",
+    "loginCodeEnterResendTime": "Отправить код повторно через",
+    "loginCodeEnterResendButton": "Отправить код повторно"
 }
