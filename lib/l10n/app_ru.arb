@@ -8,5 +8,9 @@
     "loginCodeEnterTitle": "Введите код подтверждения из смс",
     "loginCodeEnterChangeNumber": "Изменить номер",
     "loginCodeEnterResendTime": "Отправить код повторно через",
-    "loginCodeEnterResendButton": "Отправить код повторно"
+    "loginCodeEnterResendButton": "Отправить код повторно",
+    "tabBarMain": "Главная",
+    "tabBarMyRecipes": "Мои рецепты",
+    "tabBarReviews": "Отзывы",
+    "tabBarProfile": "Профиль"
 }

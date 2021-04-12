@@ -51,12 +51,6 @@ class _LoginPhoneEnterScreenState extends State<LoginPhoneEnterScreen> {
   Widget build(BuildContext context) {
     final window = MediaQuery.of(context);
     return Container(
-      decoration: BoxDecoration(
-        image: DecorationImage(
-          image: Image.asset('assets/images/background_circles.png').image,
-          fit: BoxFit.cover,
-        ),
-      ),
       child: Stack(
         children: [
           AnimatedPadding(

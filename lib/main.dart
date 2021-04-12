@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:med_cashback/widgets/login_phone_enter.dart';
+import 'package:med_cashback/widgets/main_tab_bar.dart';
 
 void main() => runApp(MyApp());
 
@@ -36,7 +37,16 @@ class MyApp extends StatelessWidget {
               bodyText1: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
               headline1: TextStyle(fontWeight: FontWeight.normal, fontSize: 24),
             ).apply(bodyColor: Color(0xff333333))),
-        home: AuthPhoneEnter(),
+        home: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: Image.asset('assets/images/background_circles.png').image,
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: MainTabBar(),
+          // child: LoginPhoneEnterScreen(),
+        ),
       ),
     );
   }
