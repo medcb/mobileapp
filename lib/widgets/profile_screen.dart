@@ -5,7 +5,8 @@ import 'package:package_info/package_info.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.all(16.0),
@@ -17,27 +18,28 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: Theme.of(context).backgroundColor,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 16),
-              ProfileHeader(),
-              ProfileScreenItem('Дети'),
-              ProfileScreenItem('Отзывы'),
-              ProfileScreenItem('Способы вывода средств'),
-              ProfileScreenItem('История выводов'),
-              ProfileScreenItemWithSwitch('Вход по отпечатку пальца'),
-              ProfileScreenItem('Условия и соглашения'),
-              ProfileScreenItem('Обратная связь'),
-              ProfileScreenItem('Выйти'),
-              ProfileAppVersion(),
-              SizedBox(height: 16),
-            ],
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).backgroundColor,
+              borderRadius: BorderRadius.all(Radius.circular(8)),
+            ),
+            child: ListView(
+              children: [
+                SizedBox(height: 16),
+                ProfileHeader(),
+                ProfileScreenItem('Дети'),
+                ProfileScreenItem('Отзывы'),
+                ProfileScreenItem('Способы вывода средств'),
+                ProfileScreenItem('История выводов'),
+                ProfileScreenItemWithSwitch('Вход по отпечатку пальца'),
+                ProfileScreenItem('Условия и соглашения'),
+                ProfileScreenItem('Обратная связь'),
+                ProfileScreenItem('Выйти'),
+                ProfileAppVersion(),
+                SizedBox(height: 16),
+              ],
+            ),
           ),
         )
       ],

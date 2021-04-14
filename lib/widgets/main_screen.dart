@@ -57,13 +57,24 @@ class MainScreen extends StatelessWidget {
       DateTime.now(),
       'assets/images/withdrawal_method_circle_qiwi.png',
     ),
+    WithdrawalModel(
+      Decimal.parse('420.69'),
+      DateTime.now(),
+      'assets/images/withdrawal_method_circle_qiwi.png',
+    ),
+    WithdrawalModel(
+      Decimal.fromInt(228),
+      DateTime.now(),
+      'assets/images/withdrawal_method_circle_qiwi.png',
+    ),
   ];
 
   //TODO: Make strings localizable
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -114,88 +125,124 @@ class MainScreen extends StatelessWidget {
           ),
         ),
         SizedBox(height: 24),
+        Expanded(
+          child: Container(
+            decoration: BoxDecoration(
+                color: Theme.of(context).backgroundColor,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(8),
+                  topRight: Radius.circular(8),
+                )),
+            child: ListView(
+              children: [
+                SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Скидки и акции',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 12,
+                        color: Theme.of(context).dividerColor,
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: 24),
+                Container(
+                  height: 64,
+                  child: ListView.separated(
+                    itemCount: _discounts.length,
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    itemBuilder: (context, index) {
+                      return DiscountCell(_discounts[index]);
+                    },
+                    separatorBuilder: (context, index) {
+                      return SizedBox(width: 8);
+                    },
+                  ),
+                ),
+                SizedBox(height: 32),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'История выводов',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Icon(
+                        Icons.arrow_forward_ios,
+                        size: 12,
+                        color: Theme.of(context).dividerColor,
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(height: 8),
+                ListView.separated(
+                  scrollDirection: Axis.vertical,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return WithdrawalCell(_withdrawals[index]);
+                  },
+                  separatorBuilder: (context, index) {
+                    return SizedBox(height: 1);
+                  },
+                  itemCount: _withdrawals.length,
+                ),
+              ],
+            ),
+          ),
+        ),
         Container(
           decoration: BoxDecoration(
             color: Theme.of(context).backgroundColor,
-            borderRadius: BorderRadius.all(Radius.circular(8)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height: 32),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Скидки и акции',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 12,
-                      color: Theme.of(context).dividerColor,
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(height: 24),
-              Container(
-                height: 64,
-                child: ListView.separated(
-                  itemCount: _discounts.length,
-                  scrollDirection: Axis.horizontal,
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  itemBuilder: (context, index) {
-                    return DiscountCell(_discounts[index]);
-                  },
-                  separatorBuilder: (context, index) {
-                    return SizedBox(width: 8);
-                  },
-                ),
-              ),
-              SizedBox(height: 32),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'История выводов',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Icon(
-                      Icons.arrow_forward_ios,
-                      size: 12,
-                      color: Theme.of(context).dividerColor,
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(height: 8),
-              ListView.separated(
-                scrollDirection: Axis.vertical,
-                physics: NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemBuilder: (context, index) {
-                  return WithdrawalCell(_withdrawals[index]);
-                },
-                separatorBuilder: (context, index) {
-                  return SizedBox(height: 1);
-                },
-                itemCount: _withdrawals.length,
-              ),
-              // Spacer(),
+            boxShadow: [
+              BoxShadow(
+                color: Theme.of(context).backgroundColor,
+                offset: Offset(0, -16),
+                blurRadius: 16,
+              )
             ],
           ),
-        ),
+          child: Padding(
+            padding: const EdgeInsets.only(
+              left: 16,
+              right: 16,
+              bottom: 16,
+            ),
+            child: SizedBox(
+              height: 44,
+              child: ElevatedButton(
+                onPressed: () {
+                  print('pressed');
+                },
+                child: Text(
+                  'Добавить рецепт',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        )
       ],
     );
   }

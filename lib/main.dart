@@ -6,6 +6,8 @@ import 'package:med_cashback/widgets/main_tab_bar.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+  final _isLoggedIn = false;
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -34,10 +36,10 @@ class MyApp extends StatelessWidget {
               headline1: TextStyle(fontWeight: FontWeight.normal, fontSize: 24),
             ).apply(bodyColor: Color(0xff333333))),
         routes: <String, WidgetBuilder>{
-          '/main': (BuildContext context) => MainTabBar(),
+          '/home': (BuildContext context) => MainTabBar(),
           '/login': (BuildContext context) => LoginPhoneEnterScreen(),
         },
-        home: LoginPhoneEnterScreen(),
+        initialRoute: _isLoggedIn ? '/home' : '/login',
       ),
     );
   }

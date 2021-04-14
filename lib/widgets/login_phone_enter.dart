@@ -305,7 +305,7 @@ class _CodeEnterTextFieldsState extends State<CodeEnterTextFields> {
             _codeDigits.reduce((value, element) => value * 10 + element);
         print(code);
         //TODO: Handle code here
-        Navigator.of(context).pushNamed('/main');
+        Navigator.of(context).pushReplacementNamed('/home');
       }
     };
 
