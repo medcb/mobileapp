@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:med_cashback/widgets/main_screen.dart';
+import 'package:med_cashback/widgets/profile_screen.dart';
 
 import 'full_screen_background_container.dart';
 
@@ -96,7 +97,7 @@ class _MainTabBarState extends State<MainTabBar>
                     MainScreen(),
                     Center(child: Text('Work In Progress')),
                     Center(child: Text('Work In Progress')),
-                    Center(child: Text('Work In Progress')),
+                    ProfileScreen(),
                   ],
                 ),
               ),
