@@ -27,6 +27,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.17.0
+  decimal: ^1.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -44,12 +45,8 @@ flutter:
 
   generate: true
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
   uses-material-design: true
 
-  # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/app_logo.png
     - assets/images/background_circles.png
@@ -62,18 +59,12 @@ flutter:
     - assets/images/tab_bar_profile_inactive.png
     - assets/images/tab_bar_reviews_active.png
     - assets/images/tab_bar_reviews_inactive.png
+    - assets/images/withdrawal_method_webmoney.png
+    - assets/images/withdrawal_method_qiwi.png
+    - assets/images/withdrawal_method_charity.png
+    - assets/images/discount_logo_eapteka.png
+    - assets/images/withdrawal_method_circle_qiwi.png
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware.
-
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
   fonts:
     - family: Rubik
       fonts:

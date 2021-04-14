@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:med_cashback/widgets/main_screen.dart';
+
+import 'full_screen_background_container.dart';
 
 class MainTabBar extends StatefulWidget {
   @override
@@ -53,41 +56,68 @@ class _MainTabBarState extends State<MainTabBar>
     var tabController = DefaultTabController(
       length: tabs.length,
       child: Builder(builder: (BuildContext context) {
-        return SafeArea(
-          child: Scaffold(
-            bottomNavigationBar: TabBar(
-              controller: _tabController,
-              indicator: BoxDecoration(),
-              labelPadding: EdgeInsets.zero,
-              labelStyle: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.w400,
-              ),
-              labelColor: Theme.of(context).accentColor,
-              unselectedLabelColor: Theme.of(context).dividerColor,
-              tabs: tabs,
-            ),
-            body: TabBarView(
-              controller: _tabController,
-              physics: NeverScrollableScrollPhysics(),
-              children: tabs.map((Tab tab) {
-                return Center(
-                  child: Column(
-                    children: [
-                      tab.icon,
-                      Text(
-                        tab.text,
-                        style: Theme.of(context).textTheme.headline5,
+        final window = MediaQuery.of(context);
+        return Stack(
+          children: [
+            SafeArea(
+              child: Scaffold(
+                backgroundColor: Color(0x00000000),
+                bottomNavigationBar: Container(
+                  decoration:
+                      BoxDecoration(color: Theme.of(context).backgroundColor),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).backgroundColor,
+                      boxShadow: [
+                        BoxShadow(
+                            color: Theme.of(context).shadowColor,
+                            blurRadius: 8,
+                            offset: Offset(0, -4)),
+                      ],
+                    ),
+                    child: TabBar(
+                      controller: _tabController,
+                      indicator: BoxDecoration(),
+                      labelPadding: EdgeInsets.zero,
+                      labelStyle: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400,
                       ),
-                    ],
+                      labelColor: Theme.of(context).accentColor,
+                      unselectedLabelColor: Theme.of(context).dividerColor,
+                      tabs: tabs,
+                    ),
                   ),
-                );
-              }).toList(),
+                ),
+                body: TabBarView(
+                  controller: _tabController,
+                  physics: NeverScrollableScrollPhysics(),
+                  children: [
+                    MainScreen(),
+                    Center(child: Text('Work In Progress')),
+                    Center(child: Text('Work In Progress')),
+                    Center(child: Text('Work In Progress')),
+                  ],
+                ),
+              ),
             ),
-          ),
+            Positioned(
+              height: window.viewInsets.bottom == 0
+                  ? window.padding.bottom
+                  : window.viewInsets.bottom,
+              bottom: -window.viewInsets.bottom,
+              left: 0,
+              width: window.size.width,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).backgroundColor,
+                ),
+              ),
+            ),
+          ],
         );
       }),
     );
-    return tabController;
+    return FullScreenBackgroundContainer(child: tabController);
   }
 }

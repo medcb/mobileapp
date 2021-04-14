@@ -8,7 +8,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:med_cashback/widgets/full_screen_background_container.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+//TODO: Make strings localizable
 
 enum _LoginPhoneEnterScreenStatus {
   phoneEnter,
@@ -50,7 +53,7 @@ class _LoginPhoneEnterScreenState extends State<LoginPhoneEnterScreen> {
   @override
   Widget build(BuildContext context) {
     final window = MediaQuery.of(context);
-    return Container(
+    return FullScreenBackgroundContainer(
       child: Stack(
         children: [
           AnimatedPadding(
@@ -144,7 +147,7 @@ class LoginContentContainer extends StatelessWidget {
 }
 
 class PhoneEnterContainer extends StatelessWidget {
-  Function(String) callback;
+  final Function(String) callback;
 
   PhoneEnterContainer(this.callback);
 
@@ -196,7 +199,8 @@ class PhoneEnterContainer extends StatelessWidget {
 }
 
 class PhoneEnterField extends StatefulWidget {
-  Function(String) callback;
+  final Function(String) callback;
+
   PhoneEnterField(this.callback);
 
   @override
@@ -300,6 +304,8 @@ class _CodeEnterTextFieldsState extends State<CodeEnterTextFields> {
         final code =
             _codeDigits.reduce((value, element) => value * 10 + element);
         print(code);
+        //TODO: Handle code here
+        Navigator.of(context).pushNamed('/main');
       }
     };
 
@@ -372,8 +378,8 @@ class _CodeEnterTextFieldState extends State<CodeEnterTextField> {
 }
 
 class CodeEnterContainer extends StatefulWidget {
-  String phone;
-  Function() changePhoneCallback;
+  final String phone;
+  final Function() changePhoneCallback;
 
   CodeEnterContainer(this.phone, this.changePhoneCallback);
 

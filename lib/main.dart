@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:med_cashback/widgets/login_phone_enter.dart';
@@ -17,10 +16,6 @@ class MyApp extends StatelessWidget {
             currentFocus.focusedChild != null) {
           FocusManager.instance.primaryFocus.unfocus();
         }
-        // if (!currentFocus.hasPrimaryFocus) {
-        //   print(currentFocus);
-        //   currentFocus.unfocus();
-        // }
       },
       child: MaterialApp(
         localizationsDelegates: AppLocalizations.localizationsDelegates,
@@ -33,28 +28,17 @@ class MyApp extends StatelessWidget {
             backgroundColor: Color(0xffFFFFFF),
             disabledColor: Color(0x800080F6),
             dividerColor: Color(0xff8D95A7),
+            shadowColor: Color(0x1a000000),
             textTheme: TextTheme(
               bodyText1: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
               headline1: TextStyle(fontWeight: FontWeight.normal, fontSize: 24),
             ).apply(bodyColor: Color(0xff333333))),
-        home: Container(
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: Image.asset('assets/images/background_circles.png').image,
-              fit: BoxFit.cover,
-            ),
-          ),
-          child: MainTabBar(),
-          // child: LoginPhoneEnterScreen(),
-        ),
+        routes: <String, WidgetBuilder>{
+          '/main': (BuildContext context) => MainTabBar(),
+          '/login': (BuildContext context) => LoginPhoneEnterScreen(),
+        },
+        home: LoginPhoneEnterScreen(),
       ),
     );
-  }
-}
-
-class AuthPhoneEnter extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return LoginPhoneEnterScreen();
   }
 }
