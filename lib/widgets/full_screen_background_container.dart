@@ -2,10 +2,10 @@ import 'package:flutter/widgets.dart';
 
 class FullScreenBackgroundContainer extends StatelessWidget {
   FullScreenBackgroundContainer({
-    Widget child,
+    Widget? child,
   }) : this.child = child;
 
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {

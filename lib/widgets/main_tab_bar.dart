@@ -13,44 +13,80 @@ class MainTabBar extends StatefulWidget {
 
 class _MainTabBarState extends State<MainTabBar>
     with SingleTickerProviderStateMixin {
-  TabController _tabController;
+  TabController? _tabController;
+
+  Image? _mainActiveImage;
+  Image? _mainInactiveImage;
+  Image? _myRecipesActiveImage;
+  Image? _myRecipesInactiveImage;
+  Image? _profileActiveImage;
+  Image? _profileInactiveImage;
+  Image? _reviewsActiveImage;
+  Image? _reviewsInactiveImage;
 
   @override
   void initState() {
     super.initState();
+
+    _mainActiveImage = Image.asset('assets/images/tab_bar_main_active.png');
+    _mainInactiveImage = Image.asset('assets/images/tab_bar_main_inactive.png');
+    _myRecipesActiveImage =
+        Image.asset('assets/images/tab_bar_my_recipes_active.png');
+    _myRecipesInactiveImage =
+        Image.asset('assets/images/tab_bar_my_recipes_inactive.png');
+    _profileActiveImage =
+        Image.asset('assets/images/tab_bar_profile_active.png');
+    _profileInactiveImage =
+        Image.asset('assets/images/tab_bar_profile_inactive.png');
+    _reviewsActiveImage =
+        Image.asset('assets/images/tab_bar_reviews_active.png');
+    _reviewsInactiveImage =
+        Image.asset('assets/images/tab_bar_reviews_inactive.png');
+
     _tabController = TabController(length: 4, vsync: this);
-    _tabController.addListener(() {
+    _tabController!.addListener(() {
       setState(() {});
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(_mainActiveImage!.image, context);
+    precacheImage(_mainInactiveImage!.image, context);
+    precacheImage(_myRecipesActiveImage!.image, context);
+    precacheImage(_myRecipesInactiveImage!.image, context);
+    precacheImage(_profileActiveImage!.image, context);
+    precacheImage(_profileInactiveImage!.image, context);
+    precacheImage(_reviewsActiveImage!.image, context);
+    precacheImage(_reviewsInactiveImage!.image, context);
   }
 
   @override
   Widget build(BuildContext context) {
     List<Tab> tabs = <Tab>[
       Tab(
-        text: AppLocalizations.of(context).tabBarMain,
-        icon: _tabController.index == 0
-            ? Image.asset('assets/images/tab_bar_main_active.png')
-            : Image.asset('assets/images/tab_bar_main_inactive.png'),
+        text: AppLocalizations.of(context)!.tabBarMain,
+        icon: _tabController!.index == 0 ? _mainActiveImage : _mainInactiveImage,
       ),
       Tab(
-        text: AppLocalizations.of(context).tabBarMyRecipes,
-        icon: _tabController.index == 1
-            ? Image.asset('assets/images/tab_bar_my_recipes_active.png')
-            : Image.asset('assets/images/tab_bar_my_recipes_inactive.png'),
+        text: AppLocalizations.of(context)!.tabBarMyRecipes,
+        icon: _tabController!.index == 1
+            ? _myRecipesActiveImage
+            : _myRecipesInactiveImage,
       ),
       Tab(
-        text: AppLocalizations.of(context).tabBarReviews,
-        icon: _tabController.index == 2
-            ? Image.asset('assets/images/tab_bar_reviews_active.png')
-            : Image.asset('assets/images/tab_bar_reviews_inactive.png'),
+        text: AppLocalizations.of(context)!.tabBarReviews,
+        icon: _tabController!.index == 2
+            ? _reviewsActiveImage
+            : _reviewsInactiveImage,
       ),
       Tab(
         // child: TabIcon(_tabController.index == 3),
-        text: AppLocalizations.of(context).tabBarProfile,
-        icon: _tabController.index == 3
-            ? Image.asset('assets/images/tab_bar_profile_active.png')
-            : Image.asset('assets/images/tab_bar_profile_inactive.png'),
+        text: AppLocalizations.of(context)!.tabBarProfile,
+        icon: _tabController!.index == 3
+            ? _profileActiveImage
+            : _profileInactiveImage,
       ),
     ];
 

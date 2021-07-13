@@ -28,8 +28,8 @@ class _LoginPhoneEnterScreenState extends State<LoginPhoneEnterScreen> {
   _LoginPhoneEnterScreenStatus _screenStatus =
       _LoginPhoneEnterScreenStatus.phoneEnter;
 
-  String _phone;
-  Widget widgetForCurrentScreenStatus() {
+  String? _phone;
+  Widget? widgetForCurrentScreenStatus() {
     switch (_screenStatus) {
       case _LoginPhoneEnterScreenStatus.phoneEnter:
         return PhoneEnterContainer((String phone) {
@@ -47,7 +47,6 @@ class _LoginPhoneEnterScreenState extends State<LoginPhoneEnterScreen> {
           });
         });
     }
-    return null;
   }
 
   @override
@@ -114,7 +113,7 @@ class LogoAndTitle extends StatelessWidget {
           ),
         ),
         Text(
-          AppLocalizations.of(context).loginPhoneEnterWelcomeMessage,
+          AppLocalizations.of(context)!.loginPhoneEnterWelcomeMessage,
           style: TextStyle(fontSize: 18),
           textAlign: TextAlign.center,
         ),
@@ -127,10 +126,10 @@ class LogoAndTitle extends StatelessWidget {
 
 class LoginContentContainer extends StatelessWidget {
   LoginContentContainer({
-    Widget child,
+    Widget? child,
   }) : this.child = child;
 
-  final Widget child;
+  final Widget? child;
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +158,7 @@ class PhoneEnterContainer extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 18, bottom: 24),
           child: Text(
-            AppLocalizations.of(context).loginPhoneEnterEnterPhone,
+            AppLocalizations.of(context)!.loginPhoneEnterEnterPhone,
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
@@ -172,15 +171,16 @@ class PhoneEnterContainer extends StatelessWidget {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text: AppLocalizations.of(context).loginPhoneEnterPrivacyPolicyText,
+            text:
+                AppLocalizations.of(context)!.loginPhoneEnterPrivacyPolicyText,
             style: Theme.of(context).textTheme.bodyText1,
             children: [
               TextSpan(
-                text: AppLocalizations.of(context)
+                text: AppLocalizations.of(context)!
                     .loginPhoneEnterPrivacyPolicyLink,
                 style: Theme.of(context)
                     .textTheme
-                    .bodyText1
+                    .bodyText1!
                     .apply(decoration: TextDecoration.underline),
                 recognizer: TapGestureRecognizer()
                   ..onTap = () async {
@@ -230,7 +230,7 @@ class _PhoneEnterFieldState extends State<PhoneEnterField> {
               style: Theme.of(context).textTheme.subtitle1,
               autofocus: true,
               decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)
+                  hintText: AppLocalizations.of(context)!
                       .loginPhoneEnterPhonePlaceholder,
                   border: InputBorder.none),
               inputFormatters: [
@@ -289,7 +289,7 @@ class CodeEnterTextFields extends StatefulWidget {
 }
 
 class _CodeEnterTextFieldsState extends State<CodeEnterTextFields> {
-  var _codeDigits = List<int>.filled(_codeLength, null);
+  var _codeDigits = List<int?>.filled(_codeLength, null);
 
   @override
   Widget build(BuildContext context) {
@@ -302,7 +302,7 @@ class _CodeEnterTextFieldsState extends State<CodeEnterTextFields> {
       if (_codeDigits.every((element) => element != null) &&
           index == _codeLength - 1) {
         final code =
-            _codeDigits.reduce((value, element) => value * 10 + element);
+            _codeDigits.reduce((value, element) => value! * 10 + element!);
         print(code);
         //TODO: Handle code here
         Navigator.of(context).pushReplacementNamed('/home');
@@ -378,7 +378,7 @@ class _CodeEnterTextFieldState extends State<CodeEnterTextField> {
 }
 
 class CodeEnterContainer extends StatefulWidget {
-  final String phone;
+  final String? phone;
   final Function() changePhoneCallback;
 
   CodeEnterContainer(this.phone, this.changePhoneCallback);
@@ -419,7 +419,7 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
       children: [
         SizedBox(height: 16),
         Text(
-          AppLocalizations.of(context).loginCodeEnterTitle,
+          AppLocalizations.of(context)!.loginCodeEnterTitle,
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
@@ -430,7 +430,7 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              widget.phone,
+              widget.phone!,
               style: TextStyle(fontSize: 12),
             ),
             SizedBox(width: 8),
@@ -439,7 +439,7 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
                 widget.changePhoneCallback();
               },
               child: Text(
-                AppLocalizations.of(context).loginCodeEnterChangeNumber,
+                AppLocalizations.of(context)!.loginCodeEnterChangeNumber,
                 style: TextStyle(
                   fontSize: 12,
                   color: Theme.of(context).accentColor,
@@ -473,8 +473,8 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
 
 class TimeLeftToResend extends StatelessWidget {
   const TimeLeftToResend({
-    Key key,
-    @required int leftTimeToResend,
+    Key? key,
+    required int leftTimeToResend,
   })  : _leftTimeToResend = leftTimeToResend,
         super(key: key);
 
@@ -483,7 +483,7 @@ class TimeLeftToResend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      AppLocalizations.of(context).loginCodeEnterResendTime +
+      AppLocalizations.of(context)!.loginCodeEnterResendTime +
           ' ${_leftTimeToResend ~/ 60}:${NumberFormat('00').format(_leftTimeToResend % 60)}',
       style: TextStyle(
         fontSize: 12,

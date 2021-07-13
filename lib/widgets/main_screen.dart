@@ -69,6 +69,10 @@ class MainScreen extends StatelessWidget {
     ),
   ];
 
+  void _addRecipe(BuildContext context) {
+    Navigator.pushNamed(context, '/addRecipe');
+  }
+
   //TODO: Make strings localizable
 
   @override
@@ -229,9 +233,7 @@ class MainScreen extends StatelessWidget {
             child: SizedBox(
               height: 44,
               child: ElevatedButton(
-                onPressed: () {
-                  print('pressed');
-                },
+                onPressed: () => _addRecipe(context),
                 child: Text(
                   'Добавить рецепт',
                   style: TextStyle(

@@ -48,5 +48,11 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+    <string>Камера используется для добавления рецептов.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Камера используется для добавления рецептов.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Галерея используется для добавления рецептов.</string>
 </dict>
 </plist>

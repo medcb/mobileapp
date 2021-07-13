@@ -1,4 +1,4 @@
-package com.example.med_cashback
+package co.inno.medCashback
 
 import io.flutter.embedding.android.FlutterActivity
 

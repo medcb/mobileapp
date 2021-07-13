@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:med_cashback/widgets/login_phone_enter.dart';
 import 'package:med_cashback/widgets/main_tab_bar.dart';
+import 'package:med_cashback/widgets/photo_shutter_screen.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
-  final _isLoggedIn = false;
+  final _isLoggedIn = true;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
 
         if (!currentFocus.hasPrimaryFocus &&
             currentFocus.focusedChild != null) {
-          FocusManager.instance.primaryFocus.unfocus();
+          FocusManager.instance.primaryFocus!.unfocus();
         }
       },
       child: MaterialApp(
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/home': (BuildContext context) => MainTabBar(),
           '/login': (BuildContext context) => LoginPhoneEnterScreen(),
+          '/addRecipe': (BuildContext context) => PhotoShutterScreen(),
         },
         initialRoute: _isLoggedIn ? '/home' : '/login',
       ),
