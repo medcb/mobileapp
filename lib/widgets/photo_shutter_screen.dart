@@ -1,6 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/constants/route_name.dart';
+import 'package:med_cashback/widgets/photo_crop_screen.dart';
 
 class PhotoShutterScreen extends StatefulWidget {
   const PhotoShutterScreen({Key? key}) : super(key: key);
@@ -88,15 +91,30 @@ class _PhotoShutterScreenState extends State<PhotoShutterScreen>
   void _takePicture() async {
     if (_controller == null) return;
     try {
-      final picture = await _controller!.takePicture();
-      print(picture.name);
+      final image = await _controller!.takePicture();
+      Navigator.pushReplacementNamed(
+        context,
+        RouteName.photoCrop,
+        arguments: PhotoCropScreenArguments(image.path),
+      );
     } catch (err) {
       print(err);
     }
   }
 
   void _selectFromGallery() async {
-    final image = _imagePicker.getImage(source: ImageSource.gallery);
+    try {
+      final image = await _imagePicker.getImage(source: ImageSource.gallery);
+      if (image != null) {
+        Navigator.pushReplacementNamed(
+          context,
+          RouteName.photoCrop,
+          arguments: PhotoCropScreenArguments(image.path),
+        );
+      }
+    } catch (err) {
+      print(err);
+    }
   }
 
   void _goBack() {
@@ -105,12 +123,6 @@ class _PhotoShutterScreenState extends State<PhotoShutterScreen>
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final deviceRatio = size.width / size.height;
-    final xScale = _controller!.value.aspectRatio / deviceRatio;
-// Modify the yScale if you are in Landscape
-    final double yScale = 1;
-
     return Scaffold(
       body: Stack(
         children: [
@@ -118,13 +130,13 @@ class _PhotoShutterScreenState extends State<PhotoShutterScreen>
             builder: (context) {
               if (!(_controller?.value.isInitialized ?? false)) {
                 return Container(
-                  color: Color(0xff000000),
+                  color: CashbackColors.photoBackgroundColor,
                 );
               }
               return Stack(
                 children: [
                   Container(
-                    color: Color(0xff000000),
+                    color: CashbackColors.photoBackgroundColor,
                   ),
                   Center(
                     child: CameraPreview(_controller!),

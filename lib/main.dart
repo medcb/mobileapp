@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/widgets/login_phone_enter.dart';
 import 'package:med_cashback/widgets/main_tab_bar.dart';
+import 'package:med_cashback/widgets/photo_crop_screen.dart';
 import 'package:med_cashback/widgets/photo_shutter_screen.dart';
 
 void main() => runApp(MyApp());
@@ -25,23 +28,36 @@ class MyApp extends StatelessWidget {
         supportedLocales: AppLocalizations.supportedLocales,
         title: "МедКешбек",
         theme: ThemeData(
-            fontFamily: 'Rubik',
-            accentColor: Color(0xff0080F6),
-            primaryColor: Color(0xffFFFFFF),
-            backgroundColor: Color(0xffFFFFFF),
-            disabledColor: Color(0x800080F6),
-            dividerColor: Color(0xff8D95A7),
-            shadowColor: Color(0x1a000000),
-            textTheme: TextTheme(
-              bodyText1: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
-              headline1: TextStyle(fontWeight: FontWeight.normal, fontSize: 24),
-            ).apply(bodyColor: Color(0xff333333))),
-        routes: <String, WidgetBuilder>{
-          '/home': (BuildContext context) => MainTabBar(),
-          '/login': (BuildContext context) => LoginPhoneEnterScreen(),
-          '/addRecipe': (BuildContext context) => PhotoShutterScreen(),
+          fontFamily: 'Rubik',
+          accentColor: CashbackColors.accentColor,
+          primaryColor: CashbackColors.backgroundColor,
+          backgroundColor: CashbackColors.backgroundColor,
+          disabledColor: CashbackColors.accentDisabledColor,
+          dividerColor: CashbackColors.disabledColor,
+          shadowColor: CashbackColors.shadowColor,
+          textTheme: TextTheme(
+            bodyText1: TextStyle(fontWeight: FontWeight.normal, fontSize: 12),
+            headline1: TextStyle(fontWeight: FontWeight.normal, fontSize: 24),
+          ).apply(bodyColor: CashbackColors.mainTextColor),
+        ),
+        onGenerateRoute: (RouteSettings settings) {
+          var routes = <String, WidgetBuilder>{
+            RouteName.home: (ctx) => MainTabBar(),
+            RouteName.login: (ctx) => LoginPhoneEnterScreen(),
+            RouteName.addRecipe: (ctx) => PhotoShutterScreen(),
+            RouteName.photoCrop: (ctx) => PhotoCropScreen(
+                  arguments: settings.arguments as PhotoCropScreenArguments,
+                ),
+          };
+          WidgetBuilder? builder = routes[settings.name];
+          if (builder != null) {
+            return MaterialPageRoute(
+                builder: (ctx) => builder(ctx), settings: settings);
+          } else {
+            return null;
+          }
         },
-        initialRoute: _isLoggedIn ? '/home' : '/login',
+        initialRoute: _isLoggedIn ? RouteName.home : RouteName.login,
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/widgets/main_screen.dart';
 import 'package:med_cashback/widgets/profile_screen.dart';
 
@@ -67,7 +68,8 @@ class _MainTabBarState extends State<MainTabBar>
     List<Tab> tabs = <Tab>[
       Tab(
         text: AppLocalizations.of(context)!.tabBarMain,
-        icon: _tabController!.index == 0 ? _mainActiveImage : _mainInactiveImage,
+        icon:
+            _tabController!.index == 0 ? _mainActiveImage : _mainInactiveImage,
       ),
       Tab(
         text: AppLocalizations.of(context)!.tabBarMyRecipes,
@@ -98,7 +100,7 @@ class _MainTabBarState extends State<MainTabBar>
           children: [
             SafeArea(
               child: Scaffold(
-                backgroundColor: Color(0x00000000),
+                backgroundColor: CashbackColors.backgroundColor,
                 bottomNavigationBar: Container(
                   decoration:
                       BoxDecoration(color: Theme.of(context).backgroundColor),

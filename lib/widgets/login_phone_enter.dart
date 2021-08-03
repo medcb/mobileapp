@@ -8,6 +8,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/widgets/full_screen_background_container.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -66,7 +68,7 @@ class _LoginPhoneEnterScreenState extends State<LoginPhoneEnterScreen> {
             duration: const Duration(milliseconds: 100),
             curve: Curves.decelerate,
             child: Scaffold(
-              backgroundColor: Color(0x00000000),
+              backgroundColor: CashbackColors.backgroundColor,
               extendBody: true,
               resizeToAvoidBottomInset: false,
               body: Column(
@@ -305,7 +307,7 @@ class _CodeEnterTextFieldsState extends State<CodeEnterTextFields> {
             _codeDigits.reduce((value, element) => value! * 10 + element!);
         print(code);
         //TODO: Handle code here
-        Navigator.of(context).pushReplacementNamed('/home');
+        Navigator.of(context).pushReplacementNamed(RouteName.home);
       }
     };
 
