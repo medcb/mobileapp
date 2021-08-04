@@ -8,5 +8,6 @@ abstract class CashbackColors {
   static final disabledColor = Color(0xff8D95A7);
   static final shadowColor = Color(0x1a000000);
   static final mainTextColor = Color(0xff333333);
+  static final contrastTextColor = Color(0xffffffff);
   static final photoCropBorderColor = Color(0xffffffff);
 }

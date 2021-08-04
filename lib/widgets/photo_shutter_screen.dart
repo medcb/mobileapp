@@ -192,6 +192,7 @@ class _PhotoShutterScreenState extends State<PhotoShutterScreen>
               padding: const EdgeInsets.all(12.0),
               child: IconButton(
                 onPressed: _goBack,
+                iconSize: 24,
                 icon: Image.asset(
                   'assets/images/back_circle_icon.png',
                 ),

@@ -12,5 +12,7 @@
     "tabBarMain": "Главная",
     "tabBarMyRecipes": "Мои рецепты",
     "tabBarReviews": "Отзывы",
-    "tabBarProfile": "Профиль"
+    "tabBarProfile": "Профиль",
+    "photoCropTitle": "Откадрируйте изображение рецепта",
+    "photoCropSave": "Сохранить"
 }

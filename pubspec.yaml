@@ -68,6 +68,7 @@ flutter:
     - assets/images/camera_shutter_button.png
     - assets/images/camera_gallery_button.png
     - assets/images/back_circle_icon.png
+    - assets/images/close_circle_icon.png
 
   fonts:
     - family: Rubik
