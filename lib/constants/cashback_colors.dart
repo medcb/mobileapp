@@ -10,4 +10,5 @@ abstract class CashbackColors {
   static final mainTextColor = Color(0xff333333);
   static final contrastTextColor = Color(0xffffffff);
   static final photoCropBorderColor = Color(0xffffffff);
+  static final photoAddPlusBackgroundColor = Color(0xffF7F8FA);
 }

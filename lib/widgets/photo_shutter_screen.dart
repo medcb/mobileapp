@@ -3,10 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/constants/route_name.dart';
+import 'package:med_cashback/models/recipe_photo_data.dart';
 import 'package:med_cashback/widgets/photo_crop_screen.dart';
 
+class PhotoShutterScreenArguments {
+  final Function(RecipePhotoData)? completion;
+
+  PhotoShutterScreenArguments({this.completion});
+}
+
 class PhotoShutterScreen extends StatefulWidget {
-  const PhotoShutterScreen({Key? key}) : super(key: key);
+  const PhotoShutterScreen({Key? key, required this.arguments})
+      : super(key: key);
+
+  final PhotoShutterScreenArguments arguments;
 
   @override
   _PhotoShutterScreenState createState() => _PhotoShutterScreenState();
@@ -95,7 +105,10 @@ class _PhotoShutterScreenState extends State<PhotoShutterScreen>
       Navigator.pushReplacementNamed(
         context,
         RouteName.photoCrop,
-        arguments: PhotoCropScreenArguments(image.path),
+        arguments: PhotoCropScreenArguments(
+          image.path,
+          completion: widget.arguments.completion,
+        ),
       );
     } catch (err) {
       print(err);
@@ -109,7 +122,10 @@ class _PhotoShutterScreenState extends State<PhotoShutterScreen>
         Navigator.pushReplacementNamed(
           context,
           RouteName.photoCrop,
-          arguments: PhotoCropScreenArguments(image.path),
+          arguments: PhotoCropScreenArguments(
+            image.path,
+            completion: widget.arguments.completion,
+          ),
         );
       }
     } catch (err) {

@@ -7,6 +7,7 @@ import 'package:med_cashback/widgets/login_phone_enter.dart';
 import 'package:med_cashback/widgets/main_tab_bar.dart';
 import 'package:med_cashback/widgets/photo_crop_screen.dart';
 import 'package:med_cashback/widgets/photo_shutter_screen.dart';
+import 'package:med_cashback/widgets/recipe_add_photos_list_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,9 +50,15 @@ class MyApp extends StatelessWidget {
           var routes = <String, WidgetBuilder>{
             RouteName.home: (ctx) => MainTabBar(),
             RouteName.login: (ctx) => LoginPhoneEnterScreen(),
-            RouteName.addRecipe: (ctx) => PhotoShutterScreen(),
+            RouteName.addRecipe: (ctx) => PhotoShutterScreen(
+                  arguments: settings.arguments as PhotoShutterScreenArguments,
+                ),
             RouteName.photoCrop: (ctx) => PhotoCropScreen(
                   arguments: settings.arguments as PhotoCropScreenArguments,
+                ),
+            RouteName.addRecipePhotosList: (ctx) => RecipeAddPhotosListScreen(
+                  arguments:
+                      settings.arguments as RecipeAddPhotosListScreenArguments,
                 ),
           };
           WidgetBuilder? builder = routes[settings.name];

@@ -14,5 +14,9 @@
     "tabBarReviews": "Отзывы",
     "tabBarProfile": "Профиль",
     "photoCropTitle": "Откадрируйте изображение рецепта",
-    "photoCropSave": "Сохранить"
+    "photoCropSave": "Сохранить",
+    "recipeAddPhotosListTitle": "Добавление рецепта",
+    "recipeAddPhotosListDeleteAlertTitle": "Удалить фото?",
+    "recipeAddPhotosListDeleteAlertYes": "Да, удалить",
+    "recipeAddPhotosListDeleteAlertNo": "Нет"
 }

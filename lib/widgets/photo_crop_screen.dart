@@ -1,12 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:image/image.dart' as imageLib;
 import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/constants/route_name.dart';
+import 'package:med_cashback/models/recipe_photo_data.dart';
 import 'package:med_cashback/widgets/image_rect_selector.dart';
+import 'package:med_cashback/widgets/recipe_add_photos_list_screen.dart';
 
 class PhotoCropScreenArguments {
   final String imagePath;
+  final Function(RecipePhotoData)? completion;
 
-  PhotoCropScreenArguments(this.imagePath);
+  PhotoCropScreenArguments(this.imagePath, {this.completion});
 }
 
 class PhotoCropScreen extends StatefulWidget {
@@ -19,8 +26,40 @@ class PhotoCropScreen extends StatefulWidget {
 }
 
 class _PhotoCropScreenState extends State<PhotoCropScreen> {
+  Rect _cropRect = Rect.zero;
+
   void _close() {
     Navigator.pop(context);
+  }
+
+  void _saveImage() {
+    var image =
+        imageLib.decodeJpg(File(widget.arguments.imagePath).readAsBytesSync());
+
+    final cropped = imageLib.copyCrop(
+      imageLib.bakeOrientation(image),
+      _cropRect.left.toInt(),
+      _cropRect.top.toInt(),
+      _cropRect.width.toInt(),
+      _cropRect.height.toInt(),
+    );
+
+    print(_cropRect.left.toInt());
+    print(_cropRect.top.toInt());
+    print(_cropRect.width.toInt());
+    print(_cropRect.height.toInt());
+
+    if (widget.arguments.completion != null) {
+      widget.arguments.completion!(RecipePhotoData(image: cropped));
+      Navigator.pop(context);
+    } else {
+      Navigator.pushReplacementNamed(
+        context,
+        RouteName.addRecipePhotosList,
+        arguments:
+            RecipeAddPhotosListScreenArguments(RecipePhotoData(image: cropped)),
+      );
+    }
   }
 
   @override
@@ -33,6 +72,7 @@ class _PhotoCropScreenState extends State<PhotoCropScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 91, bottom: 76),
               child: ImageRectSelector(
+                onRectChange: (rect) => _cropRect = rect,
                 imagePath: widget.arguments.imagePath,
                 rectColor: CashbackColors.photoCropBorderColor,
               ),
@@ -56,9 +96,7 @@ class _PhotoCropScreenState extends State<PhotoCropScreen> {
                   child: SizedBox(
                     height: 44,
                     child: ElevatedButton(
-                      onPressed: () {
-                        print("save");
-                      },
+                      onPressed: _saveImage,
                       child: Text(
                         'Добавить рецепт',
                         style: TextStyle(

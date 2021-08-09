@@ -6,12 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
 
 class ImageRectSelector extends StatefulWidget {
-  const ImageRectSelector(
-      {Key? key, required this.imagePath, required this.rectColor})
-      : super(key: key);
+  const ImageRectSelector({
+    Key? key,
+    required this.imagePath,
+    required this.rectColor,
+    this.onRectChange,
+  }) : super(key: key);
 
   final String imagePath;
   final Color rectColor;
+  final Function(Rect)? onRectChange;
 
   @override
   _ImageRectSelectorState createState() => _ImageRectSelectorState();
@@ -65,6 +69,10 @@ class _ImageRectSelectorState extends State<ImageRectSelector>
           imageSize =
               Size(info.image.width.toDouble(), info.image.height.toDouble());
           cropRect = Offset.zero & imageSize!;
+
+          if (widget.onRectChange != null) {
+            widget.onRectChange!(cropRect);
+          }
         });
       }),
     );
@@ -116,6 +124,9 @@ class _ImageRectSelectorState extends State<ImageRectSelector>
                   imageSize!.height),
               cropRect.top + _minImageSize),
         );
+        if (widget.onRectChange != null) {
+          widget.onRectChange!(cropRect);
+        }
       });
       _previousMoveCornerOffset = d.localFocalPoint;
     } else {

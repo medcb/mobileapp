@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:med_cashback/constants/route_name.dart';
+import 'package:med_cashback/widgets/photo_shutter_screen.dart';
 
 class MainScreen extends StatelessWidget {
   final _withdrawalMethodImages = [
@@ -70,7 +72,11 @@ class MainScreen extends StatelessWidget {
   ];
 
   void _addRecipe(BuildContext context) {
-    Navigator.pushNamed(context, '/addRecipe');
+    Navigator.pushNamed(
+      context,
+      RouteName.addRecipe,
+      arguments: PhotoShutterScreenArguments(),
+    );
   }
 
   //TODO: Make strings localizable
