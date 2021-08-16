@@ -1,73 +1,41 @@
-import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:image/image.dart' as imageLib;
+import 'package:image/image.dart' as imglib;
 import 'package:med_cashback/constants/cashback_colors.dart';
-import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/models/recipe_photo_data.dart';
-import 'package:med_cashback/widgets/image_rect_selector.dart';
-import 'package:med_cashback/widgets/recipe_add_photos_list_screen.dart';
 
-class PhotoCropScreenArguments {
-  final String imagePath;
-  final Function(RecipePhotoData)? completion;
+import 'image_rect_selector.dart';
 
-  PhotoCropScreenArguments(this.imagePath, {this.completion});
+class RecipeAddPhotoEditScreenArguments {
+  final RecipePhotoData photoData;
+
+  RecipeAddPhotoEditScreenArguments(this.photoData);
 }
 
-class PhotoCropScreen extends StatefulWidget {
-  const PhotoCropScreen({Key? key, required this.arguments}) : super(key: key);
+class RecipeAddPhotoEditScreen extends StatefulWidget {
+  const RecipeAddPhotoEditScreen({Key? key, required this.arguments})
+      : super(key: key);
 
-  final PhotoCropScreenArguments arguments;
+  final RecipeAddPhotoEditScreenArguments arguments;
 
   @override
-  _PhotoCropScreenState createState() => _PhotoCropScreenState();
+  _RecipeAddPhotoEditScreenState createState() =>
+      _RecipeAddPhotoEditScreenState();
 }
 
-class _PhotoCropScreenState extends State<PhotoCropScreen> {
-  Rect _cropRect = Rect.zero;
+class _RecipeAddPhotoEditScreenState extends State<RecipeAddPhotoEditScreen> {
+  Rect? _currentRect;
 
   late Image _image;
 
   @override
   void initState() {
-    _image = Image.file(File(widget.arguments.imagePath));
+    _image = Image.memory(
+        imglib.encodeJpg(widget.arguments.photoData.image) as Uint8List);
     super.initState();
-  }
-
-  void _close() {
-    Navigator.pop(context);
-  }
-
-  void _saveImage() {
-    var image =
-        imageLib.decodeJpg(File(widget.arguments.imagePath).readAsBytesSync());
-
-    final cropped = imageLib.copyCrop(
-      imageLib.bakeOrientation(image),
-      _cropRect.left.toInt(),
-      _cropRect.top.toInt(),
-      _cropRect.width.toInt(),
-      _cropRect.height.toInt(),
-    );
-
-    print(_cropRect.left.toInt());
-    print(_cropRect.top.toInt());
-    print(_cropRect.width.toInt());
-    print(_cropRect.height.toInt());
-
-    if (widget.arguments.completion != null) {
-      widget.arguments.completion!(RecipePhotoData(image: cropped));
-      Navigator.pop(context);
-    } else {
-      Navigator.pushReplacementNamed(
-        context,
-        RouteName.addRecipePhotosList,
-        arguments:
-            RecipeAddPhotosListScreenArguments(RecipePhotoData(image: cropped)),
-      );
-    }
   }
 
   @override
@@ -80,7 +48,7 @@ class _PhotoCropScreenState extends State<PhotoCropScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 91, bottom: 76),
               child: ImageRectSelector(
-                onRectChange: (rect) => _cropRect = rect,
+                onRectChange: (rect) => _currentRect = rect,
                 image: _image,
                 rectColor: CashbackColors.photoCropBorderColor,
               ),
@@ -104,9 +72,9 @@ class _PhotoCropScreenState extends State<PhotoCropScreen> {
                   child: SizedBox(
                     height: 44,
                     child: ElevatedButton(
-                      onPressed: _saveImage,
+                      onPressed: null,
                       child: Text(
-                        AppLocalizations.of(context)!.photoCropSave,
+                        'Добавить рецепт',
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
@@ -122,7 +90,7 @@ class _PhotoCropScreenState extends State<PhotoCropScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(16),
                 child: InkWell(
-                  onTap: _close,
+                  onTap: null,
                   child: Image.asset(
                     'assets/images/close_circle_icon.png',
                   ),

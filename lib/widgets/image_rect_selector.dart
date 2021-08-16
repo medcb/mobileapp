@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 import 'dart:ui' as ui;
 
@@ -8,12 +7,12 @@ import 'package:med_cashback/constants/cashback_colors.dart';
 class ImageRectSelector extends StatefulWidget {
   const ImageRectSelector({
     Key? key,
-    required this.imagePath,
+    required this.image,
     required this.rectColor,
     this.onRectChange,
   }) : super(key: key);
 
-  final String imagePath;
+  final Image image;
   final Color rectColor;
   final Function(Rect)? onRectChange;
 
@@ -59,10 +58,7 @@ class _ImageRectSelectorState extends State<ImageRectSelector>
       duration: Duration(milliseconds: 150),
       vsync: this,
     );
-    Image.file(File(widget.imagePath))
-        .image
-        .resolve(ImageConfiguration())
-        .addListener(
+    widget.image.image.resolve(ImageConfiguration()).addListener(
       ImageStreamListener((ImageInfo info, bool _) {
         image = info.image;
         setState(() {

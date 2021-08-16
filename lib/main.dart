@@ -7,6 +7,7 @@ import 'package:med_cashback/widgets/login_phone_enter.dart';
 import 'package:med_cashback/widgets/main_tab_bar.dart';
 import 'package:med_cashback/widgets/photo_crop_screen.dart';
 import 'package:med_cashback/widgets/photo_shutter_screen.dart';
+import 'package:med_cashback/widgets/recipe_add_photo_edit.dart';
 import 'package:med_cashback/widgets/recipe_add_photos_list_screen.dart';
 
 void main() {
@@ -60,6 +61,9 @@ class MyApp extends StatelessWidget {
                   arguments:
                       settings.arguments as RecipeAddPhotosListScreenArguments,
                 ),
+            RouteName.addRecipePhotoEdit: (ctx) => RecipeAddPhotoEditScreen(
+                arguments:
+                    settings.arguments as RecipeAddPhotoEditScreenArguments)
           };
           WidgetBuilder? builder = routes[settings.name];
           if (builder != null) {
