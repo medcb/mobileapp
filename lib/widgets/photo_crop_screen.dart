@@ -82,6 +82,7 @@ class _PhotoCropScreenState extends State<PhotoCropScreen> {
               child: ImageRectSelector(
                 onRectChange: (rect) => _cropRect = rect,
                 image: _image,
+                style: ImageRectSelectorStyle.crop,
                 rectColor: CashbackColors.photoCropBorderColor,
               ),
             ),

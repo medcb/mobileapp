@@ -28,5 +28,6 @@
     "recipeAddPhotosMarkTypeDate": "Дата выдачи назначения",
     "recipeAddPhotosMarkTypeDiagnose": "Диагноз",
     "recipeAddPhotosMarkTypeDrug": "Назначение",
-    "recipeAddPhotosAbsentTitle": "Вы не отметили: "
+    "recipeAddPhotosAbsentTitle": "Вы не отметили: ",
+    "recipeAddPhotoEditTitle": "Отметьте все данные в назначении"
 }

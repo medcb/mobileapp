@@ -4,16 +4,23 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
 
+enum ImageRectSelectorStyle {
+  crop,
+  edit,
+}
+
 class ImageRectSelector extends StatefulWidget {
   const ImageRectSelector({
     Key? key,
     required this.image,
     required this.rectColor,
+    required this.style,
     this.onRectChange,
   }) : super(key: key);
 
   final Image image;
-  final Color rectColor;
+  final Color? rectColor;
+  final ImageRectSelectorStyle style;
   final Function(Rect)? onRectChange;
 
   @override
@@ -216,6 +223,7 @@ class _ImageRectSelectorState extends State<ImageRectSelector>
                             : _scale,
                         cropRect: cropRect,
                         rectColor: widget.rectColor,
+                        style: widget.style,
                       ),
                     );
                   },
@@ -233,13 +241,15 @@ class _ZoomableImagePainter extends CustomPainter {
     required this.scale,
     required this.cropRect,
     required this.rectColor,
+    required this.style,
   });
 
   final ui.Image image;
   final Offset offset;
   final double scale;
   final Rect cropRect;
-  final Color rectColor;
+  final Color? rectColor;
+  final ImageRectSelectorStyle style;
 
   @override
   void paint(Canvas canvas, Size canvasSize) {
@@ -263,55 +273,96 @@ class _ZoomableImagePainter extends CustomPainter {
       fit: BoxFit.fill,
     );
 
+    if (rectColor == null) {
+      return;
+    }
+
     var paint = Paint()
       ..strokeWidth = 1
       ..style = PaintingStyle.stroke
-      ..color = rectColor;
+      ..color = rectColor!;
     canvas.drawRect(cropTarget, paint);
 
-    final double verticalThird = (cropTarget.bottom - cropTarget.top) / 3;
-    canvas.drawLine(
-      Offset(cropTarget.left, cropTarget.top + verticalThird),
-      Offset(cropTarget.right, cropTarget.top + verticalThird),
-      paint,
-    );
-    canvas.drawLine(
-      Offset(cropTarget.left, cropTarget.top + verticalThird * 2),
-      Offset(cropTarget.right, cropTarget.top + verticalThird * 2),
-      paint,
+    var darkPaint = Paint()
+      ..style = PaintingStyle.fill
+      ..color = CashbackColors.photoCropSubstractColor;
+    canvas.drawDRRect(
+      RRect.fromRectAndCorners(Rect.largest),
+      RRect.fromRectAndCorners(cropTarget),
+      darkPaint,
     );
 
-    final double horizontalThird = (cropTarget.right - cropTarget.left) / 3;
-    canvas.drawLine(
-      Offset(cropTarget.left + horizontalThird, cropTarget.top),
-      Offset(cropTarget.left + horizontalThird, cropTarget.bottom),
-      paint,
-    );
-    canvas.drawLine(
-      Offset(cropTarget.left + horizontalThird * 2, cropTarget.top),
-      Offset(cropTarget.left + horizontalThird * 2, cropTarget.bottom),
-      paint,
-    );
+    switch (style) {
+      case ImageRectSelectorStyle.crop:
+        final double verticalThird = (cropTarget.bottom - cropTarget.top) / 3;
+        canvas.drawLine(
+          Offset(cropTarget.left, cropTarget.top + verticalThird),
+          Offset(cropTarget.right, cropTarget.top + verticalThird),
+          paint,
+        );
+        canvas.drawLine(
+          Offset(cropTarget.left, cropTarget.top + verticalThird * 2),
+          Offset(cropTarget.right, cropTarget.top + verticalThird * 2),
+          paint,
+        );
 
-    paint.strokeWidth = 4;
-    var path = Path()
-      ..moveTo(cropTarget.left, min(cropTarget.top + 24, cropTarget.bottom))
-      ..lineTo(cropTarget.left, cropTarget.top)
-      ..lineTo(min(cropTarget.left + 24, cropTarget.right), cropTarget.top)
-      ..moveTo(max(cropTarget.right - 24, cropTarget.left), cropTarget.top)
-      ..lineTo(cropTarget.right, cropTarget.top)
-      ..lineTo(cropTarget.right, min(cropTarget.top + 24, cropTarget.bottom))
-      ..moveTo(cropTarget.right, max(cropTarget.bottom - 24, cropTarget.top))
-      ..lineTo(cropTarget.right, cropTarget.bottom)
-      ..lineTo(max(cropTarget.right - 24, cropTarget.left), cropTarget.bottom)
-      ..moveTo(min(cropTarget.left + 24, cropTarget.right), cropTarget.bottom)
-      ..lineTo(cropTarget.left, cropTarget.bottom)
-      ..lineTo(cropTarget.left, max(cropTarget.bottom - 24, cropTarget.top));
-    canvas.drawPath(path, paint);
+        final double horizontalThird = (cropTarget.right - cropTarget.left) / 3;
+        canvas.drawLine(
+          Offset(cropTarget.left + horizontalThird, cropTarget.top),
+          Offset(cropTarget.left + horizontalThird, cropTarget.bottom),
+          paint,
+        );
+        canvas.drawLine(
+          Offset(cropTarget.left + horizontalThird * 2, cropTarget.top),
+          Offset(cropTarget.left + horizontalThird * 2, cropTarget.bottom),
+          paint,
+        );
+
+        paint.strokeWidth = 4;
+        var path = Path()
+          ..moveTo(cropTarget.left, min(cropTarget.top + 24, cropTarget.bottom))
+          ..lineTo(cropTarget.left, cropTarget.top)
+          ..lineTo(min(cropTarget.left + 24, cropTarget.right), cropTarget.top)
+          ..moveTo(max(cropTarget.right - 24, cropTarget.left), cropTarget.top)
+          ..lineTo(cropTarget.right, cropTarget.top)
+          ..lineTo(
+              cropTarget.right, min(cropTarget.top + 24, cropTarget.bottom))
+          ..moveTo(
+              cropTarget.right, max(cropTarget.bottom - 24, cropTarget.top))
+          ..lineTo(cropTarget.right, cropTarget.bottom)
+          ..lineTo(
+              max(cropTarget.right - 24, cropTarget.left), cropTarget.bottom)
+          ..moveTo(
+              min(cropTarget.left + 24, cropTarget.right), cropTarget.bottom)
+          ..lineTo(cropTarget.left, cropTarget.bottom)
+          ..lineTo(
+              cropTarget.left, max(cropTarget.bottom - 24, cropTarget.top));
+        canvas.drawPath(path, paint);
+        break;
+
+      case ImageRectSelectorStyle.edit:
+        paint.style = PaintingStyle.fill;
+        canvas.drawCircle(Offset(cropTarget.left, cropTarget.top), 8, paint);
+        canvas.drawCircle(Offset(cropTarget.right, cropTarget.top), 8, paint);
+        canvas.drawCircle(Offset(cropTarget.left, cropTarget.bottom), 8, paint);
+        canvas.drawCircle(
+            Offset(cropTarget.right, cropTarget.bottom), 8, paint);
+
+        // canvas.drawImage(ui.Image.asset('assets/images/close_circle_icon.png'),
+        //     offset, paint);
+        // paintImage(
+        //   canvas: canvas,
+        //   rect: offset & targetSize,
+        //   image: ui.Image(
+        //       image: AssetImage('assets/images/close_circle_icon.png')),
+        //   fit: BoxFit.fill,
+        // );
+        break;
+    }
   }
 
   @override
-  bool? hitTest(ui.Offset position) {
+  bool? hitTest(Offset position) {
     return super.hitTest(position);
   }
 
