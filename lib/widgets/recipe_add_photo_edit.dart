@@ -12,8 +12,9 @@ import 'image_rect_selector.dart';
 
 class RecipeAddPhotoEditScreenArguments {
   final RecipePhotoData photoData;
+  final Function completion;
 
-  RecipeAddPhotoEditScreenArguments(this.photoData);
+  RecipeAddPhotoEditScreenArguments(this.photoData, this.completion);
 }
 
 class RecipeAddPhotoEditScreen extends StatefulWidget {
@@ -30,24 +31,172 @@ class RecipeAddPhotoEditScreen extends StatefulWidget {
 class _RecipeAddPhotoEditScreenState extends State<RecipeAddPhotoEditScreen> {
   Rect? _currentRect;
 
+  Rect? patientFioRect;
+  Rect? dateRect;
+  Rect? clinicRect;
+  Rect? specialtyRect;
+  Rect? diagnoseRect;
+  Rect? drugRect;
+
   late Image _image;
 
   PhotoMarkType? _selectingMarkType;
 
+  GlobalKey<ImageRectSelectorState> rectSelectorStateKey = GlobalKey();
+
   @override
   void initState() {
+    patientFioRect = widget.arguments.photoData.patientFioRect;
+    dateRect = widget.arguments.photoData.dateRect;
+    clinicRect = widget.arguments.photoData.clinicRect;
+    specialtyRect = widget.arguments.photoData.specialtyRect;
+    diagnoseRect = widget.arguments.photoData.diagnoseRect;
+    drugRect = widget.arguments.photoData.drugRect;
+
     _image = Image.memory(
         imglib.encodeJpg(widget.arguments.photoData.image) as Uint8List);
     super.initState();
   }
 
   void _selectMarkType(PhotoMarkType markType) {
+    _setCurrentRectToMarkTypeRect();
     setState(() {
       _selectingMarkType = markType;
+      switch (markType) {
+        case PhotoMarkType.patientName:
+          _currentRect = patientFioRect;
+          break;
+        case PhotoMarkType.doctorSpeciality:
+          _currentRect = specialtyRect;
+          break;
+        case PhotoMarkType.clinic:
+          _currentRect = clinicRect;
+          break;
+        case PhotoMarkType.date:
+          _currentRect = dateRect;
+          break;
+        case PhotoMarkType.diagnose:
+          _currentRect = diagnoseRect;
+          break;
+        case PhotoMarkType.drug:
+          _currentRect = drugRect;
+          break;
+      }
+      if (_currentRect != null) {
+        rectSelectorStateKey.currentState?.cropRect = _currentRect!;
+      }
     });
   }
 
-  void _save() {}
+  void _setCurrentRectToMarkTypeRect() {
+    switch (_selectingMarkType) {
+      case PhotoMarkType.patientName:
+        patientFioRect = _currentRect;
+        break;
+      case PhotoMarkType.doctorSpeciality:
+        specialtyRect = _currentRect;
+        break;
+      case PhotoMarkType.clinic:
+        clinicRect = _currentRect;
+        break;
+      case PhotoMarkType.date:
+        dateRect = _currentRect;
+        break;
+      case PhotoMarkType.diagnose:
+        diagnoseRect = _currentRect;
+        break;
+      case PhotoMarkType.drug:
+        drugRect = _currentRect;
+        break;
+      case null:
+        break;
+    }
+  }
+
+  List<PhotoMarkType> _definedMarksList() {
+    List<PhotoMarkType> list = [];
+    if (patientFioRect != null) {
+      list.add(PhotoMarkType.patientName);
+    }
+    if (specialtyRect != null) {
+      list.add(PhotoMarkType.doctorSpeciality);
+    }
+    if (clinicRect != null) {
+      list.add(PhotoMarkType.clinic);
+    }
+    if (dateRect != null) {
+      list.add(PhotoMarkType.date);
+    }
+    if (diagnoseRect != null) {
+      list.add(PhotoMarkType.diagnose);
+    }
+    if (drugRect != null) {
+      list.add(PhotoMarkType.drug);
+    }
+    return list;
+  }
+
+  List<ImageRectSelectorInactiveRectModel> _inactiveRects() {
+    List<ImageRectSelectorInactiveRectModel> rects = [];
+
+    if (patientFioRect != null &&
+        _selectingMarkType != PhotoMarkType.patientName) {
+      rects.add(ImageRectSelectorInactiveRectModel(
+        patientFioRect!,
+        PhotoMarkType.patientName.color(),
+      ));
+    }
+
+    if (specialtyRect != null &&
+        _selectingMarkType != PhotoMarkType.doctorSpeciality) {
+      rects.add(ImageRectSelectorInactiveRectModel(
+        specialtyRect!,
+        PhotoMarkType.doctorSpeciality.color(),
+      ));
+    }
+
+    if (clinicRect != null && _selectingMarkType != PhotoMarkType.clinic) {
+      rects.add(ImageRectSelectorInactiveRectModel(
+        clinicRect!,
+        PhotoMarkType.clinic.color(),
+      ));
+    }
+
+    if (dateRect != null && _selectingMarkType != PhotoMarkType.date) {
+      rects.add(ImageRectSelectorInactiveRectModel(
+        dateRect!,
+        PhotoMarkType.date.color(),
+      ));
+    }
+
+    if (diagnoseRect != null && _selectingMarkType != PhotoMarkType.diagnose) {
+      rects.add(ImageRectSelectorInactiveRectModel(
+        diagnoseRect!,
+        PhotoMarkType.diagnose.color(),
+      ));
+    }
+
+    if (drugRect != null && _selectingMarkType != PhotoMarkType.drug) {
+      rects.add(ImageRectSelectorInactiveRectModel(
+        drugRect!,
+        PhotoMarkType.drug.color(),
+      ));
+    }
+
+    return rects;
+  }
+
+  void _save() {
+    _setCurrentRectToMarkTypeRect();
+    widget.arguments.photoData.patientFioRect = patientFioRect;
+    widget.arguments.photoData.dateRect = dateRect;
+    widget.arguments.photoData.clinicRect = clinicRect;
+    widget.arguments.photoData.specialtyRect = specialtyRect;
+    widget.arguments.photoData.diagnoseRect = diagnoseRect;
+    widget.arguments.photoData.drugRect = drugRect;
+    widget.arguments.completion();
+    _goBack();
+  }
 
   void _goBack() {
     Navigator.pop(context);
@@ -63,10 +212,12 @@ class _RecipeAddPhotoEditScreenState extends State<RecipeAddPhotoEditScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 91, bottom: 140),
               child: ImageRectSelector(
+                key: rectSelectorStateKey,
                 onRectChange: (rect) => _currentRect = rect,
                 image: _image,
                 style: ImageRectSelectorStyle.edit,
                 rectColor: _selectingMarkType?.color(),
+                inactiveRects: _inactiveRects(),
               ),
             ),
             Column(
@@ -95,7 +246,7 @@ class _RecipeAddPhotoEditScreenState extends State<RecipeAddPhotoEditScreen> {
                       _RecipeAddPhotoEditMarkTypesList(
                         onSelect: (markType) => _selectMarkType(markType),
                         selectedMarkType: _selectingMarkType,
-                        definedMarkTypes: [],
+                        definedMarkTypes: _definedMarksList(),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
@@ -212,14 +363,30 @@ class _RecipeAddPhotoEditMarkTypesListCell extends StatelessWidget {
             ? markType.color()
             : CashbackColors.unselectedPhotoMarkTypeColor,
       ),
-      child: Text(
-        markType.localizedName(context),
-        style: TextStyle(
-          color: isSelected
-              ? CashbackColors.contrastTextColor
-              : CashbackColors.mainTextColor,
-          fontSize: 12,
-        ),
+      child: Row(
+        children: [
+          Text(
+            markType.localizedName(context),
+            style: TextStyle(
+              color: isSelected
+                  ? CashbackColors.contrastTextColor
+                  : CashbackColors.mainTextColor,
+              fontSize: 12,
+            ),
+          ),
+          isDefined
+              ? Padding(
+                  padding: const EdgeInsets.only(left: 4),
+                  child: Icon(
+                    Icons.check,
+                    color: isSelected
+                        ? CashbackColors.contrastTextColor
+                        : markType.color(),
+                    size: 14,
+                  ),
+                )
+              : Container(),
+        ],
       ),
     );
   }

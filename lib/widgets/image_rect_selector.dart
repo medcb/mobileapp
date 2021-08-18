@@ -9,6 +9,13 @@ enum ImageRectSelectorStyle {
   edit,
 }
 
+class ImageRectSelectorInactiveRectModel {
+  final Rect rect;
+  final Color color;
+
+  ImageRectSelectorInactiveRectModel(this.rect, this.color);
+}
+
 class ImageRectSelector extends StatefulWidget {
   const ImageRectSelector({
     Key? key,
@@ -16,18 +23,20 @@ class ImageRectSelector extends StatefulWidget {
     required this.rectColor,
     required this.style,
     this.onRectChange,
+    this.inactiveRects,
   }) : super(key: key);
 
   final Image image;
   final Color? rectColor;
   final ImageRectSelectorStyle style;
   final Function(Rect)? onRectChange;
+  final List<ImageRectSelectorInactiveRectModel>? inactiveRects;
 
   @override
-  _ImageRectSelectorState createState() => _ImageRectSelectorState();
+  ImageRectSelectorState createState() => ImageRectSelectorState();
 }
 
-class _ImageRectSelectorState extends State<ImageRectSelector>
+class ImageRectSelectorState extends State<ImageRectSelector>
     with TickerProviderStateMixin {
   late ui.Image image;
   Size? _canvasSize;
@@ -224,6 +233,7 @@ class _ImageRectSelectorState extends State<ImageRectSelector>
                         cropRect: cropRect,
                         rectColor: widget.rectColor,
                         style: widget.style,
+                        inactiveRects: widget.inactiveRects ?? [],
                       ),
                     );
                   },
@@ -242,6 +252,7 @@ class _ZoomableImagePainter extends CustomPainter {
     required this.cropRect,
     required this.rectColor,
     required this.style,
+    required this.inactiveRects,
   });
 
   final ui.Image image;
@@ -250,6 +261,7 @@ class _ZoomableImagePainter extends CustomPainter {
   final Rect cropRect;
   final Color? rectColor;
   final ImageRectSelectorStyle style;
+  final List<ImageRectSelectorInactiveRectModel> inactiveRects;
 
   @override
   void paint(Canvas canvas, Size canvasSize) {
@@ -272,6 +284,20 @@ class _ZoomableImagePainter extends CustomPainter {
       image: image,
       fit: BoxFit.fill,
     );
+
+    inactiveRects.forEach((inactiveRect) {
+      var paint = Paint()
+        ..strokeWidth = 1
+        ..style = PaintingStyle.stroke
+        ..color = inactiveRect.color;
+      Rect translatedRect = Rect.fromLTWH(
+        offset.dx + inactiveRect.rect.left * targetScale,
+        offset.dy + inactiveRect.rect.top * targetScale,
+        inactiveRect.rect.width * targetScale,
+        inactiveRect.rect.height * targetScale,
+      );
+      canvas.drawRect(translatedRect, paint);
+    });
 
     if (rectColor == null) {
       return;

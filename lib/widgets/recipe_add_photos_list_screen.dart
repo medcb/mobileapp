@@ -82,7 +82,12 @@ class _RecipeAddPhotosListState extends State<RecipeAddPhotosListScreen> {
 
   void _didTapPhoto(RecipePhotoData photo) {
     Navigator.pushNamed(context, RouteName.addRecipePhotoEdit,
-        arguments: RecipeAddPhotoEditScreenArguments(photo));
+        arguments: RecipeAddPhotoEditScreenArguments(
+          photo,
+          () {
+            setState(() {});
+          },
+        ));
   }
 
   String? absentPhotosErrorText() {
