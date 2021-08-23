@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,6 +8,7 @@ import 'package:med_cashback/widgets/login_phone_enter.dart';
 import 'package:med_cashback/widgets/main_tab_bar.dart';
 import 'package:med_cashback/widgets/photo_crop_screen.dart';
 import 'package:med_cashback/widgets/photo_shutter_screen.dart';
+import 'package:med_cashback/widgets/proxy_setup_screen.dart';
 import 'package:med_cashback/widgets/recipe_add_photo_edit.dart';
 import 'package:med_cashback/widgets/recipe_add_photos_list_screen.dart';
 
@@ -17,7 +19,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final _isLoggedIn = true;
+  final _isLoggedIn = false;
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +51,8 @@ class MyApp extends StatelessWidget {
         ),
         onGenerateRoute: (RouteSettings settings) {
           var routes = <String, WidgetBuilder>{
-            RouteName.home: (ctx) => MainTabBar(),
-            RouteName.login: (ctx) => LoginPhoneEnterScreen(),
+            RouteName.home: (ctx) =>
+                _isLoggedIn ? MainTabBar() : LoginPhoneEnterScreen(),
             RouteName.addRecipe: (ctx) => PhotoShutterScreen(
                   arguments: settings.arguments as PhotoShutterScreenArguments,
                 ),
@@ -63,7 +65,8 @@ class MyApp extends StatelessWidget {
                 ),
             RouteName.addRecipePhotoEdit: (ctx) => RecipeAddPhotoEditScreen(
                 arguments:
-                    settings.arguments as RecipeAddPhotoEditScreenArguments)
+                    settings.arguments as RecipeAddPhotoEditScreenArguments),
+            RouteName.proxySetup: (ctx) => ProxySetupScreen(),
           };
           WidgetBuilder? builder = routes[settings.name];
           if (builder != null) {
@@ -73,7 +76,7 @@ class MyApp extends StatelessWidget {
             return null;
           }
         },
-        initialRoute: _isLoggedIn ? RouteName.home : RouteName.login,
+        initialRoute: kReleaseMode ? RouteName.home : RouteName.proxySetup,
       ),
     );
   }

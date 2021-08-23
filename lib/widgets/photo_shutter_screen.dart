@@ -117,7 +117,7 @@ class _PhotoShutterScreenState extends State<PhotoShutterScreen>
 
   void _selectFromGallery() async {
     try {
-      final image = await _imagePicker.getImage(source: ImageSource.gallery);
+      final image = await _imagePicker.pickImage(source: ImageSource.gallery);
       if (image != null) {
         Navigator.pushReplacementNamed(
           context,

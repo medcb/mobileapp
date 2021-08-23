@@ -1,4 +1,8 @@
 {
+    "errorDefault": "Произошла ошибка",
+    "repeatRequestError": "Повторить",
+    "emptyDefault": "Нет данных",
+    "repeatRequestEmpty": "Обновить",
     "loginPhoneEnterWelcomeMessage": "Приветствуем вас в",
     "loginPhoneEnterEnterPhone": "Введите номер телефона",
     "loginPhoneEnterPhonePlaceholder": "+7 (000) 000-00-00",

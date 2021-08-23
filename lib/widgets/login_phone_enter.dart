@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
-import 'package:med_cashback/constants/route_name.dart';
+import 'package:med_cashback/network/auth_service.dart';
 import 'package:med_cashback/widgets/full_screen_background_container.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -29,25 +29,86 @@ class LoginPhoneEnterScreen extends StatefulWidget {
 class _LoginPhoneEnterScreenState extends State<LoginPhoneEnterScreen> {
   _LoginPhoneEnterScreenStatus _screenStatus =
       _LoginPhoneEnterScreenStatus.phoneEnter;
-
   String? _phone;
+
+  void _registerTapped(String phone) async {
+    if (_phone == phone) {
+      setState(() {
+        _screenStatus = _LoginPhoneEnterScreenStatus.codeEnter;
+      });
+      return;
+    }
+    _register(phone);
+  }
+
+  void _register(String phone) async {
+    setState(() {
+      _screenStatus = _LoginPhoneEnterScreenStatus.loading;
+    });
+    try {
+      await AuthService.register(phone);
+      setState(() {
+        _phone = phone;
+        _screenStatus = _LoginPhoneEnterScreenStatus.codeEnter;
+      });
+    } catch (err) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(err.toString())));
+      setState(() {
+        _screenStatus = _LoginPhoneEnterScreenStatus.phoneEnter;
+      });
+    }
+  }
+
+  void _changePhone() {
+    setState(() {
+      _screenStatus = _LoginPhoneEnterScreenStatus.phoneEnter;
+    });
+  }
+
+  void _resendCode() async {
+    if (_phone == null) {
+      print('No phone found to resend code');
+      return;
+    }
+
+    _register(_phone!);
+  }
+
+  void _sendCode(String code) async {
+    setState(() {
+      _screenStatus = _LoginPhoneEnterScreenStatus.loading;
+    });
+    try {
+      await AuthService.login(phone: _phone!, sms: code);
+    } catch (err) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(err.toString())));
+      setState(() {
+        _screenStatus = _LoginPhoneEnterScreenStatus.codeEnter;
+      });
+    }
+  }
+
   Widget? widgetForCurrentScreenStatus() {
     switch (_screenStatus) {
       case _LoginPhoneEnterScreenStatus.phoneEnter:
-        return PhoneEnterContainer((String phone) {
-          setState(() {
-            _phone = phone;
-            _screenStatus = _LoginPhoneEnterScreenStatus.codeEnter;
-          });
-        });
+        return PhoneEnterContainer(_registerTapped);
       case _LoginPhoneEnterScreenStatus.loading:
-        return Container();
+        return Padding(
+          padding: EdgeInsets.only(top: 16.0),
+          child: Align(
+            alignment: AlignmentDirectional.topCenter,
+            child: CircularProgressIndicator(),
+          ),
+        );
       case _LoginPhoneEnterScreenStatus.codeEnter:
-        return CodeEnterContainer(_phone, () {
-          setState(() {
-            _screenStatus = _LoginPhoneEnterScreenStatus.phoneEnter;
-          });
-        });
+        return CodeEnterContainer(
+          phone: _phone,
+          changePhoneCallback: _changePhone,
+          sendCodeCallback: _sendCode,
+          resendCodeCallback: _resendCode,
+        );
     }
   }
 
@@ -72,11 +133,9 @@ class _LoginPhoneEnterScreenState extends State<LoginPhoneEnterScreen> {
               extendBody: true,
               resizeToAvoidBottomInset: false,
               body: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  SizedBox(height: 60),
+                  SizedBox(height: 50),
                   LogoAndTitle(),
-                  Spacer(),
                   LoginContentContainer(
                     child: widgetForCurrentScreenStatus(),
                   ),
@@ -248,8 +307,8 @@ class _PhoneEnterFieldState extends State<PhoneEnterField> {
           Padding(
             padding: EdgeInsets.only(left: 10),
           ),
-          GestureDetector(
-            onTap: () {
+          TextButton(
+            onPressed: () {
               if (!isValidPhone()) {
                 return;
               }
@@ -267,7 +326,7 @@ class _PhoneEnterFieldState extends State<PhoneEnterField> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                 child: Text(
-                  'Продолжить',
+                  AppLocalizations.of(context)!.loginPhoneEnterContinue,
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -286,40 +345,41 @@ class _PhoneEnterFieldState extends State<PhoneEnterField> {
 final _codeLength = 4;
 
 class CodeEnterTextFields extends StatefulWidget {
+  CodeEnterTextFields({Key? key, required this.completion}) : super(key: key);
+
   @override
   _CodeEnterTextFieldsState createState() => _CodeEnterTextFieldsState();
+
+  final Function(String) completion;
 }
 
 class _CodeEnterTextFieldsState extends State<CodeEnterTextFields> {
   var _codeDigits = List<int?>.filled(_codeLength, null);
 
+  void _onEdit(int index, String text) {
+    if (text.length == 1) {
+      _codeDigits[index] = int.parse(text);
+    } else {
+      _codeDigits[index] = null;
+    }
+    if (_codeDigits.every((element) => element != null) &&
+        index == _codeLength - 1) {
+      final code = _codeDigits.map((e) => "${e!}").join();
+      widget.completion(code);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Function(int, String) editingCallback = (int index, String text) {
-      if (text.length == 1) {
-        _codeDigits[index] = int.parse(text);
-      } else {
-        _codeDigits[index] = null;
-      }
-      if (_codeDigits.every((element) => element != null) &&
-          index == _codeLength - 1) {
-        final code =
-            _codeDigits.reduce((value, element) => value! * 10 + element!);
-        print(code);
-        //TODO: Handle code here
-        Navigator.of(context).pushReplacementNamed(RouteName.home);
-      }
-    };
-
     return Container(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          CodeEnterTextField(0, editingCallback),
-          CodeEnterTextField(1, editingCallback),
-          CodeEnterTextField(2, editingCallback),
-          CodeEnterTextField(3, editingCallback),
+          CodeEnterTextField(0, _onEdit),
+          CodeEnterTextField(1, _onEdit),
+          CodeEnterTextField(2, _onEdit),
+          CodeEnterTextField(3, _onEdit),
         ],
       ),
     );
@@ -382,8 +442,15 @@ class _CodeEnterTextFieldState extends State<CodeEnterTextField> {
 class CodeEnterContainer extends StatefulWidget {
   final String? phone;
   final Function() changePhoneCallback;
+  final Function(String) sendCodeCallback;
+  final Function() resendCodeCallback;
 
-  CodeEnterContainer(this.phone, this.changePhoneCallback);
+  CodeEnterContainer({
+    required this.phone,
+    required this.changePhoneCallback,
+    required this.sendCodeCallback,
+    required this.resendCodeCallback,
+  });
 
   @override
   _CodeEnterContainerState createState() => _CodeEnterContainerState();
@@ -406,13 +473,23 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
     Timer(Duration(seconds: 1), _resendTimerTick);
   }
 
+  void _resendCode() {
+    _setupResendTimer();
+    widget.resendCodeCallback();
+  }
+
   void _resendTimerTick() {
     if (_leftTimeToResend > 0) {
-      setState(() {
-        _leftTimeToResend -= 1;
-      });
+      _leftTimeToResend -= 60;
+      if (mounted) {
+        setState(() {});
+      }
       Timer(Duration(seconds: 1), _resendTimerTick);
     }
+  }
+
+  void _codeEntered(String code) {
+    widget.sendCodeCallback(code);
   }
 
   @override
@@ -451,14 +528,13 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
           ],
         ),
         SizedBox(height: 16),
-        CodeEnterTextFields(),
+        CodeEnterTextFields(completion: _codeEntered),
         SizedBox(height: 16),
         _leftTimeToResend == 0
             ? GestureDetector(
-                onTap: () {
-                  _setupResendTimer();
-                },
-                child: Text('Отправить код повторно',
+                onTap: _resendCode,
+                child: Text(
+                    AppLocalizations.of(context)!.loginCodeEnterResendButton,
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -476,17 +552,16 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
 class TimeLeftToResend extends StatelessWidget {
   const TimeLeftToResend({
     Key? key,
-    required int leftTimeToResend,
-  })  : _leftTimeToResend = leftTimeToResend,
-        super(key: key);
+    required this.leftTimeToResend,
+  }) : super(key: key);
 
-  final int _leftTimeToResend;
+  final int leftTimeToResend;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       AppLocalizations.of(context)!.loginCodeEnterResendTime +
-          ' ${_leftTimeToResend ~/ 60}:${NumberFormat('00').format(_leftTimeToResend % 60)}',
+          ' ${leftTimeToResend ~/ 60}:${NumberFormat('00').format(leftTimeToResend % 60)}',
       style: TextStyle(
         fontSize: 12,
         color: Theme.of(context).dividerColor,
