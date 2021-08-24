@@ -1,10 +1,11 @@
 import 'dart:typed_data';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image/image.dart' as imglib;
 import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/models/photo_mark_type.dart';
 import 'package:med_cashback/models/recipe_photo_data.dart';
 
@@ -227,7 +228,7 @@ class _RecipeAddPhotoEditScreenState extends State<RecipeAddPhotoEditScreen> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    AppLocalizations.of(context)!.recipeAddPhotoEditTitle,
+                    LocaleKeys.recipeAddPhotoEditTitle.tr(),
                     style: TextStyle(
                       color: CashbackColors.contrastTextColor,
                     ),
@@ -259,8 +260,7 @@ class _RecipeAddPhotoEditScreenState extends State<RecipeAddPhotoEditScreen> {
                                   CashbackColors.accentColor),
                             ),
                             child: Text(
-                              AppLocalizations.of(context)!
-                                  .recipeAddPhotosListSave,
+                              LocaleKeys.recipeAddPhotosListSave.tr(),
                               style: TextStyle(
                                 color: CashbackColors.contrastTextColor,
                               ),

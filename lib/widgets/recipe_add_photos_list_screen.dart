@@ -1,10 +1,11 @@
 import 'dart:typed_data';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image/image.dart' as imglib;
 import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/constants/route_name.dart';
+import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/models/photo_mark_type.dart';
 import 'package:med_cashback/models/recipe_photo_data.dart';
 import 'package:med_cashback/widgets/photo_shutter_screen.dart';
@@ -61,17 +62,14 @@ class _RecipeAddPhotosListState extends State<RecipeAddPhotosListScreen> {
         });
         Navigator.pop(context);
       },
-      child:
-          Text(AppLocalizations.of(context)!.recipeAddPhotosListDeleteAlertYes),
+      child: Text(LocaleKeys.recipeAddPhotosListDeleteAlertYes.tr()),
     );
     final noButton = TextButton(
       onPressed: () => Navigator.pop(context),
-      child:
-          Text(AppLocalizations.of(context)!.recipeAddPhotosListDeleteAlertNo),
+      child: Text(LocaleKeys.recipeAddPhotosListDeleteAlertNo.tr()),
     );
     final alertDialog = AlertDialog(
-      title: Text(
-          AppLocalizations.of(context)!.recipeAddPhotosListDeleteAlertTitle),
+      title: Text(LocaleKeys.recipeAddPhotosListDeleteAlertTitle.tr()),
       actions: [noButton, yesButton],
     );
     showDialog(
@@ -113,7 +111,7 @@ class _RecipeAddPhotosListState extends State<RecipeAddPhotosListScreen> {
     });
 
     if (absentTypes.length > 0) {
-      return AppLocalizations.of(context)!.recipeAddPhotosAbsentTitle +
+      return LocaleKeys.recipeAddPhotosAbsentTitle.tr() +
           absentTypes.map((e) => e.localizedName(context)).join(", ");
     } else {
       return null;
@@ -126,8 +124,7 @@ class _RecipeAddPhotosListState extends State<RecipeAddPhotosListScreen> {
 
     // TODO: errors logic
     if (_photos.length == 0) {
-      errorText =
-          AppLocalizations.of(context)!.recipeAddPhotosListErrorNoPhotos;
+      errorText = LocaleKeys.recipeAddPhotosListErrorNoPhotos.tr();
     }
 
     if (_photos.length == 1) {
@@ -138,8 +135,7 @@ class _RecipeAddPhotosListState extends State<RecipeAddPhotosListScreen> {
           photo.specialtyRect == null &&
           photo.diagnoseRect == null &&
           photo.drugRect == null) {
-        errorText =
-            AppLocalizations.of(context)!.recipeAddPhotosListErrorNoMarks;
+        errorText = LocaleKeys.recipeAddPhotosListErrorNoMarks.tr();
       }
     }
 
@@ -158,7 +154,7 @@ class _RecipeAddPhotosListState extends State<RecipeAddPhotosListScreen> {
           Padding(
             padding: const EdgeInsets.all(16),
             child: Text(
-              AppLocalizations.of(context)!.recipeAddPhotosListTitle,
+              LocaleKeys.recipeAddPhotosListTitle.tr(),
               style: TextStyle(
                 fontWeight: FontWeight.w500,
                 fontSize: 20,
@@ -256,7 +252,7 @@ class _RecipeAddPhotosListState extends State<RecipeAddPhotosListScreen> {
                             CashbackColors.accentColor),
                       ),
                       child: Text(
-                        AppLocalizations.of(context)!.recipeAddPhotosListSave,
+                        LocaleKeys.recipeAddPhotosListSave.tr(),
                         style: TextStyle(
                           color: CashbackColors.contrastTextColor,
                         ),

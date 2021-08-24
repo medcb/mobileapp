@@ -2,18 +2,16 @@ import 'dart:async';
 import 'dart:math';
 import 'dart:ui';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/network/auth_service.dart';
 import 'package:med_cashback/widgets/full_screen_background_container.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-//TODO: Make strings localizable
 
 enum _LoginPhoneEnterScreenStatus {
   phoneEnter,
@@ -174,7 +172,7 @@ class LogoAndTitle extends StatelessWidget {
           ),
         ),
         Text(
-          AppLocalizations.of(context)!.loginPhoneEnterWelcomeMessage,
+          LocaleKeys.loginPhoneEnterWelcomeMessage.tr(),
           style: TextStyle(fontSize: 18),
           textAlign: TextAlign.center,
         ),
@@ -219,7 +217,7 @@ class PhoneEnterContainer extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 18, bottom: 24),
           child: Text(
-            AppLocalizations.of(context)!.loginPhoneEnterEnterPhone,
+            LocaleKeys.loginPhoneEnterEnterPhone.tr(),
             style: Theme.of(context).textTheme.headline6,
           ),
         ),
@@ -232,13 +230,11 @@ class PhoneEnterContainer extends StatelessWidget {
         RichText(
           textAlign: TextAlign.center,
           text: TextSpan(
-            text:
-                AppLocalizations.of(context)!.loginPhoneEnterPrivacyPolicyText,
+            text: LocaleKeys.loginPhoneEnterPrivacyPolicyText.tr(),
             style: Theme.of(context).textTheme.bodyText1,
             children: [
               TextSpan(
-                text: AppLocalizations.of(context)!
-                    .loginPhoneEnterPrivacyPolicyLink,
+                text: LocaleKeys.loginPhoneEnterPrivacyPolicyLink.tr(),
                 style: Theme.of(context)
                     .textTheme
                     .bodyText1!
@@ -291,8 +287,7 @@ class _PhoneEnterFieldState extends State<PhoneEnterField> {
               style: Theme.of(context).textTheme.subtitle1,
               autofocus: true,
               decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)!
-                      .loginPhoneEnterPhonePlaceholder,
+                  hintText: LocaleKeys.loginPhoneEnterPhonePlaceholder.tr(),
                   border: InputBorder.none),
               inputFormatters: [
                 PhoneTextFieldFormatter(),
@@ -326,7 +321,7 @@ class _PhoneEnterFieldState extends State<PhoneEnterField> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                 child: Text(
-                  AppLocalizations.of(context)!.loginPhoneEnterContinue,
+                  LocaleKeys.loginPhoneEnterContinue.tr(),
                   style: TextStyle(color: Colors.white),
                 ),
               ),
@@ -498,7 +493,7 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
       children: [
         SizedBox(height: 16),
         Text(
-          AppLocalizations.of(context)!.loginCodeEnterTitle,
+          LocaleKeys.loginCodeEnterTitle.tr(),
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w500,
@@ -518,7 +513,7 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
                 widget.changePhoneCallback();
               },
               child: Text(
-                AppLocalizations.of(context)!.loginCodeEnterChangeNumber,
+                LocaleKeys.loginCodeEnterChangeNumber.tr(),
                 style: TextStyle(
                   fontSize: 12,
                   color: Theme.of(context).accentColor,
@@ -533,8 +528,7 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
         _leftTimeToResend == 0
             ? GestureDetector(
                 onTap: _resendCode,
-                child: Text(
-                    AppLocalizations.of(context)!.loginCodeEnterResendButton,
+                child: Text(LocaleKeys.loginCodeEnterResendButton.tr(),
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
@@ -560,7 +554,7 @@ class TimeLeftToResend extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      AppLocalizations.of(context)!.loginCodeEnterResendTime +
+      LocaleKeys.loginCodeEnterResendTime.tr() +
           ' ${leftTimeToResend ~/ 60}:${NumberFormat('00').format(leftTimeToResend % 60)}',
       style: TextStyle(
         fontSize: 12,

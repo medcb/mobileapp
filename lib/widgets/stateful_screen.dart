@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 enum StatefulScreenState { loading, error, content, empty }
 
@@ -55,15 +56,15 @@ class _StatefulScreenState extends State<StatefulScreen> {
         );
       case StatefulScreenState.error:
         return emptyView(
-          widget.errorText ?? AppLocalizations.of(context)!.errorDefault,
-          AppLocalizations.of(context)!.repeatRequestError,
+          widget.errorText ?? LocaleKeys.errorDefault.tr(),
+          LocaleKeys.repeatRequestError.tr(),
         );
       case StatefulScreenState.content:
         return widget.child;
       case StatefulScreenState.empty:
         return emptyView(
-          AppLocalizations.of(context)!.emptyDefault,
-          AppLocalizations.of(context)!.repeatRequestEmpty,
+          LocaleKeys.emptyDefault.tr(),
+          LocaleKeys.repeatRequestEmpty.tr(),
         );
     }
   }

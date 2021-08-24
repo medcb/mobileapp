@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:http/http.dart' as http;
+import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 
 enum HTTPMethod {
   get,
@@ -79,11 +81,10 @@ class NetworkingClient {
       final streamResponse = await request.send();
       response = await http.Response.fromStream(streamResponse);
     } on SocketException {
-      // todo - translate errors
-      throw 'Произошла ошибка. Возможно, нет интернета, попробуйте позже.';
+      throw LocaleKeys.networkErrorNoInternet.tr();
     } catch (err) {
       print(err);
-      throw 'Произошла ошибка. (1)';
+      throw LocaleKeys.networkError1.tr();
     }
     // if (response.statusCode == 401) {
     // if (requireAuth) {
@@ -105,7 +106,7 @@ class NetworkingClient {
       if (statusCodeMessages?.containsKey(response.statusCode) ?? false) {
         throw statusCodeMessages![response.statusCode]!;
       }
-      throw 'Произошла ошибка. (2)';
+      throw LocaleKeys.networkError2.tr();
     }
 
     Map<String, dynamic>? json;
@@ -119,19 +120,7 @@ class NetworkingClient {
       return fromJsonT(json);
     } catch (err) {
       print(err);
-      throw 'Произошла ошибка. (3)';
+      throw LocaleKeys.networkError3.tr();
     }
-    // try {
-    //   final _reply = T.fromJson(jsonDecode(response.body), (json) {
-    //     if (fromJsonT != null) {
-    //       return fromJsonT(json);
-    //     }
-    //     return null;
-    //   });
-    //   reply = _reply;
-    // } catch (err) {
-    //   print(err);
-    //   throw 'Произошла ошибка.';
-    // }
   }
 }

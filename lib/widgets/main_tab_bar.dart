@@ -1,7 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/widgets/main_screen.dart';
 import 'package:med_cashback/widgets/profile_screen.dart';
 
@@ -67,25 +68,25 @@ class _MainTabBarState extends State<MainTabBar>
   Widget build(BuildContext context) {
     List<Tab> tabs = <Tab>[
       Tab(
-        text: AppLocalizations.of(context)!.tabBarMain,
+        text: LocaleKeys.tabBarMain.tr(),
         icon:
             _tabController!.index == 0 ? _mainActiveImage : _mainInactiveImage,
       ),
       Tab(
-        text: AppLocalizations.of(context)!.tabBarMyRecipes,
+        text: LocaleKeys.tabBarMyRecipes.tr(),
         icon: _tabController!.index == 1
             ? _myRecipesActiveImage
             : _myRecipesInactiveImage,
       ),
       Tab(
-        text: AppLocalizations.of(context)!.tabBarReviews,
+        text: LocaleKeys.tabBarReviews.tr(),
         icon: _tabController!.index == 2
             ? _reviewsActiveImage
             : _reviewsInactiveImage,
       ),
       Tab(
         // child: TabIcon(_tabController.index == 3),
-        text: AppLocalizations.of(context)!.tabBarProfile,
+        text: LocaleKeys.tabBarProfile.tr(),
         icon: _tabController!.index == 3
             ? _profileActiveImage
             : _profileInactiveImage,

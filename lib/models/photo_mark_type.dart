@@ -1,6 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 
 enum PhotoMarkType {
   patientName,
@@ -15,18 +16,17 @@ extension UIValues on PhotoMarkType {
   String localizedName(BuildContext context) {
     switch (this) {
       case PhotoMarkType.patientName:
-        return AppLocalizations.of(context)!.recipeAddPhotosMarkTypePatientName;
+        return LocaleKeys.recipeAddPhotosMarkTypePatientName.tr();
       case PhotoMarkType.doctorSpeciality:
-        return AppLocalizations.of(context)!
-            .recipeAddPhotosMarkTypeDoctorSpeciality;
+        return LocaleKeys.recipeAddPhotosMarkTypeDoctorSpeciality.tr();
       case PhotoMarkType.clinic:
-        return AppLocalizations.of(context)!.recipeAddPhotosMarkTypeClinic;
+        return LocaleKeys.recipeAddPhotosMarkTypeClinic.tr();
       case PhotoMarkType.date:
-        return AppLocalizations.of(context)!.recipeAddPhotosMarkTypeDate;
+        return LocaleKeys.recipeAddPhotosMarkTypeDate.tr();
       case PhotoMarkType.diagnose:
-        return AppLocalizations.of(context)!.recipeAddPhotosMarkTypeDiagnose;
+        return LocaleKeys.recipeAddPhotosMarkTypeDiagnose.tr();
       case PhotoMarkType.drug:
-        return AppLocalizations.of(context)!.recipeAddPhotosMarkTypeDrug;
+        return LocaleKeys.recipeAddPhotosMarkTypeDrug.tr();
     }
   }
 

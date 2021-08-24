@@ -1,10 +1,11 @@
 import 'dart:io';
 
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image/image.dart' as imageLib;
 import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/constants/route_name.dart';
+import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/models/recipe_photo_data.dart';
 import 'package:med_cashback/widgets/image_rect_selector.dart';
 import 'package:med_cashback/widgets/recipe_add_photos_list_screen.dart';
@@ -93,7 +94,7 @@ class _PhotoCropScreenState extends State<PhotoCropScreen> {
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Text(
-                    AppLocalizations.of(context)!.photoCropTitle,
+                    LocaleKeys.photoCropTitle.tr(),
                     style: TextStyle(
                       color: CashbackColors.contrastTextColor,
                     ),
@@ -107,7 +108,7 @@ class _PhotoCropScreenState extends State<PhotoCropScreen> {
                     child: ElevatedButton(
                       onPressed: _saveImage,
                       child: Text(
-                        AppLocalizations.of(context)!.photoCropSave,
+                        LocaleKeys.photoCropSave.tr(),
                         style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,

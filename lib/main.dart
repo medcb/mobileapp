@@ -1,7 +1,7 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/widgets/login_phone_enter.dart';
@@ -12,10 +12,23 @@ import 'package:med_cashback/widgets/proxy_setup_screen.dart';
 import 'package:med_cashback/widgets/recipe_add_photo_edit.dart';
 import 'package:med_cashback/widgets/recipe_add_photos_list_screen.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+import 'generated/codegen_loader.g.dart';
+
+void main() async {
+  FlutterError.onError = (FlutterErrorDetails details) {
+    FlutterError.dumpErrorToConsole(details);
+  };
   runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  final app = MyApp();
+  runApp(EasyLocalization(
+    supportedLocales: [Locale('ru', 'RU')],
+    path: 'assets/translations',
+    child: app,
+    assetLoader: CodegenLoader(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -33,8 +46,9 @@ class MyApp extends StatelessWidget {
         }
       },
       child: MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: context.localizationDelegates,
+        supportedLocales: context.supportedLocales,
+        locale: context.locale,
         title: "МедКешбек",
         theme: ThemeData(
           fontFamily: 'Rubik',

@@ -1,3 +1,5 @@
+import 'package:easy_localization/easy_localization.dart';
+import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/models/json_models.dart';
 
 import 'networking_client.dart';
@@ -10,7 +12,7 @@ class AuthService {
         'phone': _stripPhoneSymbols(phone),
       },
       statusCodeMessages: {
-        406: 'Достигнут лимит СМС для указанного номера. Попробуйте позже.',
+        406: LocaleKeys.authErrorRegister406.tr(),
       },
       requireAuth: false,
       fromJsonT: (_) => null,
@@ -27,9 +29,9 @@ class AuthService {
       },
       requireAuth: false,
       statusCodeMessages: {
-        400: "Некорректные данные",
-        401: "Неверный код",
-        404: "Телефон не найден",
+        400: LocaleKeys.authErrorLogin400.tr(),
+        401: LocaleKeys.authErrorLogin401.tr(),
+        404: LocaleKeys.authErrorLogin404.tr(),
       },
       fromJsonT: (json) => LoginData.fromJson(json!),
     );
