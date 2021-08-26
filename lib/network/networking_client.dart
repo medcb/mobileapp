@@ -5,6 +5,22 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:http/http.dart' as http;
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 
+import 'auth_service.dart';
+
+class UnauthorizedException implements Exception {
+  @override
+  String toString() {
+    return LocaleKeys.networkErrorUnauthorized.tr();
+  }
+}
+
+class NoInternetException implements Exception {
+  @override
+  String toString() {
+    return LocaleKeys.networkErrorNoInternet.tr();
+  }
+}
+
 enum HTTPMethod {
   get,
   post,
@@ -69,43 +85,44 @@ class NetworkingClient {
   }) async {
     var response;
     Map<String, String> headers = {};
-    // String? token;
-    // try {
-    //   token = await AuthService.instance.authToken();
-    // } catch (_) {}
-    // if (token != null) {
-    //   headers[HttpHeaders.authorizationHeader] = "Bearer $token";
-    // }
+    try {
+      final token = await AuthService.instance.authToken();
+      if (token != null) {
+        headers[HttpHeaders.authorizationHeader] = "Bearer $token";
+      }
+    } catch (_) {}
     request.headers.addAll(headers);
     try {
       final streamResponse = await request.send();
       response = await http.Response.fromStream(streamResponse);
     } on SocketException {
-      throw LocaleKeys.networkErrorNoInternet.tr();
+      throw NoInternetException();
     } catch (err) {
       print(err);
       throw LocaleKeys.networkError1.tr();
     }
-    // if (response.statusCode == 401) {
-    // if (requireAuth) {
-    //   try {
-    //     await AuthService.instance.refreshToken();
-    //   } on SocketException {
-    //     throw 'Произошла ошибка. Возможно, нет подключения к интернету, попробуйте позже.';
-    //   } catch (err) {
-    //     print(err);
-    //     throw 'Произошла ошибка.';
-    //   }
-    //   return onRepeat();
-    // } else {
-    //   throw UnauthorizedException();
-    // }
-    // }
+
+    if (statusCodeMessages?.containsKey(response.statusCode) ?? false) {
+      throw statusCodeMessages![response.statusCode]!;
+    }
+
+    if (response.statusCode == 401) {
+      if (requireAuth) {
+        try {
+          await AuthService.instance.refreshToken();
+        } on NoInternetException {
+          throw NoInternetException();
+        } catch (_) {
+          throw UnauthorizedException();
+        }
+        return onRepeat();
+      } else {
+        throw UnauthorizedException();
+      }
+    }
+
     if (response.statusCode != 200) {
       print("statusCode: ${response.statusCode} body: ${response.body}");
-      if (statusCodeMessages?.containsKey(response.statusCode) ?? false) {
-        throw statusCodeMessages![response.statusCode]!;
-      }
       throw LocaleKeys.networkError2.tr();
     }
 

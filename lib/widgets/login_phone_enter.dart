@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/network/auth_service.dart';
 import 'package:med_cashback/widgets/full_screen_background_container.dart';
@@ -44,7 +45,7 @@ class _LoginPhoneEnterScreenState extends State<LoginPhoneEnterScreen> {
       _screenStatus = _LoginPhoneEnterScreenStatus.loading;
     });
     try {
-      await AuthService.register(phone);
+      await AuthService.instance.register(phone);
       setState(() {
         _phone = phone;
         _screenStatus = _LoginPhoneEnterScreenStatus.codeEnter;
@@ -78,7 +79,15 @@ class _LoginPhoneEnterScreenState extends State<LoginPhoneEnterScreen> {
       _screenStatus = _LoginPhoneEnterScreenStatus.loading;
     });
     try {
-      await AuthService.login(phone: _phone!, sms: code);
+      await AuthService.instance.login(phone: _phone!, sms: code);
+      final accountInfo = await AuthService.instance.getAccountInfo();
+      if (accountInfo.lastNameHash == null ||
+          accountInfo.firstNameHash == null ||
+          accountInfo.gender == null) {
+        Navigator.pushReplacementNamed(context, RouteName.profileFillInfo);
+      } else {
+        Navigator.pushReplacementNamed(context, RouteName.home);
+      }
     } catch (err) {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(err.toString())));
@@ -475,7 +484,7 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
 
   void _resendTimerTick() {
     if (_leftTimeToResend > 0) {
-      _leftTimeToResend -= 60;
+      _leftTimeToResend -= 1;
       if (mounted) {
         setState(() {});
       }

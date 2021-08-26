@@ -8,32 +8,36 @@ import 'package:med_cashback/widgets/login_phone_enter.dart';
 import 'package:med_cashback/widgets/main_tab_bar.dart';
 import 'package:med_cashback/widgets/photo_crop_screen.dart';
 import 'package:med_cashback/widgets/photo_shutter_screen.dart';
+import 'package:med_cashback/widgets/profile_fill_info_screen.dart';
 import 'package:med_cashback/widgets/proxy_setup_screen.dart';
 import 'package:med_cashback/widgets/recipe_add_photo_edit.dart';
 import 'package:med_cashback/widgets/recipe_add_photos_list_screen.dart';
 
 import 'generated/codegen_loader.g.dart';
+import 'network/auth_service.dart';
+
+bool _isAuthorized = false;
 
 void main() async {
   FlutterError.onError = (FlutterErrorDetails details) {
     FlutterError.dumpErrorToConsole(details);
   };
-  runApp(MyApp());
   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  final app = MyApp();
+  _isAuthorized = await AuthService.instance.isAuthorized();
+  AuthService.instance.addListener(() async {
+    _isAuthorized = await AuthService.instance.isAuthorized();
+  });
   runApp(EasyLocalization(
     supportedLocales: [Locale('ru', 'RU')],
     path: 'assets/translations',
-    child: app,
+    child: MyApp(),
     assetLoader: CodegenLoader(),
   ));
 }
 
 class MyApp extends StatelessWidget {
-  final _isLoggedIn = false;
-
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -66,7 +70,7 @@ class MyApp extends StatelessWidget {
         onGenerateRoute: (RouteSettings settings) {
           var routes = <String, WidgetBuilder>{
             RouteName.home: (ctx) =>
-                _isLoggedIn ? MainTabBar() : LoginPhoneEnterScreen(),
+                _isAuthorized ? MainTabBar() : LoginPhoneEnterScreen(),
             RouteName.addRecipe: (ctx) => PhotoShutterScreen(
                   arguments: settings.arguments as PhotoShutterScreenArguments,
                 ),
@@ -80,6 +84,7 @@ class MyApp extends StatelessWidget {
             RouteName.addRecipePhotoEdit: (ctx) => RecipeAddPhotoEditScreen(
                 arguments:
                     settings.arguments as RecipeAddPhotoEditScreenArguments),
+            RouteName.profileFillInfo: (ctx) => ProfileFillInfoScreen(),
             RouteName.proxySetup: (ctx) => ProxySetupScreen(),
           };
           WidgetBuilder? builder = routes[settings.name];

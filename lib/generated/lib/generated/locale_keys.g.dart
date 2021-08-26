@@ -6,6 +6,7 @@ abstract class  LocaleKeys {
   static const emptyDefault = 'emptyDefault';
   static const repeatRequestEmpty = 'repeatRequestEmpty';
   static const networkErrorNoInternet = 'networkErrorNoInternet';
+  static const networkErrorUnauthorized = 'networkErrorUnauthorized';
   static const networkError1 = 'networkError1';
   static const networkError2 = 'networkError2';
   static const networkError3 = 'networkError3';
@@ -13,6 +14,7 @@ abstract class  LocaleKeys {
   static const authErrorLogin400 = 'authErrorLogin400';
   static const authErrorLogin401 = 'authErrorLogin401';
   static const authErrorLogin404 = 'authErrorLogin404';
+  static const setAccountInfoError400 = 'setAccountInfoError400';
   static const loginPhoneEnterWelcomeMessage = 'loginPhoneEnterWelcomeMessage';
   static const loginPhoneEnterEnterPhone = 'loginPhoneEnterEnterPhone';
   static const loginPhoneEnterPhonePlaceholder = 'loginPhoneEnterPhonePlaceholder';
@@ -44,5 +46,16 @@ abstract class  LocaleKeys {
   static const recipeAddPhotosMarkTypeDrug = 'recipeAddPhotosMarkTypeDrug';
   static const recipeAddPhotosAbsentTitle = 'recipeAddPhotosAbsentTitle';
   static const recipeAddPhotoEditTitle = 'recipeAddPhotoEditTitle';
+  static const profileFillInfoTitle = 'profileFillInfoTitle';
+  static const profileFillInfoSecondName = 'profileFillInfoSecondName';
+  static const profileFillInfoFirstName = 'profileFillInfoFirstName';
+  static const profileFillInfoMiddleName = 'profileFillInfoMiddleName';
+  static const profileFillInfoGender = 'profileFillInfoGender';
+  static const profileFillInfoGenderMale = 'profileFillInfoGenderMale';
+  static const profileFillInfoGenderFemale = 'profileFillInfoGenderFemale';
+  static const profileFillInfoBirthday = 'profileFillInfoBirthday';
+  static const profileFillInfoBirthdayEmpty = 'profileFillInfoBirthdayEmpty';
+  static const profileFillInfoSave = 'profileFillInfoSave';
+  static const profileFillInfoCancel = 'profileFillInfoCancel';
 
 }

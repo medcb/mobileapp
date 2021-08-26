@@ -20,6 +20,7 @@ class CodegenLoader extends AssetLoader{
   "emptyDefault": "Нет данных",
   "repeatRequestEmpty": "Обновить",
   "networkErrorNoInternet": "Произошла ошибка. Возможно, нет интернета, попробуйте позже.",
+  "networkErrorUnauthorized": "Произошла ошибка. Не удалось пройти авторизацию.",
   "networkError1": "Произошла ошибка (код 1)",
   "networkError2": "Произошла ошибка (код 2)",
   "networkError3": "Произошла ошибка (код 3)",
@@ -27,6 +28,7 @@ class CodegenLoader extends AssetLoader{
   "authErrorLogin400": "Некорректные данные",
   "authErrorLogin401": "Неверный код",
   "authErrorLogin404": "Телефон не найден",
+  "setAccountInfoError400": "Данные заданы неверно",
   "loginPhoneEnterWelcomeMessage": "Приветствуем вас в",
   "loginPhoneEnterEnterPhone": "Введите номер телефона",
   "loginPhoneEnterPhonePlaceholder": "+7 (000) 000-00-00",
@@ -57,7 +59,18 @@ class CodegenLoader extends AssetLoader{
   "recipeAddPhotosMarkTypeDiagnose": "Диагноз",
   "recipeAddPhotosMarkTypeDrug": "Назначение",
   "recipeAddPhotosAbsentTitle": "Вы не отметили: ",
-  "recipeAddPhotoEditTitle": "Отметьте все данные в назначении"
+  "recipeAddPhotoEditTitle": "Отметьте все данные в назначении",
+  "profileFillInfoTitle": "Укажите личные данные",
+  "profileFillInfoSecondName": "Фамилия",
+  "profileFillInfoFirstName": "Имя",
+  "profileFillInfoMiddleName": "Отчество",
+  "profileFillInfoGender": "Пол",
+  "profileFillInfoGenderMale": "Мужской",
+  "profileFillInfoGenderFemale": "Женский",
+  "profileFillInfoBirthday": "Дата рождения",
+  "profileFillInfoBirthdayEmpty": "00.00.0000",
+  "profileFillInfoSave": "Сохранить и продолжить",
+  "profileFillInfoCancel": "Отмена"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ru_RU": ru_RU};
 }

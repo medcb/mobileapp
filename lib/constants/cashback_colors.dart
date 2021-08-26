@@ -12,6 +12,10 @@ abstract class CashbackColors {
   static final photoCropBorderColor = Color(0xffffffff);
   static final photoCropSubstractColor = Color(0x4C000000);
   static final photoAddPlusBackgroundColor = Color(0xffF7F8FA);
+  static final textFieldBackgroundColor = Color(0xffF7F8FA);
+  static final buttonSecondaryBackgroundColor = Color(0xffEDEFF2);
+  static final buttonSecondarySelectedBackgroundColor = Color(0xffA1A9BB);
+  static final buttonSecondaryDisabledBackgroundColor = Color(0x80A1A9BB);
   static final toastBackgroundColor = Color(0xff474F61);
   static final unselectedPhotoMarkTypeColor = Color(0xffEDEFF2);
   static final photoMarkTypePatientNameColor = Color(0xff0080F6);
