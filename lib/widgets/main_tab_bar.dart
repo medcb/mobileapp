@@ -1,12 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
-import 'package:med_cashback/widgets/main_screen.dart';
+import 'package:med_cashback/widgets/prescriptions_list_screen.dart';
 import 'package:med_cashback/widgets/profile_screen.dart';
 
-import 'full_screen_background_container.dart';
+import 'components/full_screen_background_container.dart';
 
 class MainTabBar extends StatefulWidget {
   @override
@@ -17,21 +16,15 @@ class _MainTabBarState extends State<MainTabBar>
     with SingleTickerProviderStateMixin {
   TabController? _tabController;
 
-  Image? _mainActiveImage;
-  Image? _mainInactiveImage;
   Image? _myRecipesActiveImage;
   Image? _myRecipesInactiveImage;
   Image? _profileActiveImage;
   Image? _profileInactiveImage;
-  Image? _reviewsActiveImage;
-  Image? _reviewsInactiveImage;
 
   @override
   void initState() {
     super.initState();
 
-    _mainActiveImage = Image.asset('assets/images/tab_bar_main_active.png');
-    _mainInactiveImage = Image.asset('assets/images/tab_bar_main_inactive.png');
     _myRecipesActiveImage =
         Image.asset('assets/images/tab_bar_my_recipes_active.png');
     _myRecipesInactiveImage =
@@ -40,12 +33,8 @@ class _MainTabBarState extends State<MainTabBar>
         Image.asset('assets/images/tab_bar_profile_active.png');
     _profileInactiveImage =
         Image.asset('assets/images/tab_bar_profile_inactive.png');
-    _reviewsActiveImage =
-        Image.asset('assets/images/tab_bar_reviews_active.png');
-    _reviewsInactiveImage =
-        Image.asset('assets/images/tab_bar_reviews_inactive.png');
 
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 2, vsync: this);
     _tabController!.addListener(() {
       setState(() {});
     });
@@ -54,40 +43,24 @@ class _MainTabBarState extends State<MainTabBar>
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    precacheImage(_mainActiveImage!.image, context);
-    precacheImage(_mainInactiveImage!.image, context);
     precacheImage(_myRecipesActiveImage!.image, context);
     precacheImage(_myRecipesInactiveImage!.image, context);
     precacheImage(_profileActiveImage!.image, context);
     precacheImage(_profileInactiveImage!.image, context);
-    precacheImage(_reviewsActiveImage!.image, context);
-    precacheImage(_reviewsInactiveImage!.image, context);
   }
 
   @override
   Widget build(BuildContext context) {
     List<Tab> tabs = <Tab>[
       Tab(
-        text: LocaleKeys.tabBarMain.tr(),
-        icon:
-            _tabController!.index == 0 ? _mainActiveImage : _mainInactiveImage,
-      ),
-      Tab(
         text: LocaleKeys.tabBarMyRecipes.tr(),
-        icon: _tabController!.index == 1
+        icon: _tabController!.index == 0
             ? _myRecipesActiveImage
             : _myRecipesInactiveImage,
       ),
       Tab(
-        text: LocaleKeys.tabBarReviews.tr(),
-        icon: _tabController!.index == 2
-            ? _reviewsActiveImage
-            : _reviewsInactiveImage,
-      ),
-      Tab(
-        // child: TabIcon(_tabController.index == 3),
         text: LocaleKeys.tabBarProfile.tr(),
-        icon: _tabController!.index == 3
+        icon: _tabController!.index == 1
             ? _profileActiveImage
             : _profileInactiveImage,
       ),
@@ -101,7 +74,7 @@ class _MainTabBarState extends State<MainTabBar>
           children: [
             SafeArea(
               child: Scaffold(
-                backgroundColor: CashbackColors.backgroundColor,
+                backgroundColor: Color(0),
                 bottomNavigationBar: Container(
                   decoration:
                       BoxDecoration(color: Theme.of(context).backgroundColor),
@@ -133,9 +106,7 @@ class _MainTabBarState extends State<MainTabBar>
                   controller: _tabController,
                   physics: NeverScrollableScrollPhysics(),
                   children: [
-                    MainScreen(),
-                    Center(child: Text('Work In Progress')),
-                    Center(child: Text('Work In Progress')),
+                    PrescriptionsListScreen(),
                     ProfileScreen(),
                   ],
                 ),

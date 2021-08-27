@@ -15,6 +15,7 @@ class CodegenLoader extends AssetLoader{
   }
 
   static const Map<String,dynamic> ru_RU = {
+  "ok": "Ок",
   "errorDefault": "Произошла ошибка",
   "repeatRequestError": "Повторить",
   "emptyDefault": "Нет данных",
@@ -60,6 +61,8 @@ class CodegenLoader extends AssetLoader{
   "recipeAddPhotosMarkTypeDrug": "Назначение",
   "recipeAddPhotosAbsentTitle": "Вы не отметили: ",
   "recipeAddPhotoEditTitle": "Отметьте все данные в назначении",
+  "recipeAddSuccessTitle": "Направление отправлено на обработку",
+  "recipeAddSuccessMessage": "Результат обработки данных появится в категории Мои направления.",
   "profileFillInfoTitle": "Укажите личные данные",
   "profileFillInfoSecondName": "Фамилия",
   "profileFillInfoFirstName": "Имя",
@@ -70,7 +73,14 @@ class CodegenLoader extends AssetLoader{
   "profileFillInfoBirthday": "Дата рождения",
   "profileFillInfoBirthdayEmpty": "00.00.0000",
   "profileFillInfoSave": "Сохранить и продолжить",
-  "profileFillInfoCancel": "Отмена"
+  "profileFillInfoCancel": "Отмена",
+  "prescriptionsListTitle": "Мои назначения",
+  "prescriptionsListAdd": "Добавить назначение",
+  "prescriptionStateSent": "Отправлено",
+  "prescriptionStateDenied": "Отказано",
+  "prescriptionStateNeedsCheckByUser": "Требует проверки",
+  "prescriptionStateCheckedByUser": "Проверен пользователем",
+  "prescriptionStateAccepted": "Принят"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ru_RU": ru_RU};
 }

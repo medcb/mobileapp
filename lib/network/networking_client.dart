@@ -70,8 +70,10 @@ class NetworkingClient {
         statusCodeMessages: statusCodeMessages,
         onRepeat: () => fetch(
               path,
-              requireAuth: false,
+              method: method,
+              requireAuth: requireAuth,
               parameters: parameters,
+              statusCodeMessages: statusCodeMessages,
               fromJsonT: fromJsonT,
             ));
   }

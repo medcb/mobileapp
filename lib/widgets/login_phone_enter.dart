@@ -11,7 +11,7 @@ import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/network/auth_service.dart';
-import 'package:med_cashback/widgets/full_screen_background_container.dart';
+import 'package:med_cashback/widgets/components/full_screen_background_container.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum _LoginPhoneEnterScreenStatus {

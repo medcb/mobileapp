@@ -8,7 +8,7 @@ import 'package:med_cashback/network/auth_service.dart';
 import 'package:med_cashback/widgets/components/filled_button.dart';
 import 'package:med_cashback/widgets/components/filled_button_secondary.dart';
 
-import 'full_screen_background_container.dart';
+import 'components/full_screen_background_container.dart';
 
 enum Gender { male, female }
 

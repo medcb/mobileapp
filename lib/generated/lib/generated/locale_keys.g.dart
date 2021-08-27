@@ -1,6 +1,7 @@
 // DO NOT EDIT. This is code generated via package:easy_localization/generate.dart
 
 abstract class  LocaleKeys {
+  static const ok = 'ok';
   static const errorDefault = 'errorDefault';
   static const repeatRequestError = 'repeatRequestError';
   static const emptyDefault = 'emptyDefault';
@@ -46,6 +47,8 @@ abstract class  LocaleKeys {
   static const recipeAddPhotosMarkTypeDrug = 'recipeAddPhotosMarkTypeDrug';
   static const recipeAddPhotosAbsentTitle = 'recipeAddPhotosAbsentTitle';
   static const recipeAddPhotoEditTitle = 'recipeAddPhotoEditTitle';
+  static const recipeAddSuccessTitle = 'recipeAddSuccessTitle';
+  static const recipeAddSuccessMessage = 'recipeAddSuccessMessage';
   static const profileFillInfoTitle = 'profileFillInfoTitle';
   static const profileFillInfoSecondName = 'profileFillInfoSecondName';
   static const profileFillInfoFirstName = 'profileFillInfoFirstName';
@@ -57,5 +60,12 @@ abstract class  LocaleKeys {
   static const profileFillInfoBirthdayEmpty = 'profileFillInfoBirthdayEmpty';
   static const profileFillInfoSave = 'profileFillInfoSave';
   static const profileFillInfoCancel = 'profileFillInfoCancel';
+  static const prescriptionsListTitle = 'prescriptionsListTitle';
+  static const prescriptionsListAdd = 'prescriptionsListAdd';
+  static const prescriptionStateSent = 'prescriptionStateSent';
+  static const prescriptionStateDenied = 'prescriptionStateDenied';
+  static const prescriptionStateNeedsCheckByUser = 'prescriptionStateNeedsCheckByUser';
+  static const prescriptionStateCheckedByUser = 'prescriptionStateCheckedByUser';
+  static const prescriptionStateAccepted = 'prescriptionStateAccepted';
 
 }

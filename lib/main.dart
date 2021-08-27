@@ -12,6 +12,7 @@ import 'package:med_cashback/widgets/profile_fill_info_screen.dart';
 import 'package:med_cashback/widgets/proxy_setup_screen.dart';
 import 'package:med_cashback/widgets/recipe_add_photo_edit.dart';
 import 'package:med_cashback/widgets/recipe_add_photos_list_screen.dart';
+import 'package:med_cashback/widgets/recipe_add_success_screen.dart';
 
 import 'generated/codegen_loader.g.dart';
 import 'network/auth_service.dart';
@@ -84,6 +85,7 @@ class MyApp extends StatelessWidget {
             RouteName.addRecipePhotoEdit: (ctx) => RecipeAddPhotoEditScreen(
                 arguments:
                     settings.arguments as RecipeAddPhotoEditScreenArguments),
+            RouteName.addRecipeSuccess: (ctx) => RecipeAddSuccessScreen(),
             RouteName.profileFillInfo: (ctx) => ProfileFillInfoScreen(),
             RouteName.proxySetup: (ctx) => ProxySetupScreen(),
           };
