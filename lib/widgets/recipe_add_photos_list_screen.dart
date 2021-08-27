@@ -35,7 +35,7 @@ class _RecipeAddPhotosListState extends State<RecipeAddPhotosListScreen> {
 
   List<RecipePhotoData> _photos = [];
 
-  PrescriptionsService _prescriptionsService = PrescriptionsService();
+  PrescriptionsService _prescriptionsService = PrescriptionsService.instance;
 
   @override
   void initState() {

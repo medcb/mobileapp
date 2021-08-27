@@ -78,10 +78,11 @@ class _StatefulScreenState extends State<StatefulScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _errorImage!,
+            SizedBox(height: 16),
             Text(
               title,
               style: TextStyle(
-                color: CashbackColors.contrastTextColor,
+                color: CashbackColors.mainTextColor,
                 fontSize: 15,
                 fontWeight: FontWeight.w400,
               ),

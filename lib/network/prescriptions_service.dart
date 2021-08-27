@@ -1,12 +1,55 @@
 import 'dart:convert';
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:image/image.dart' as imglib;
 import 'package:med_cashback/models/json_models.dart';
 import 'package:med_cashback/models/recipe_photo_data.dart';
 import 'package:med_cashback/network/networking_client.dart';
 
-class PrescriptionsService {
+enum PrescriptionsServiceLoadState {
+  notLoaded,
+  loading,
+  loaded,
+  error,
+}
+
+class PrescriptionsService with ChangeNotifier {
+  static final instance = PrescriptionsService();
+
+  PrescriptionsServiceLoadState state = PrescriptionsServiceLoadState.notLoaded;
+  Object? error;
+  List<Prescription>? prescriptions;
+
+  Future<List<Prescription>> reloadPrescriptions() async {
+    state = PrescriptionsServiceLoadState.loading;
+    error = null;
+    prescriptions = null;
+    notifyListeners();
+
+    try {
+      prescriptions = await NetworkingClient.fetch('prescriptions',
+          requireAuth: true,
+          method: HTTPMethod.get,
+          fromJsonT: (json) => (json as List<dynamic>)
+              .map((e) => Prescription.fromJson(e))
+              .toList());
+
+      error = null;
+      state = PrescriptionsServiceLoadState.loaded;
+      notifyListeners();
+
+      return prescriptions!;
+    } catch (err) {
+      error = err;
+      prescriptions = null;
+      state = PrescriptionsServiceLoadState.error;
+      notifyListeners();
+
+      throw err;
+    }
+  }
+
   Future<void> createPrescription({
     required AccountInfo accountInfo,
     required List<RecipePhotoData> photos,

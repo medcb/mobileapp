@@ -47,7 +47,7 @@ class NetworkingClient {
     bool requireAuth = true,
     Map<String, dynamic>? parameters,
     Map<int, String>? statusCodeMessages,
-    required T Function(Map<String, dynamic>? json) fromJsonT,
+    required T Function(dynamic json) fromJsonT,
   }) async {
     String queryString = "";
     if (method == HTTPMethod.get) {
@@ -81,7 +81,7 @@ class NetworkingClient {
   static Future<T> _performRequest<T>(
     http.BaseRequest request, {
     required bool requireAuth,
-    required T Function(Map<String, dynamic>? json) fromJsonT,
+    required T Function(dynamic json) fromJsonT,
     required Future<T> Function() onRepeat,
     required Map<int, String>? statusCodeMessages,
   }) async {
@@ -128,7 +128,7 @@ class NetworkingClient {
       throw LocaleKeys.networkError2.tr();
     }
 
-    Map<String, dynamic>? json;
+    dynamic json;
     try {
       json = jsonDecode(response.body);
     } catch (err) {

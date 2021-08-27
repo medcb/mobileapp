@@ -53,3 +53,24 @@ Map<String, dynamic> _$AccountInfoToJson(AccountInfo instance) =>
       'year': instance.birthYear,
       'sex': instance.gender,
     };
+
+Prescription _$PrescriptionFromJson(Map<String, dynamic> json) {
+  return Prescription(
+    json['prescription_id'] as int,
+    DateTime.parse(json['sended'] as String),
+    json['status'] as String,
+    json['reason'] as String?,
+    json['check'] as bool,
+    json['flag'] as bool,
+  );
+}
+
+Map<String, dynamic> _$PrescriptionToJson(Prescription instance) =>
+    <String, dynamic>{
+      'prescription_id': instance.id,
+      'sended': instance.creationDate.toIso8601String(),
+      'status': instance.status,
+      'reason': instance.reason,
+      'check': instance.needsCheck,
+      'flag': instance.flag,
+    };
