@@ -49,6 +49,9 @@ abstract class  LocaleKeys {
   static const recipeAddPhotoEditTitle = 'recipeAddPhotoEditTitle';
   static const recipeAddSuccessTitle = 'recipeAddSuccessTitle';
   static const recipeAddSuccessMessage = 'recipeAddSuccessMessage';
+  static const recipeAddHandwrittenTypeTitle = 'recipeAddHandwrittenTypeTitle';
+  static const recipeAddHandwrittenTypeTrue = 'recipeAddHandwrittenTypeTrue';
+  static const recipeAddHandwrittenTypeFalse = 'recipeAddHandwrittenTypeFalse';
   static const profileFillInfoTitle = 'profileFillInfoTitle';
   static const profileFillInfoSecondName = 'profileFillInfoSecondName';
   static const profileFillInfoFirstName = 'profileFillInfoFirstName';
@@ -62,10 +65,17 @@ abstract class  LocaleKeys {
   static const profileFillInfoCancel = 'profileFillInfoCancel';
   static const prescriptionsListTitle = 'prescriptionsListTitle';
   static const prescriptionsListAdd = 'prescriptionsListAdd';
+  static const prescriptionsListEmpty = 'prescriptionsListEmpty';
   static const prescriptionStateSent = 'prescriptionStateSent';
   static const prescriptionStateDenied = 'prescriptionStateDenied';
   static const prescriptionStateNeedsCheckByUser = 'prescriptionStateNeedsCheckByUser';
   static const prescriptionStateCheckedByUser = 'prescriptionStateCheckedByUser';
   static const prescriptionStateAccepted = 'prescriptionStateAccepted';
+  static const profileAgreement = 'profileAgreement';
+  static const profileLogout = 'profileLogout';
+  static const profileVersion = 'profileVersion';
+  static const profileLogoutAlertTitle = 'profileLogoutAlertTitle';
+  static const profileLogoutAlertYes = 'profileLogoutAlertYes';
+  static const profileLogoutAlertNo = 'profileLogoutAlertNo';
 
 }

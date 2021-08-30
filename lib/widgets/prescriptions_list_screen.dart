@@ -8,6 +8,7 @@ import 'package:med_cashback/models/json_models.dart';
 import 'package:med_cashback/network/prescriptions_service.dart';
 import 'package:med_cashback/widgets/components/filled_button.dart';
 import 'package:med_cashback/widgets/photo_shutter_screen.dart';
+import 'package:med_cashback/widgets/prescription_details_screen.dart';
 import 'package:med_cashback/widgets/stateful_screen.dart';
 
 class PrescriptionsListScreen extends StatefulWidget {
@@ -19,7 +20,10 @@ class PrescriptionsListScreen extends StatefulWidget {
 }
 
 class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
-  StatefulScreenState _screenState = StatefulScreenState.content;
+  StatefulScreenState _screenState = StatefulScreenState.loading;
+
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
 
   var _listenPrescriptionsServiceChange;
   List<Prescription> _prescriptions = [];
@@ -41,14 +45,20 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
     super.dispose();
   }
 
-  void _loadData() async {
-    PrescriptionsService.instance.reloadPrescriptions();
+  Future<void> _loadData() async {
+    await PrescriptionsService.instance.reloadPrescriptions();
   }
 
   void _prescriptionsStateChanged() {
     print('_prescriptionsStateChanged');
     if (!mounted) return;
     print('mounted ${PrescriptionsService.instance.state}');
+    if (_screenState == StatefulScreenState.content &&
+        PrescriptionsService.instance.state ==
+            PrescriptionsServiceLoadState.loading) {
+      // update by RefreshIndicator
+      return;
+    }
     SchedulerBinding.instance!.addPostFrameCallback((_) {
       setState(() {
         switch (PrescriptionsService.instance.state) {
@@ -80,20 +90,34 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
     );
   }
 
+  void _openPrescription(Prescription prescription) {
+    Navigator.pushNamed(
+      context,
+      RouteName.prescriptionDetails,
+      arguments: PrescriptionDetailsScreenArguments(prescription),
+    );
+  }
+
   Widget _prescriptionsList() {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
         color: CashbackColors.backgroundColor,
       ),
-      child: ListView.separated(
-        itemBuilder: (context, index) =>
-            PrescriptionsListItem(prescription: _prescriptions[index]),
-        separatorBuilder: (ctx, index) => Container(
-          color: CashbackColors.shadowColor,
-          height: 1,
+      child: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        onRefresh: _loadData,
+        child: ListView.separated(
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () => _openPrescription(_prescriptions[index]),
+            child: PrescriptionsListItem(prescription: _prescriptions[index]),
+          ),
+          separatorBuilder: (ctx, index) => Container(
+            color: CashbackColors.shadowColor,
+            height: 1,
+          ),
+          itemCount: _prescriptions.length,
         ),
-        itemCount: _prescriptions.length,
       ),
     );
   }
@@ -118,6 +142,7 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
           child: StatefulScreen(
             onRepeat: _loadData,
             screenState: _screenState,
+            emptyText: LocaleKeys.prescriptionsListEmpty.tr(),
             child: _prescriptionsList(),
           ),
         ),
@@ -149,54 +174,58 @@ class PrescriptionsListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(
-        left: 8,
-        top: 24,
-        right: 16,
-        bottom: 16,
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 8,
-            height: 8,
-            decoration: BoxDecoration(
-              color: prescription.flag ? CashbackColors.accentColor : Color(0),
-              borderRadius: BorderRadius.circular(4),
+    return Container(
+      color: CashbackColors.backgroundColor,
+      child: Padding(
+        padding: EdgeInsets.only(
+          left: 8,
+          top: 24,
+          right: 16,
+          bottom: 16,
+        ),
+        child: Row(
+          children: [
+            Container(
+              width: 8,
+              height: 8,
+              decoration: BoxDecoration(
+                color:
+                    prescription.flag ? CashbackColors.accentColor : Color(0),
+                borderRadius: BorderRadius.circular(4),
+              ),
             ),
-          ),
-          SizedBox(width: 4),
-          Image.asset('assets/images/prescription_icon.png'),
-          SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Text(
-                  DateFormat('dd.MM.yyyy HH:mm')
-                      .format(prescription.creationDate),
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: CashbackColors.mainTextColor,
+            SizedBox(width: 4),
+            Image.asset('assets/images/prescription_icon.png'),
+            SizedBox(width: 16),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Text(
+                    DateFormat('dd.MM.yyyy HH:mm')
+                        .format(prescription.creationDate),
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: CashbackColors.mainTextColor,
+                    ),
                   ),
-                ),
-                SizedBox(height: 8),
-                Text(
-                  prescription.reason ?? prescription.status,
-                  style: TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w400,
-                    color: prescription.reason != null
-                        ? CashbackColors.errorTextColor
-                        : CashbackColors.mainTextColor,
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
+                  SizedBox(height: 8),
+                  Text(
+                    prescription.reason ?? prescription.status,
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w400,
+                      color: prescription.reason != null
+                          ? CashbackColors.errorTextColor
+                          : CashbackColors.mainTextColor,
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

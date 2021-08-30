@@ -50,9 +50,31 @@ class PrescriptionsService with ChangeNotifier {
     }
   }
 
+  Future<PrescriptionDetails> loadPrescriptionDetails(
+      Prescription prescription) async {
+    return await NetworkingClient.fetch(
+      'prescription/${prescription.id}',
+      requireAuth: true,
+      method: HTTPMethod.get,
+      fromJsonT: (json) => PrescriptionDetails.fromJson(json),
+    );
+  }
+
+  Future<void> setFlag(Prescription prescription) async {
+    await NetworkingClient.fetch(
+      'prescription/${prescription.id}/flag',
+      requireAuth: true,
+      method: HTTPMethod.post,
+      fromJsonT: (_) => null,
+    );
+    prescription.flag = false;
+    notifyListeners();
+  }
+
   Future<void> createPrescription({
     required AccountInfo accountInfo,
     required List<RecipePhotoData> photos,
+    required bool isHandwritten,
   }) async {
     final prescriptions = photos
         .map((photo) => {
@@ -70,7 +92,7 @@ class PrescriptionsService with ChangeNotifier {
       "first_hash": accountInfo.firstNameHash,
       "last_hash": accountInfo.lastNameHash,
       "patronymic_hash": accountInfo.middleNameHash,
-      "handwritten": true,
+      "handwritten": isHandwritten,
       "prescriptions": prescriptions,
     };
 

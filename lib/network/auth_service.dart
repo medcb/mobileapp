@@ -13,6 +13,8 @@ import 'networking_client.dart';
 class AuthService with ChangeNotifier {
   static final instance = AuthService();
 
+  AccountInfo? accountInfo;
+
   final _storage = new FlutterSecureStorage();
 
   bool? _isAuthorized;
@@ -90,12 +92,13 @@ class AuthService with ChangeNotifier {
   }
 
   Future<AccountInfo> getAccountInfo() async {
-    return await NetworkingClient.fetch<AccountInfo>(
+    accountInfo = await NetworkingClient.fetch<AccountInfo>(
       'account',
       method: HTTPMethod.get,
       requireAuth: true,
       fromJsonT: (json) => AccountInfo.fromJson(json!),
     );
+    return accountInfo!;
   }
 
   Future<void> setAccountInfo({
@@ -129,9 +132,11 @@ class AuthService with ChangeNotifier {
       },
       fromJsonT: (_) => null,
     );
+    await getAccountInfo();
   }
 
   Future<void> clearAuthData() async {
+    accountInfo = null;
     for (String key in [_kTokenKey, _kRefreshTokenKey, _kSaltKey]) {
       await _storage.delete(key: key);
     }

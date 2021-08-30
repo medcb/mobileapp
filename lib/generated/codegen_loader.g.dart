@@ -63,6 +63,9 @@ class CodegenLoader extends AssetLoader{
   "recipeAddPhotoEditTitle": "Отметьте все данные в назначении",
   "recipeAddSuccessTitle": "Направление отправлено на обработку",
   "recipeAddSuccessMessage": "Результат обработки данных появится в категории Мои направления.",
+  "recipeAddHandwrittenTypeTitle": "Укажите признак документа",
+  "recipeAddHandwrittenTypeTrue": "Рукописный",
+  "recipeAddHandwrittenTypeFalse": "Печатный",
   "profileFillInfoTitle": "Укажите личные данные",
   "profileFillInfoSecondName": "Фамилия",
   "profileFillInfoFirstName": "Имя",
@@ -76,11 +79,18 @@ class CodegenLoader extends AssetLoader{
   "profileFillInfoCancel": "Отмена",
   "prescriptionsListTitle": "Мои назначения",
   "prescriptionsListAdd": "Добавить назначение",
+  "prescriptionsListEmpty": "У Вас нет добавленных назначений.",
   "prescriptionStateSent": "Отправлено",
   "prescriptionStateDenied": "Отказано",
   "prescriptionStateNeedsCheckByUser": "Требует проверки",
   "prescriptionStateCheckedByUser": "Проверен пользователем",
-  "prescriptionStateAccepted": "Принят"
+  "prescriptionStateAccepted": "Принят",
+  "profileAgreement": "Условия и соглашения",
+  "profileLogout": "Выйти",
+  "profileVersion": "Версия {}",
+  "profileLogoutAlertTitle": "Вы действительно хотите выйти?",
+  "profileLogoutAlertYes": "Да",
+  "profileLogoutAlertNo": "Нет"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ru_RU": ru_RU};
 }

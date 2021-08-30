@@ -8,6 +8,7 @@ import 'package:med_cashback/widgets/login_phone_enter.dart';
 import 'package:med_cashback/widgets/main_tab_bar.dart';
 import 'package:med_cashback/widgets/photo_crop_screen.dart';
 import 'package:med_cashback/widgets/photo_shutter_screen.dart';
+import 'package:med_cashback/widgets/prescription_details_screen.dart';
 import 'package:med_cashback/widgets/profile_fill_info_screen.dart';
 import 'package:med_cashback/widgets/proxy_setup_screen.dart';
 import 'package:med_cashback/widgets/recipe_add_photo_edit.dart';
@@ -86,6 +87,9 @@ class MyApp extends StatelessWidget {
                 arguments:
                     settings.arguments as RecipeAddPhotoEditScreenArguments),
             RouteName.addRecipeSuccess: (ctx) => RecipeAddSuccessScreen(),
+            RouteName.prescriptionDetails: (ctx) => PrescriptionDetailsScreen(
+                arguments:
+                    settings.arguments as PrescriptionDetailsScreenArguments),
             RouteName.profileFillInfo: (ctx) => ProfileFillInfoScreen(),
             RouteName.proxySetup: (ctx) => ProxySetupScreen(),
           };

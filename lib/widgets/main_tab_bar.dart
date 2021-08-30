@@ -1,9 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/widgets.dart';
+import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
+import 'package:med_cashback/models/json_models.dart';
+import 'package:med_cashback/network/auth_service.dart';
 import 'package:med_cashback/widgets/prescriptions_list_screen.dart';
 import 'package:med_cashback/widgets/profile_screen.dart';
+import 'package:med_cashback/widgets/stateful_screen.dart';
 
 import 'components/full_screen_background_container.dart';
 
@@ -14,6 +19,9 @@ class MainTabBar extends StatefulWidget {
 
 class _MainTabBarState extends State<MainTabBar>
     with SingleTickerProviderStateMixin {
+  StatefulScreenState _screenState = StatefulScreenState.loading;
+  String? _errorText;
+
   TabController? _tabController;
 
   Image? _myRecipesActiveImage;
@@ -37,6 +45,34 @@ class _MainTabBarState extends State<MainTabBar>
     _tabController = TabController(length: 2, vsync: this);
     _tabController!.addListener(() {
       setState(() {});
+    });
+
+    loadProfile();
+  }
+
+  void loadProfile() async {
+    AccountInfo? accountInfo = AuthService.instance.accountInfo;
+    if (accountInfo == null) {
+      setState(() {
+        _screenState = StatefulScreenState.loading;
+      });
+      try {
+        accountInfo = await AuthService.instance.getAccountInfo();
+      } catch (err) {
+        setState(() {
+          _errorText = err.toString();
+          _screenState = StatefulScreenState.error;
+        });
+      }
+    }
+    SchedulerBinding.instance!.addPostFrameCallback((_) {
+      if (!accountInfo!.isFilled()) {
+        Navigator.pushReplacementNamed(context, RouteName.profileFillInfo);
+      } else {
+        setState(() {
+          _screenState = StatefulScreenState.content;
+        });
+      }
     });
   }
 
@@ -129,6 +165,12 @@ class _MainTabBarState extends State<MainTabBar>
         );
       }),
     );
-    return FullScreenBackgroundContainer(child: tabController);
+    return FullScreenBackgroundContainer(
+      child: StatefulScreen(
+        screenState: _screenState,
+        errorText: _errorText,
+        child: tabController,
+      ),
+    );
   }
 }

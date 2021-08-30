@@ -5,6 +5,7 @@ abstract class RouteName {
   static final addRecipePhotosList = '/addRecipePhotosList';
   static final addRecipePhotoEdit = '/addRecipePhotoEdit';
   static final addRecipeSuccess = '/addRecipeSuccess';
+  static final prescriptionDetails = '/prescriptionDetails';
   static final proxySetup = '/proxySetup';
   static final profileFillInfo = '/profileFillInfo';
 }

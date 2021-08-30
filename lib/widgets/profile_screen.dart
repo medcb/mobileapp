@@ -1,23 +1,45 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:med_cashback/constants/route_name.dart';
+import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
+import 'package:med_cashback/network/auth_service.dart';
 import 'package:package_info/package_info.dart';
 
 class ProfileScreen extends StatelessWidget {
+  void _logout(BuildContext context) async {
+    final yesButton = TextButton(
+      onPressed: () async {
+        Navigator.pop(context);
+        await AuthService.instance.clearAuthData();
+        Navigator.pushReplacementNamed(context, RouteName.home);
+      },
+      child: Text(LocaleKeys.profileLogoutAlertYes.tr()),
+    );
+    final noButton = TextButton(
+      onPressed: () => Navigator.pop(context),
+      child: Text(LocaleKeys.profileLogoutAlertNo.tr()),
+    );
+    final alertDialog = AlertDialog(
+      title: Text(LocaleKeys.profileLogoutAlertTitle.tr()),
+      actions: [noButton, yesButton],
+    );
+    showDialog(
+      context: context,
+      builder: (context) => alertDialog,
+    );
+  }
+
+  void _openAgreement(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Пока у нас нет URL соглашения 🤷‍')));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Text(
-            'ФИО',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
         Expanded(
           child: Container(
             decoration: BoxDecoration(
@@ -28,14 +50,14 @@ class ProfileScreen extends StatelessWidget {
               children: [
                 SizedBox(height: 16),
                 ProfileHeader(),
-                ProfileScreenItem('Дети'),
-                ProfileScreenItem('Отзывы'),
-                ProfileScreenItem('Способы вывода средств'),
-                ProfileScreenItem('История выводов'),
-                ProfileScreenItemWithSwitch('Вход по отпечатку пальца'),
-                ProfileScreenItem('Условия и соглашения'),
-                ProfileScreenItem('Обратная связь'),
-                ProfileScreenItem('Выйти'),
+                ProfileScreenItem(
+                  onTap: () => _openAgreement(context),
+                  itemName: LocaleKeys.profileAgreement.tr(),
+                ),
+                ProfileScreenItem(
+                  onTap: () => _logout(context),
+                  itemName: LocaleKeys.profileLogout.tr(),
+                ),
                 ProfileAppVersion(),
                 SizedBox(height: 16),
               ],
@@ -48,69 +70,28 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class ProfileScreenItem extends StatelessWidget {
-  final String itemName;
+  const ProfileScreenItem({
+    Key? key,
+    required this.onTap,
+    required this.itemName,
+  }) : super(key: key);
 
-  ProfileScreenItem(this.itemName);
+  final Function() onTap;
+  final String itemName;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Text(
-        itemName,
-        style: TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-        ),
-      ),
-    );
-  }
-}
-
-class ProfileScreenItemWithSwitch extends StatefulWidget {
-  final String itemName;
-
-  ProfileScreenItemWithSwitch(this.itemName);
-
-  @override
-  _ProfileScreenItemWithSwitchState createState() =>
-      _ProfileScreenItemWithSwitchState();
-}
-
-class _ProfileScreenItemWithSwitchState
-    extends State<ProfileScreenItemWithSwitch> {
-  var enabled = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 2,
-        horizontal: 16,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Flexible(
-            child: Text(
-              widget.itemName,
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
+    return GestureDetector(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Text(
+          itemName,
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
           ),
-          Switch.adaptive(
-            value: enabled,
-            activeColor: Theme.of(context).accentColor,
-            onChanged: (value) {
-              setState(() {
-                enabled = value;
-              });
-              print('changed');
-            },
-          )
-        ],
+        ),
       ),
     );
   }
@@ -124,40 +105,20 @@ class ProfileHeader extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset('assets/images/profile_placeholder.png'),
-          SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'ФИО',
+                  'Профиль',
                   style: TextStyle(
-                    fontSize: 18,
+                    fontSize: 20,
                     fontWeight: FontWeight.w500,
-                  ),
-                ),
-                SizedBox(height: 12),
-                Text(
-                  '+7 999 999-12-34',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(height: 7),
-                Text(
-                  'email@mailservice.com',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ],
             ),
           ),
-          SizedBox(width: 16),
-          Icon(Icons.edit),
         ],
       ),
     );
@@ -199,7 +160,7 @@ class _ProfileAppVersionState extends State<ProfileAppVersion> {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Text(
-        'Версия $version ($buildNumber)',
+        LocaleKeys.profileVersion.tr(args: ['$version ($buildNumber)']),
         style: TextStyle(
           fontSize: 12,
           fontWeight: FontWeight.w400,

@@ -81,9 +81,7 @@ class _LoginPhoneEnterScreenState extends State<LoginPhoneEnterScreen> {
     try {
       await AuthService.instance.login(phone: _phone!, sms: code);
       final accountInfo = await AuthService.instance.getAccountInfo();
-      if (accountInfo.lastNameHash == null ||
-          accountInfo.firstNameHash == null ||
-          accountInfo.gender == null) {
+      if (!accountInfo.isFilled()) {
         Navigator.pushReplacementNamed(context, RouteName.profileFillInfo);
       } else {
         Navigator.pushReplacementNamed(context, RouteName.home);

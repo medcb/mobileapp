@@ -7,6 +7,7 @@ import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/network/auth_service.dart';
 import 'package:med_cashback/widgets/components/filled_button.dart';
 import 'package:med_cashback/widgets/components/filled_button_secondary.dart';
+import 'package:med_cashback/widgets/stateful_screen.dart';
 
 import 'components/full_screen_background_container.dart';
 
@@ -20,6 +21,8 @@ class ProfileFillInfoScreen extends StatefulWidget {
 }
 
 class _ProfileFillInfoScreenState extends State<ProfileFillInfoScreen> {
+  StatefulScreenState _screenState = StatefulScreenState.content;
+
   String? secondName;
   String? firstName;
   String? middleName;
@@ -46,16 +49,26 @@ class _ProfileFillInfoScreenState extends State<ProfileFillInfoScreen> {
   }
 
   void _save() async {
-    if (!_isDataValid()) {
-      return;
+    if (!_isDataValid()) return;
+    setState(() {
+      _screenState = StatefulScreenState.loading;
+    });
+    try {
+      await AuthService.instance.setAccountInfo(
+        secondName: secondName!,
+        firstName: firstName!,
+        middleName: middleName,
+        gender: _gender!,
+        birthYear: birthday!.year,
+      );
+      Navigator.pushReplacementNamed(context, RouteName.home);
+    } catch (err) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(err.toString())));
+      setState(() {
+        _screenState = StatefulScreenState.content;
+      });
     }
-    AuthService.instance.setAccountInfo(
-      secondName: secondName!,
-      firstName: firstName!,
-      middleName: middleName,
-      gender: _gender!,
-      birthYear: birthday!.year,
-    );
   }
 
   void _cancel() async {
@@ -67,86 +80,83 @@ class _ProfileFillInfoScreenState extends State<ProfileFillInfoScreen> {
   Widget build(BuildContext context) {
     final window = MediaQuery.of(context);
     return FullScreenBackgroundContainer(
-      child: Padding(
-        padding: EdgeInsets.fromLTRB(
-            window.padding.left,
-            window.padding.top,
-            window.padding.right,
-            window.viewInsets.bottom > 0
-                ? window.viewInsets.bottom
-                : window.padding.bottom),
-        child: Scaffold(
-          extendBody: true,
-          resizeToAvoidBottomInset: false,
-          backgroundColor: Color(0),
-          body: Container(
-            decoration: BoxDecoration(
-              color: CashbackColors.backgroundColor,
-              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-              boxShadow: [
-                BoxShadow(
-                  color: CashbackColors.shadowColor,
-                  blurRadius: 8,
-                )
-              ],
-            ),
-            child: ListView(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: Text(
-                    LocaleKeys.profileFillInfoTitle.tr(),
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
-                      color: CashbackColors.mainTextColor,
-                    ),
-                  ),
-                ),
-                ProfileFillInfoScreenTextField(
-                  title: LocaleKeys.profileFillInfoSecondName.tr(),
-                  onChanged: (text) => setState(() {
-                    secondName = text;
-                  }),
-                ),
-                ProfileFillInfoScreenTextField(
-                  title: LocaleKeys.profileFillInfoFirstName.tr(),
-                  onChanged: (text) => setState(() {
-                    firstName = text;
-                  }),
-                ),
-                ProfileFillInfoScreenTextField(
-                  title: LocaleKeys.profileFillInfoMiddleName.tr(),
-                  onChanged: (text) => setState(() {
-                    middleName = text;
-                  }),
-                ),
-                ProfileFillInfoScreenGenderSelector(
-                  gender: _gender,
-                  completion: _setGender,
-                ),
-                ProfileInfoEnterBirthdaySelector(
-                  date: birthday,
-                  onChanged: _setBirthday,
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  child: FilledButton(
-                    onPressed: _save,
-                    isEnabled: _isDataValid(),
-                    title: LocaleKeys.profileFillInfoSave.tr(),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                  child: TextButton(
-                    onPressed: _cancel,
+      child: Scaffold(
+        extendBody: true,
+        resizeToAvoidBottomInset: true,
+        backgroundColor: Color(0),
+        body: StatefulScreen(
+          screenState: _screenState,
+          child: Padding(
+            padding: EdgeInsets.only(top: window.padding.top),
+            child: Container(
+              decoration: BoxDecoration(
+                color: CashbackColors.backgroundColor,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+                boxShadow: [
+                  BoxShadow(
+                    color: CashbackColors.shadowColor,
+                    blurRadius: 8,
+                  )
+                ],
+              ),
+              child: ListView(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
                     child: Text(
-                      LocaleKeys.profileFillInfoCancel.tr(),
+                      LocaleKeys.profileFillInfoTitle.tr(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                        color: CashbackColors.mainTextColor,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                  ProfileFillInfoScreenTextField(
+                    title: LocaleKeys.profileFillInfoSecondName.tr(),
+                    onChanged: (text) => setState(() {
+                      secondName = text;
+                    }),
+                  ),
+                  ProfileFillInfoScreenTextField(
+                    title: LocaleKeys.profileFillInfoFirstName.tr(),
+                    onChanged: (text) => setState(() {
+                      firstName = text;
+                    }),
+                  ),
+                  ProfileFillInfoScreenTextField(
+                    title: LocaleKeys.profileFillInfoMiddleName.tr(),
+                    onChanged: (text) => setState(() {
+                      middleName = text;
+                    }),
+                  ),
+                  ProfileFillInfoScreenGenderSelector(
+                    gender: _gender,
+                    completion: _setGender,
+                  ),
+                  ProfileInfoEnterBirthdaySelector(
+                    date: birthday,
+                    onChanged: _setBirthday,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: FilledButton(
+                      onPressed: _save,
+                      isEnabled: _isDataValid(),
+                      title: LocaleKeys.profileFillInfoSave.tr(),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    child: TextButton(
+                      onPressed: _cancel,
+                      child: Text(
+                        LocaleKeys.profileFillInfoCancel.tr(),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

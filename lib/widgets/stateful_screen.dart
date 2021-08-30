@@ -63,7 +63,7 @@ class _StatefulScreenState extends State<StatefulScreen> {
         return widget.child;
       case StatefulScreenState.empty:
         return emptyView(
-          LocaleKeys.emptyDefault.tr(),
+          widget.emptyText ?? LocaleKeys.emptyDefault.tr(),
           LocaleKeys.repeatRequestEmpty.tr(),
         );
     }

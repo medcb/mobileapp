@@ -74,3 +74,23 @@ Map<String, dynamic> _$PrescriptionToJson(Prescription instance) =>
       'check': instance.needsCheck,
       'flag': instance.flag,
     };
+
+PrescriptionDetails _$PrescriptionDetailsFromJson(Map<String, dynamic> json) {
+  return PrescriptionDetails(
+    DateTime.parse(json['sended'] as String),
+    json['status'] as String,
+    json['reason'] as String?,
+    json['check'] as bool,
+    json['flag'] as bool,
+  );
+}
+
+Map<String, dynamic> _$PrescriptionDetailsToJson(
+        PrescriptionDetails instance) =>
+    <String, dynamic>{
+      'sended': instance.creationDate.toIso8601String(),
+      'status': instance.status,
+      'reason': instance.reason,
+      'check': instance.needsCheck,
+      'flag': instance.flag,
+    };

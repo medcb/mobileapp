@@ -208,6 +208,7 @@ class _RecipeAddPhotoEditScreenState extends State<RecipeAddPhotoEditScreen> {
     return Scaffold(
       backgroundColor: CashbackColors.photoBackgroundColor,
       body: SafeArea(
+        bottom: false,
         child: Stack(
           children: [
             Padding(
@@ -240,35 +241,40 @@ class _RecipeAddPhotoEditScreenState extends State<RecipeAddPhotoEditScreen> {
                       color: CashbackColors.backgroundColor,
                       borderRadius:
                           BorderRadius.vertical(top: Radius.circular(8))),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      SizedBox(height: 6),
-                      _RecipeAddPhotoEditMarkTypesList(
-                        onSelect: (markType) => _selectMarkType(markType),
-                        selectedMarkType: _selectingMarkType,
-                        definedMarkTypes: _definedMarksList(),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: SizedBox(
-                          height: 44,
-                          child: TextButton(
-                            onPressed: _save,
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all(
-                                  CashbackColors.accentColor),
-                            ),
-                            child: Text(
-                              LocaleKeys.recipeAddPhotosListSave.tr(),
-                              style: TextStyle(
-                                color: CashbackColors.contrastTextColor,
+                  child: SafeArea(
+                    top: false,
+                    left: false,
+                    right: false,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        SizedBox(height: 6),
+                        _RecipeAddPhotoEditMarkTypesList(
+                          onSelect: (markType) => _selectMarkType(markType),
+                          selectedMarkType: _selectingMarkType,
+                          definedMarkTypes: _definedMarksList(),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: SizedBox(
+                            height: 44,
+                            child: TextButton(
+                              onPressed: _save,
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    CashbackColors.accentColor),
+                              ),
+                              child: Text(
+                                LocaleKeys.recipeAddPhotosListSave.tr(),
+                                style: TextStyle(
+                                  color: CashbackColors.contrastTextColor,
+                                ),
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 )
               ],

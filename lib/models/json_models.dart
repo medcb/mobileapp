@@ -66,6 +66,10 @@ class AccountInfo {
       _$AccountInfoFromJson(json);
 
   Map<String, dynamic> toJson() => _$AccountInfoToJson(this);
+
+  bool isFilled() {
+    return lastNameHash != null && firstNameHash != null && gender != null;
+  }
 }
 
 @JsonSerializable()
@@ -75,7 +79,43 @@ class Prescription {
   final int id;
 
   // sended: <iso8601> дата.время отправки на сервер
-  @JsonKey(name: 'sended', fromJson: _decodeDate)
+  @JsonKey(name: 'sended')
+  final DateTime creationDate;
+
+  // status: <str> текстовый статус ('Получен', 'Подготовлен', 'Распознан', 'Отказ', 'Проверен пользователем', Отменен пользователем, Подтвержден)
+  @JsonKey(name: 'status')
+  final String status;
+
+  // reason: <str> причина отказа. необязательное
+  @JsonKey(name: 'reason')
+  final String? reason;
+
+  // check: <bool> True - требуется проверка пациентом
+  @JsonKey(name: 'check')
+  final bool needsCheck;
+
+  // flag: <bool> сбрасывается пациентом, поднимается сервером
+  @JsonKey(name: 'flag')
+  bool flag;
+
+  Prescription(
+    this.id,
+    this.creationDate,
+    this.status,
+    this.reason,
+    this.needsCheck,
+    this.flag,
+  );
+
+  factory Prescription.fromJson(Map<String, dynamic> json) =>
+      _$PrescriptionFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PrescriptionToJson(this);
+}
+
+@JsonSerializable()
+class PrescriptionDetails {
+  @JsonKey(name: 'sended')
   final DateTime creationDate;
 
   // status: <str> текстовый статус ('Получен', 'Подготовлен', 'Распознан', 'Отказ', 'Проверен пользователем', Отменен пользователем, Подтвержден)
@@ -94,12 +134,23 @@ class Prescription {
   @JsonKey(name: 'flag')
   final bool flag;
 
-  static DateTime _decodeDate(String from) {
-    return DateTime.now();
-  }
+  // clinic: <str> название клиники. необязательное
+  // date: <iso 8601> дата рецепта. необязательное
+  // specialty: <str> специальность врача. необязательное
+  // diagnosis: [{
+  // diagnose_id <int> диагноз
+  // diagnose_name <str>
+  // }]
+  // drugs: [{
+  // drug_id: <int>
+  // drug_name: <str> название мед. препарата
+  // }]
+  // photo: [<photo_id>] список ID фото
+  // cashback_amount: <int> в копейках. null - не начислено
+  // cashback_status: <bool> null - в процессе перевода, true-переведено, false-отказ
+  // cashback_reason: <str> - причина отказа
 
-  Prescription(
-    this.id,
+  PrescriptionDetails(
     this.creationDate,
     this.status,
     this.reason,
@@ -107,8 +158,8 @@ class Prescription {
     this.flag,
   );
 
-  factory Prescription.fromJson(Map<String, dynamic> json) =>
-      _$PrescriptionFromJson(json);
+  factory PrescriptionDetails.fromJson(Map<String, dynamic> json) =>
+      _$PrescriptionDetailsFromJson(json);
 
-  Map<String, dynamic> toJson() => _$PrescriptionToJson(this);
+  Map<String, dynamic> toJson() => _$PrescriptionDetailsToJson(this);
 }

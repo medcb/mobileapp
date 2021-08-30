@@ -60,7 +60,9 @@ class NetworkingClient {
         method.stringValue, Uri.parse(_baseUrl + path + queryString))
       ..encoding = utf8;
     if (method == HTTPMethod.post) {
-      request.body = jsonEncode(parameters);
+      if (parameters != null) {
+        request.body = jsonEncode(parameters);
+      }
       request.headers.addAll({'Content-Type': 'application/json'});
     }
 
