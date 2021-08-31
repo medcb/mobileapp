@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:json_annotation/json_annotation.dart';
+import 'package:med_cashback/constants/cashback_colors.dart';
 
 part 'json_models.g.dart';
 
@@ -135,20 +138,40 @@ class PrescriptionDetails {
   final bool flag;
 
   // clinic: <str> название клиники. необязательное
+  @JsonKey(name: 'clinic')
+  final String? clinic;
+
   // date: <iso 8601> дата рецепта. необязательное
+  @JsonKey(name: 'date')
+  final DateTime? date;
+
   // specialty: <str> специальность врача. необязательное
-  // diagnosis: [{
-  // diagnose_id <int> диагноз
-  // diagnose_name <str>
-  // }]
-  // drugs: [{
-  // drug_id: <int>
-  // drug_name: <str> название мед. препарата
-  // }]
+  @JsonKey(name: 'specialty')
+  final String? specialty;
+
+  // diagnosis: [{}] диагнозы
+  @JsonKey(name: 'diagnosis')
+  final List<PrescriptionDiagnosis>? diagnosis;
+
+  // drugs: [{}] препараты
+  @JsonKey(name: 'drugs')
+  final List<PrescriptionDrug>? drugs;
+
   // photo: [<photo_id>] список ID фото
+  @JsonKey(name: 'photo')
+  final List<int>? photoIds;
+
   // cashback_amount: <int> в копейках. null - не начислено
+  @JsonKey(name: 'cashback_amount')
+  final int? cashbackAmount;
+
   // cashback_status: <bool> null - в процессе перевода, true-переведено, false-отказ
+  @JsonKey(name: 'cashback_status')
+  final bool? cashbackStatus;
+
   // cashback_reason: <str> - причина отказа
+  @JsonKey(name: 'cashback_reason')
+  final String? cashbackReason;
 
   PrescriptionDetails(
     this.creationDate,
@@ -156,10 +179,73 @@ class PrescriptionDetails {
     this.reason,
     this.needsCheck,
     this.flag,
+    this.clinic,
+    this.date,
+    this.specialty,
+    this.diagnosis,
+    this.drugs,
+    this.photoIds,
+    this.cashbackAmount,
+    this.cashbackStatus,
+    this.cashbackReason,
   );
+
+  Color statusColor() {
+    if (reason != null || cashbackReason != null) {
+      return CashbackColors.prescriptionStatusDeclinedColor;
+    }
+    switch (status.toLowerCase()) {
+      case 'подтвержден':
+        return CashbackColors.prescriptionStatusAcceptedColor;
+      case 'подготовлен':
+        return CashbackColors.prescriptionStatusSentColor;
+      case 'отказ':
+        return CashbackColors.prescriptionStatusDeclinedColor;
+      case 'проверен пользователем':
+        return CashbackColors.prescriptionStatusCheckedColor;
+      default:
+        return CashbackColors.prescriptionStatusNeedsCheckColor;
+    }
+  }
 
   factory PrescriptionDetails.fromJson(Map<String, dynamic> json) =>
       _$PrescriptionDetailsFromJson(json);
 
   Map<String, dynamic> toJson() => _$PrescriptionDetailsToJson(this);
+}
+
+@JsonSerializable()
+class PrescriptionDiagnosis {
+  // diagnose_id <int>
+  @JsonKey(name: 'drug_id')
+  final int id;
+
+  // diagnose_name <str>
+  @JsonKey(name: 'drug_name')
+  final String name;
+
+  PrescriptionDiagnosis(this.id, this.name);
+
+  factory PrescriptionDiagnosis.fromJson(Map<String, dynamic> json) =>
+      _$PrescriptionDiagnosisFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PrescriptionDiagnosisToJson(this);
+}
+
+@JsonSerializable()
+class PrescriptionDrug {
+  // drug_id: <int>
+  @JsonKey(name: 'drug_id')
+  final int id;
+
+  // drug_name: <str> название мед. препарата
+  @JsonKey(name: 'drug_name')
+  final String name;
+
+  PrescriptionDrug(this.id, this.name);
+
+  factory PrescriptionDrug.fromJson(Map<String, dynamic> json) =>
+      _$PrescriptionDrugFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PrescriptionDrugToJson(this);
 }

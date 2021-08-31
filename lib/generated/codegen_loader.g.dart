@@ -90,7 +90,12 @@ class CodegenLoader extends AssetLoader{
   "profileVersion": "Версия {}",
   "profileLogoutAlertTitle": "Вы действительно хотите выйти?",
   "profileLogoutAlertYes": "Да",
-  "profileLogoutAlertNo": "Нет"
+  "profileLogoutAlertNo": "Нет",
+  "prescriptionDetailsSpecialty": "Специальность врача",
+  "prescriptionDetailsDate": "Дата выдачи назначения",
+  "prescriptionDetailsClinic": "Клиника",
+  "prescriptionDetailsDiagnosis": "Диагнозы по МКБ 10",
+  "prescriptionDetailsDrugs": "Назначения"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ru_RU": ru_RU};
 }

@@ -77,5 +77,10 @@ abstract class  LocaleKeys {
   static const profileLogoutAlertTitle = 'profileLogoutAlertTitle';
   static const profileLogoutAlertYes = 'profileLogoutAlertYes';
   static const profileLogoutAlertNo = 'profileLogoutAlertNo';
+  static const prescriptionDetailsSpecialty = 'prescriptionDetailsSpecialty';
+  static const prescriptionDetailsDate = 'prescriptionDetailsDate';
+  static const prescriptionDetailsClinic = 'prescriptionDetailsClinic';
+  static const prescriptionDetailsDiagnosis = 'prescriptionDetailsDiagnosis';
+  static const prescriptionDetailsDrugs = 'prescriptionDetailsDrugs';
 
 }

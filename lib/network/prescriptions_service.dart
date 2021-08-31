@@ -105,6 +105,11 @@ class PrescriptionsService with ChangeNotifier {
     );
   }
 
+  String photoUrl({required int prescriptionId, required int photoId}) {
+    return NetworkingClient.baseUrl +
+        'prescription/$prescriptionId/photo/$photoId';
+  }
+
   List<int>? _encodeRect(Rect? rect) {
     if (rect == null) {
       return null;

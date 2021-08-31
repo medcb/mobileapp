@@ -42,8 +42,10 @@ class _PhotoCropScreenState extends State<PhotoCropScreen> {
   }
 
   void _saveImage() {
-    var image =
-        imageLib.decodeJpg(File(widget.arguments.imagePath).readAsBytesSync());
+    print(widget.arguments.imagePath);
+    var image = imageLib.decodeNamedImage(
+        File(widget.arguments.imagePath).readAsBytesSync(),
+        widget.arguments.imagePath)!;
 
     final cropped = imageLib.copyCrop(
       imageLib.bakeOrientation(image),

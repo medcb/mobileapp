@@ -157,7 +157,7 @@ class AuthService with ChangeNotifier {
       throw UnauthorizedException();
     }
 
-    var bytes = utf8.encode(string + salt); // data being hashed
+    var bytes = utf8.encode(string.toLowerCase() + salt); // data being hashed
     var digest = sha256.convert(bytes);
     return digest.toString();
   }

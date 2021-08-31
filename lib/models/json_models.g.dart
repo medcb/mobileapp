@@ -82,6 +82,19 @@ PrescriptionDetails _$PrescriptionDetailsFromJson(Map<String, dynamic> json) {
     json['reason'] as String?,
     json['check'] as bool,
     json['flag'] as bool,
+    json['clinic'] as String?,
+    json['date'] == null ? null : DateTime.parse(json['date'] as String),
+    json['specialty'] as String?,
+    (json['diagnosis'] as List<dynamic>?)
+        ?.map((e) => PrescriptionDiagnosis.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    (json['drugs'] as List<dynamic>?)
+        ?.map((e) => PrescriptionDrug.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    (json['photo'] as List<dynamic>?)?.map((e) => e as int).toList(),
+    json['cashback_amount'] as int?,
+    json['cashback_status'] as bool?,
+    json['cashback_reason'] as String?,
   );
 }
 
@@ -93,4 +106,41 @@ Map<String, dynamic> _$PrescriptionDetailsToJson(
       'reason': instance.reason,
       'check': instance.needsCheck,
       'flag': instance.flag,
+      'clinic': instance.clinic,
+      'date': instance.date?.toIso8601String(),
+      'specialty': instance.specialty,
+      'diagnosis': instance.diagnosis,
+      'drugs': instance.drugs,
+      'photo': instance.photoIds,
+      'cashback_amount': instance.cashbackAmount,
+      'cashback_status': instance.cashbackStatus,
+      'cashback_reason': instance.cashbackReason,
+    };
+
+PrescriptionDiagnosis _$PrescriptionDiagnosisFromJson(
+    Map<String, dynamic> json) {
+  return PrescriptionDiagnosis(
+    json['drug_id'] as int,
+    json['drug_name'] as String,
+  );
+}
+
+Map<String, dynamic> _$PrescriptionDiagnosisToJson(
+        PrescriptionDiagnosis instance) =>
+    <String, dynamic>{
+      'drug_id': instance.id,
+      'drug_name': instance.name,
+    };
+
+PrescriptionDrug _$PrescriptionDrugFromJson(Map<String, dynamic> json) {
+  return PrescriptionDrug(
+    json['drug_id'] as int,
+    json['drug_name'] as String,
+  );
+}
+
+Map<String, dynamic> _$PrescriptionDrugToJson(PrescriptionDrug instance) =>
+    <String, dynamic>{
+      'drug_id': instance.id,
+      'drug_name': instance.name,
     };

@@ -92,6 +92,7 @@ class _RecipeAddPhotosListState extends State<RecipeAddPhotosListScreen> {
     setState(() {
       _screenState = StatefulScreenState.content;
     });
+    _prescriptionsService.reloadPrescriptions();
   }
 
   void _didTapDeletePhoto(RecipePhotoData photo) {

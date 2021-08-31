@@ -50,9 +50,7 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
   }
 
   void _prescriptionsStateChanged() {
-    print('_prescriptionsStateChanged');
     if (!mounted) return;
-    print('mounted ${PrescriptionsService.instance.state}');
     if (_screenState == StatefulScreenState.content &&
         PrescriptionsService.instance.state ==
             PrescriptionsServiceLoadState.loading) {

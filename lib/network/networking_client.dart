@@ -38,7 +38,7 @@ extension StringValue on HTTPMethod {
 }
 
 class NetworkingClient {
-  static final String _baseUrl = "https://medcashback.inno.co/mp/";
+  static final String baseUrl = "https://medcashback.inno.co/mp/";
 
   /// Supports only String and List<String> as parameter values
   static Future<T> fetch<T>(
@@ -57,7 +57,7 @@ class NetworkingClient {
       }
     }
     var request = http.Request(
-        method.stringValue, Uri.parse(_baseUrl + path + queryString))
+        method.stringValue, Uri.parse(baseUrl + path + queryString))
       ..encoding = utf8;
     if (method == HTTPMethod.post) {
       if (parameters != null) {
