@@ -79,5 +79,6 @@
   "prescriptionDetailsDate": "Дата выдачи назначения",
   "prescriptionDetailsClinic": "Клиника",
   "prescriptionDetailsDiagnosis": "Диагнозы по МКБ 10",
-  "prescriptionDetailsDrugs": "Назначения"
+  "prescriptionDetailsDrugs": "Назначения",
+  "prescriptionDetailsCheck": "Отправить"
 }

@@ -6,6 +6,7 @@ import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/models/json_models.dart';
 import 'package:med_cashback/network/auth_service.dart';
+import 'package:med_cashback/network/networking_client.dart';
 import 'package:med_cashback/widgets/prescriptions_list_screen.dart';
 import 'package:med_cashback/widgets/profile_screen.dart';
 import 'package:med_cashback/widgets/stateful_screen.dart';
@@ -58,6 +59,9 @@ class _MainTabBarState extends State<MainTabBar>
       });
       try {
         accountInfo = await AuthService.instance.getAccountInfo();
+      } on UnauthorizedException {
+        await AuthService.instance.clearAuthData();
+        Navigator.pushReplacementNamed(context, RouteName.home);
       } catch (err) {
         setState(() {
           _errorText = err.toString();

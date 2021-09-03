@@ -60,6 +60,12 @@ class _PrescriptionDetailsScreenState extends State<PrescriptionDetailsScreen> {
     }
   }
 
+  void _checkPrescription() async {
+    setState(() {
+      _screenState = StatefulScreenState.loading;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final prescription = widget.arguments.prescription;
@@ -161,6 +167,10 @@ class _PrescriptionDetailsScreenState extends State<PrescriptionDetailsScreen> {
           title: LocaleKeys.prescriptionDetailsDrugs.tr(),
           values: details.drugs!.map((e) => e.name).toList(),
         ));
+      }
+
+      if (details.needsCheck) {
+        // listChildren.add(FilledButton(onPressed: onPressed, title: title))
       }
     }
 
