@@ -12,6 +12,7 @@ import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/network/auth_service.dart';
 import 'package:med_cashback/widgets/components/full_screen_background_container.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 enum _LoginPhoneEnterScreenStatus {
@@ -19,6 +20,8 @@ enum _LoginPhoneEnterScreenStatus {
   codeEnter,
   loading,
 }
+
+final _codeLength = 4;
 
 class LoginPhoneEnterScreen extends StatefulWidget {
   @override
@@ -75,6 +78,7 @@ class _LoginPhoneEnterScreenState extends State<LoginPhoneEnterScreen> {
   }
 
   void _sendCode(String code) async {
+    if (code.length != _codeLength) return;
     setState(() {
       _screenStatus = _LoginPhoneEnterScreenStatus.loading;
     });
@@ -280,8 +284,7 @@ class _PhoneEnterFieldState extends State<PhoneEnterField> {
       decoration: BoxDecoration(
         borderRadius: BorderRadiusDirectional.all(Radius.circular(4)),
         boxShadow: [
-          BoxShadow(color: Color(0xffF7F8FA)),
-          BoxShadow(color: Color(0xD000000), spreadRadius: -2, blurRadius: 8),
+          BoxShadow(color: CashbackColors.textFieldBackgroundColor),
         ],
       ),
       padding: EdgeInsets.all(8),
@@ -341,103 +344,6 @@ class _PhoneEnterFieldState extends State<PhoneEnterField> {
 
   bool isValidPhone() {
     return phone.length == 18;
-  }
-}
-
-final _codeLength = 4;
-
-class CodeEnterTextFields extends StatefulWidget {
-  CodeEnterTextFields({Key? key, required this.completion}) : super(key: key);
-
-  @override
-  _CodeEnterTextFieldsState createState() => _CodeEnterTextFieldsState();
-
-  final Function(String) completion;
-}
-
-class _CodeEnterTextFieldsState extends State<CodeEnterTextFields> {
-  var _codeDigits = List<int?>.filled(_codeLength, null);
-
-  void _onEdit(int index, String text) {
-    if (text.length == 1) {
-      _codeDigits[index] = int.parse(text);
-    } else {
-      _codeDigits[index] = null;
-    }
-    if (_codeDigits.every((element) => element != null) &&
-        index == _codeLength - 1) {
-      final code = _codeDigits.map((e) => "${e!}").join();
-      widget.completion(code);
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          CodeEnterTextField(0, _onEdit),
-          CodeEnterTextField(1, _onEdit),
-          CodeEnterTextField(2, _onEdit),
-          CodeEnterTextField(3, _onEdit),
-        ],
-      ),
-    );
-  }
-}
-
-class CodeEnterTextField extends StatefulWidget {
-  final int index;
-  final Function(int, String) editingCallback;
-
-  CodeEnterTextField(this.index, this.editingCallback);
-
-  @override
-  _CodeEnterTextFieldState createState() => _CodeEnterTextFieldState();
-}
-
-class _CodeEnterTextFieldState extends State<CodeEnterTextField> {
-  @override
-  Widget build(BuildContext context) {
-    final node = FocusScope.of(context);
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Color(0xffF7F8FA),
-          borderRadius: BorderRadius.all(Radius.circular(4)),
-        ),
-        height: 48,
-        width: 60,
-        child: TextField(
-          textAlign: TextAlign.center,
-          keyboardType: TextInputType.number,
-          autofillHints: [AutofillHints.oneTimeCode],
-          decoration: InputDecoration(border: InputBorder.none),
-          style: TextStyle(fontSize: 18, color: Theme.of(context).accentColor),
-          inputFormatters: [SingleDigitTextFieldFormatter()],
-          autofocus: widget.index == 0,
-          onChanged: (text) {
-            if (text.length == 1) {
-              if (widget.index != 3) {
-                node.nextFocus();
-                print(node);
-              }
-            }
-            if (text.length == 0) {
-              if (widget.index != 0) {
-                node.previousFocus();
-              }
-            }
-            widget.editingCallback(widget.index, text);
-            // TODO: handle pasting of login code
-            // if (text.length == 4) {}
-          },
-        ),
-      ),
-    );
   }
 }
 
@@ -530,7 +436,37 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
           ],
         ),
         SizedBox(height: 16),
-        CodeEnterTextFields(completion: _codeEntered),
+        SizedBox(
+          width: 288,
+          child: PinCodeTextField(
+            appContext: context,
+            length: _codeLength,
+            onChanged: _codeEntered,
+            autoFocus: true,
+            boxShadows: [
+              BoxShadow(color: CashbackColors.textFieldBackgroundColor),
+            ],
+            textStyle: TextStyle(
+              fontSize: 18,
+              color: CashbackColors.accentColor,
+            ),
+            inputFormatters: [CodeTextFieldFormatter()],
+            keyboardType: TextInputType.numberWithOptions(),
+            beforeTextPaste: (text) => false,
+            pinTheme: PinTheme(
+              shape: PinCodeFieldShape.box,
+              borderRadius: BorderRadius.circular(4),
+              activeFillColor: CashbackColors.textFieldBackgroundColor,
+              activeColor: CashbackColors.textFieldBackgroundColor,
+              inactiveFillColor: CashbackColors.textFieldBackgroundColor,
+              inactiveColor: CashbackColors.textFieldBackgroundColor,
+              selectedFillColor: CashbackColors.textFieldBackgroundColor,
+              selectedColor: CashbackColors.textFieldBackgroundColor,
+              fieldWidth: 60,
+              fieldHeight: 48,
+            ),
+          ),
+        ),
         SizedBox(height: 16),
         _leftTimeToResend == 0
             ? GestureDetector(
@@ -624,20 +560,13 @@ class PhoneTextFieldFormatter extends TextInputFormatter {
   }
 }
 
-class SingleDigitTextFieldFormatter extends TextInputFormatter {
+class CodeTextFieldFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     final number = newValue.text.replaceAll(RegExp(r'[^\d]'), '');
-    // TODO: Handle pasting of login code
-    // if (newValue.text.length == 4) {
-    //   return newValue;
-    // }
-    if (number.length == 0) {
-      return TextEditingValue(text: '');
-    }
     return TextEditingValue(
-        text: number.characters.last,
-        selection: TextSelection.collapsed(offset: 1));
+        text: number,
+        selection: TextSelection.collapsed(offset: number.length));
   }
 }
