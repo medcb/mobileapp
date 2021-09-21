@@ -71,6 +71,7 @@ abstract class  LocaleKeys {
   static const prescriptionStateNeedsCheckByUser = 'prescriptionStateNeedsCheckByUser';
   static const prescriptionStateCheckedByUser = 'prescriptionStateCheckedByUser';
   static const prescriptionStateAccepted = 'prescriptionStateAccepted';
+  static const profileTitle = 'profileTitle';
   static const profileAgreement = 'profileAgreement';
   static const profileLogout = 'profileLogout';
   static const profileVersion = 'profileVersion';

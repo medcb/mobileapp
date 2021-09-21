@@ -110,7 +110,7 @@ class ProfileHeader extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Профиль',
+                  LocaleKeys.profileTitle.tr(),
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w500,

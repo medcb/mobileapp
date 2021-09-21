@@ -69,6 +69,7 @@
   "prescriptionStateNeedsCheckByUser": "Требует проверки",
   "prescriptionStateCheckedByUser": "Проверен пользователем",
   "prescriptionStateAccepted": "Принят",
+  "profileTitle": "Профиль",
   "profileAgreement": "Условия и соглашения",
   "profileLogout": "Выйти",
   "profileVersion": "Версия {}",

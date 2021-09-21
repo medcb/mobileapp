@@ -69,6 +69,7 @@
   "prescriptionStateNeedsCheckByUser": "Needs checking by user",
   "prescriptionStateCheckedByUser": "Checked by user",
   "prescriptionStateAccepted": "Confirmed",
+  "profileTitle": "Profile",
   "profileAgreement": "Terms and conditions",
   "profileLogout": "Quit",
   "profileVersion": "Version {}",
