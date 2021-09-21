@@ -55,7 +55,7 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/translations/ru-RU.json
+    - assets/translations/
     - assets/images/app_logo.png
     - assets/images/background_circles.png
     - assets/images/medcashback_text.png

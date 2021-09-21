@@ -43,16 +43,8 @@ class RefreshTokenData {
 @JsonSerializable()
 class AccountInfo {
   // first_hash: <hash_fio> имя
-  @JsonKey(name: 'first_hash')
-  final String? firstNameHash;
-
-  // last_hash: <hash_fio> фамилия
-  @JsonKey(name: 'last_hash')
-  final String? lastNameHash;
-
-  // patronymic_hash: <hash_fio> отчество
-  @JsonKey(name: 'patronymic_hash')
-  final String? middleNameHash;
+  @JsonKey(name: 'fio')
+  final AccountInfoFio fio;
 
   // year: <int> год рождения
   @JsonKey(name: 'year')
@@ -62,8 +54,7 @@ class AccountInfo {
   @JsonKey(name: 'sex')
   final bool? gender;
 
-  AccountInfo(this.firstNameHash, this.lastNameHash, this.middleNameHash,
-      this.birthYear, this.gender);
+  AccountInfo(this.fio, this.birthYear, this.gender);
 
   factory AccountInfo.fromJson(Map<String, dynamic> json) =>
       _$AccountInfoFromJson(json);
@@ -71,8 +62,49 @@ class AccountInfo {
   Map<String, dynamic> toJson() => _$AccountInfoToJson(this);
 
   bool isFilled() {
-    return lastNameHash != null && firstNameHash != null && gender != null;
+    return fio.firstName != null &&
+        fio.lastName != null &&
+        fio.initials.first != null &&
+        gender != null;
   }
+}
+
+@JsonSerializable()
+class AccountInfoFio {
+  @JsonKey(name: 'first')
+  final String? firstName;
+
+  @JsonKey(name: 'last')
+  final String? lastName;
+
+  @JsonKey(name: 'patronymic')
+  final String? middleName;
+
+  @JsonKey(name: 'initials')
+  final AccountInfoInitials initials;
+
+  AccountInfoFio(this.firstName, this.lastName, this.middleName, this.initials);
+
+  factory AccountInfoFio.fromJson(Map<String, dynamic> json) =>
+      _$AccountInfoFioFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AccountInfoFioToJson(this);
+}
+
+@JsonSerializable()
+class AccountInfoInitials {
+  @JsonKey(name: 'first')
+  final String? first;
+
+  @JsonKey(name: 'patronymic')
+  final String? patronymic;
+
+  AccountInfoInitials(this.first, this.patronymic);
+
+  factory AccountInfoInitials.fromJson(Map<String, dynamic> json) =>
+      _$AccountInfoInitialsFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AccountInfoInitialsToJson(this);
 }
 
 @JsonSerializable()

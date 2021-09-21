@@ -37,9 +37,7 @@ Map<String, dynamic> _$RefreshTokenDataToJson(RefreshTokenData instance) =>
 
 AccountInfo _$AccountInfoFromJson(Map<String, dynamic> json) {
   return AccountInfo(
-    json['first_hash'] as String?,
-    json['last_hash'] as String?,
-    json['patronymic_hash'] as String?,
+    AccountInfoFio.fromJson(json['fio'] as Map<String, dynamic>),
     json['year'] as int?,
     json['sex'] as bool?,
   );
@@ -47,11 +45,40 @@ AccountInfo _$AccountInfoFromJson(Map<String, dynamic> json) {
 
 Map<String, dynamic> _$AccountInfoToJson(AccountInfo instance) =>
     <String, dynamic>{
-      'first_hash': instance.firstNameHash,
-      'last_hash': instance.lastNameHash,
-      'patronymic_hash': instance.middleNameHash,
+      'fio': instance.fio,
       'year': instance.birthYear,
       'sex': instance.gender,
+    };
+
+AccountInfoFio _$AccountInfoFioFromJson(Map<String, dynamic> json) {
+  return AccountInfoFio(
+    json['first'] as String?,
+    json['last'] as String?,
+    json['patronymic'] as String?,
+    AccountInfoInitials.fromJson(json['initials'] as Map<String, dynamic>),
+  );
+}
+
+Map<String, dynamic> _$AccountInfoFioToJson(AccountInfoFio instance) =>
+    <String, dynamic>{
+      'first': instance.firstName,
+      'last': instance.lastName,
+      'patronymic': instance.middleName,
+      'initials': instance.initials,
+    };
+
+AccountInfoInitials _$AccountInfoInitialsFromJson(Map<String, dynamic> json) {
+  return AccountInfoInitials(
+    json['first'] as String?,
+    json['patronymic'] as String?,
+  );
+}
+
+Map<String, dynamic> _$AccountInfoInitialsToJson(
+        AccountInfoInitials instance) =>
+    <String, dynamic>{
+      'first': instance.first,
+      'patronymic': instance.patronymic,
     };
 
 Prescription _$PrescriptionFromJson(Map<String, dynamic> json) {

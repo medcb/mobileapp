@@ -89,9 +89,7 @@ class PrescriptionsService with ChangeNotifier {
         .toList();
 
     Map<String, dynamic> parameters = {
-      "first_hash": accountInfo.firstNameHash,
-      "last_hash": accountInfo.lastNameHash,
-      "patronymic_hash": accountInfo.middleNameHash,
+      "fio": accountInfo.fio.toJson(),
       "handwritten": isHandwritten,
       "prescriptions": prescriptions,
     };

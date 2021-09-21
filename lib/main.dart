@@ -32,7 +32,11 @@ void main() async {
     _isAuthorized = await AuthService.instance.isAuthorized();
   });
   runApp(EasyLocalization(
-    supportedLocales: [Locale('ru', 'RU')],
+    supportedLocales: [
+      Locale('ru', 'RU'),
+      Locale('en', 'US'),
+    ],
+    fallbackLocale: Locale('en', 'US'),
     path: 'assets/translations',
     child: MyApp(),
     assetLoader: CodegenLoader(),

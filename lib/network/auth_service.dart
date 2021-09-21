@@ -122,10 +122,17 @@ class AuthService with ChangeNotifier {
       method: HTTPMethod.post,
       requireAuth: true,
       parameters: {
-        'first_hash': await _createHash(firstName),
-        'last_hash': await _createHash(secondName),
-        'patronymic_hash':
-            middleName != null ? await _createHash(middleName) : null,
+        'fio': {
+          'first': await _createHash(firstName),
+          'last': await _createHash(secondName),
+          'patronymic':
+              middleName != null ? await _createHash(middleName) : null,
+          'initials': {
+            'first': await _createHash(firstName[0]),
+            'patronymic':
+                middleName != null ? await _createHash(middleName[0]) : null,
+          },
+        },
         'year': birthYear,
         'sex': sex,
         'children': [],

@@ -82,5 +82,6 @@ abstract class  LocaleKeys {
   static const prescriptionDetailsClinic = 'prescriptionDetailsClinic';
   static const prescriptionDetailsDiagnosis = 'prescriptionDetailsDiagnosis';
   static const prescriptionDetailsDrugs = 'prescriptionDetailsDrugs';
+  static const prescriptionDetailsCheck = 'prescriptionDetailsCheck';
 
 }
