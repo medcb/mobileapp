@@ -1,10 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:med_cashback/constants/constants.dart';
 import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/network/auth_service.dart';
 import 'package:package_info/package_info.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileScreen extends StatelessWidget {
   void _logout(BuildContext context) async {
@@ -30,9 +32,10 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  void _openAgreement(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Пока у нас нет URL соглашения 🤷‍')));
+  void _openAgreement(BuildContext context) async {
+    if (await canLaunch(Constants.kPrivacyPolicyURL)) {
+      launch(Constants.kPrivacyPolicyURL);
+    }
   }
 
   @override

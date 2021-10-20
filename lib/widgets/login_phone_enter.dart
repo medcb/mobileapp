@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/constants/constants.dart';
 import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/network/auth_service.dart';
@@ -219,6 +220,13 @@ class PhoneEnterContainer extends StatelessWidget {
   final Function(String) callback;
 
   PhoneEnterContainer(this.callback);
+  
+    void _openPrivacyPolicy() async {
+    if (await canLaunch(Constants.kPrivacyPolicyURL)) {
+      launch(Constants.kPrivacyPolicyURL);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -251,12 +259,7 @@ class PhoneEnterContainer extends StatelessWidget {
                     .bodyText1!
                     .apply(decoration: TextDecoration.underline),
                 recognizer: TapGestureRecognizer()
-                  ..onTap = () async {
-                    const _url = 'https://google.com';
-                    await canLaunch(_url)
-                        ? launch(_url)
-                        : print('cannot launch url');
-                  },
+                  ..onTap = _openPrivacyPolicy,
               )
             ],
           ),
