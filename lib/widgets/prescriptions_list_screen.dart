@@ -210,7 +210,8 @@ class PrescriptionsListItem extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    prescription.reason ?? prescription.status,
+                    prescription.reason ??
+                        prescription.status.localizedDescription(),
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.w400,

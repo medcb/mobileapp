@@ -97,7 +97,12 @@ class CodegenLoader extends AssetLoader{
   "prescriptionDetailsClinic": "Клиника",
   "prescriptionDetailsDiagnosis": "Диагнозы по МКБ 10",
   "prescriptionDetailsDrugs": "Назначения",
-  "prescriptionDetailsCheck": "Отправить"
+  "prescriptionDetailsCheck": "Отправить",
+  "prescriptionStatusObtained": "Получен",
+  "prescriptionStatusPrepared": "Подготовлен",
+  "prescriptionStatusRecognized": "Распознан",
+  "prescriptionStatusFailure": "Отказ",
+  "prescriptionStatusClosed": "Подтверждён"
 };
 static const Map<String,dynamic> en_US = {
   "ok": "Ok",
@@ -182,7 +187,12 @@ static const Map<String,dynamic> en_US = {
   "prescriptionDetailsClinic": "Medical facility",
   "prescriptionDetailsDiagnosis": "Diagnosis",
   "prescriptionDetailsDrugs": "Prescriptions",
-  "prescriptionDetailsCheck": "Send"
+  "prescriptionDetailsCheck": "Send",
+  "prescriptionStatusObtained": "Obtained",
+  "prescriptionStatusPrepared": "Prepared",
+  "prescriptionStatusRecognized": "Recognized",
+  "prescriptionStatusFailure": "Failure",
+  "prescriptionStatusClosed": "Closed"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ru_RU": ru_RU, "en_US": en_US};
 }

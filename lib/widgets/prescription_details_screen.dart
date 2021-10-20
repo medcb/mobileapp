@@ -89,7 +89,9 @@ class _PrescriptionDetailsScreenState extends State<PrescriptionDetailsScreen> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                details.cashbackReason ?? details.reason ?? details.status,
+                details.cashbackReason ??
+                    details.reason ??
+                    details.status.localizedDescription(),
                 overflow: TextOverflow.ellipsis,
                 softWrap: false,
                 style: TextStyle(
@@ -122,13 +124,18 @@ class _PrescriptionDetailsScreenState extends State<PrescriptionDetailsScreen> {
                 photoId: details.photoIds![index],
               ),
               headers: {'Authorization': 'Bearer $_authToken'},
-              color: CashbackColors.shadowColor,
-              errorBuilder: (context, error, stackTrace) => Container(
-                color: CashbackColors.shadowColor,
-              ),
-              loadingBuilder: (context, child, loadingProgress) => Container(
-                color: CashbackColors.shadowColor,
-              ),
+              errorBuilder: (context, error, stackTrace) {
+                print(error);
+                return Container(
+                  color: CashbackColors.shadowColor,
+                );
+              },
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Container(
+                  color: CashbackColors.shadowColor,
+                );
+              },
             ),
           ),
         ));

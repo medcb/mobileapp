@@ -81,5 +81,10 @@
   "prescriptionDetailsClinic": "Клиника",
   "prescriptionDetailsDiagnosis": "Диагнозы по МКБ 10",
   "prescriptionDetailsDrugs": "Назначения",
-  "prescriptionDetailsCheck": "Отправить"
+  "prescriptionDetailsCheck": "Отправить",
+  "prescriptionStatusObtained": "Получен",
+  "prescriptionStatusPrepared": "Подготовлен",
+  "prescriptionStatusRecognized": "Распознан",
+  "prescriptionStatusFailure": "Отказ",
+  "prescriptionStatusClosed": "Подтверждён"
 }

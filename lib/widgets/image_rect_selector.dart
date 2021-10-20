@@ -169,9 +169,9 @@ class ImageRectSelectorState extends State<ImageRectSelector>
             });
       _offsetAnimation = Tween<Offset>(begin: _offset, end: _zeroZoomOffset)
           .animate(_offsetAnimationController)
-            ..addListener(() {
-              setState(() {});
-            });
+        ..addListener(() {
+          setState(() {});
+        });
       _scale = 1;
       _offset = _zeroZoomOffset;
       _scaleAnimationController.forward();

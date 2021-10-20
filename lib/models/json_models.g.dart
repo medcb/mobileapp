@@ -85,7 +85,7 @@ Prescription _$PrescriptionFromJson(Map<String, dynamic> json) {
   return Prescription(
     json['prescription_id'] as int,
     DateTime.parse(json['sended'] as String),
-    json['status'] as String,
+    _$enumDecode(_$PrescriptionStatusEnumMap, json['status']),
     json['reason'] as String?,
     json['check'] as bool,
     json['flag'] as bool,
@@ -96,16 +96,50 @@ Map<String, dynamic> _$PrescriptionToJson(Prescription instance) =>
     <String, dynamic>{
       'prescription_id': instance.id,
       'sended': instance.creationDate.toIso8601String(),
-      'status': instance.status,
+      'status': _$PrescriptionStatusEnumMap[instance.status],
       'reason': instance.reason,
       'check': instance.needsCheck,
       'flag': instance.flag,
     };
 
+K _$enumDecode<K, V>(
+  Map<K, V> enumValues,
+  Object? source, {
+  K? unknownValue,
+}) {
+  if (source == null) {
+    throw ArgumentError(
+      'A value must be provided. Supported values: '
+      '${enumValues.values.join(', ')}',
+    );
+  }
+
+  return enumValues.entries.singleWhere(
+    (e) => e.value == source,
+    orElse: () {
+      if (unknownValue == null) {
+        throw ArgumentError(
+          '`$source` is not one of the supported values: '
+          '${enumValues.values.join(', ')}',
+        );
+      }
+      return MapEntry(unknownValue, enumValues.values.first);
+    },
+  ).key;
+}
+
+const _$PrescriptionStatusEnumMap = {
+  PrescriptionStatus.obtained: 'PRESCRIPTION_GET',
+  PrescriptionStatus.prepared: 'PRESCRIPTION_PREPARED',
+  PrescriptionStatus.recognized: 'PRESCRIPTION_RECOGNIZED',
+  PrescriptionStatus.failure: 'PRESCRIPTION_FAILURE',
+  PrescriptionStatus.closed: 'PRESCRIPTION_CLOSED',
+};
+
 PrescriptionDetails _$PrescriptionDetailsFromJson(Map<String, dynamic> json) {
   return PrescriptionDetails(
     DateTime.parse(json['sended'] as String),
-    json['status'] as String,
+    _$enumDecode(_$PrescriptionStatusEnumMap, json['status']),
     json['reason'] as String?,
     json['check'] as bool,
     json['flag'] as bool,
@@ -129,7 +163,7 @@ Map<String, dynamic> _$PrescriptionDetailsToJson(
         PrescriptionDetails instance) =>
     <String, dynamic>{
       'sended': instance.creationDate.toIso8601String(),
-      'status': instance.status,
+      'status': _$PrescriptionStatusEnumMap[instance.status],
       'reason': instance.reason,
       'check': instance.needsCheck,
       'flag': instance.flag,
@@ -147,16 +181,16 @@ Map<String, dynamic> _$PrescriptionDetailsToJson(
 PrescriptionDiagnosis _$PrescriptionDiagnosisFromJson(
     Map<String, dynamic> json) {
   return PrescriptionDiagnosis(
-    json['drug_id'] as int,
-    json['drug_name'] as String,
+    json['diagnose_id'] as int,
+    json['diagnose_name'] as String,
   );
 }
 
 Map<String, dynamic> _$PrescriptionDiagnosisToJson(
         PrescriptionDiagnosis instance) =>
     <String, dynamic>{
-      'drug_id': instance.id,
-      'drug_name': instance.name,
+      'diagnose_id': instance.id,
+      'diagnose_name': instance.name,
     };
 
 PrescriptionDrug _$PrescriptionDrugFromJson(Map<String, dynamic> json) {

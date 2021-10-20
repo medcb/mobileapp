@@ -81,5 +81,10 @@
   "prescriptionDetailsClinic": "Medical facility",
   "prescriptionDetailsDiagnosis": "Diagnosis",
   "prescriptionDetailsDrugs": "Prescriptions",
-  "prescriptionDetailsCheck": "Send"
+  "prescriptionDetailsCheck": "Send",
+  "prescriptionStatusObtained": "Obtained",
+  "prescriptionStatusPrepared": "Prepared",
+  "prescriptionStatusRecognized": "Recognized",
+  "prescriptionStatusFailure": "Failure",
+  "prescriptionStatusClosed": "Closed"
 }

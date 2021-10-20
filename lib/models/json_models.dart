@@ -1,7 +1,9 @@
 import 'dart:ui';
 
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 
 part 'json_models.g.dart';
 
@@ -119,7 +121,7 @@ class Prescription {
 
   // status: <str> текстовый статус ('Получен', 'Подготовлен', 'Распознан', 'Отказ', 'Проверен пользователем', Отменен пользователем, Подтвержден)
   @JsonKey(name: 'status')
-  final String status;
+  final PrescriptionStatus status;
 
   // reason: <str> причина отказа. необязательное
   @JsonKey(name: 'reason')
@@ -148,6 +150,36 @@ class Prescription {
   Map<String, dynamic> toJson() => _$PrescriptionToJson(this);
 }
 
+enum PrescriptionStatus {
+  @JsonValue("PRESCRIPTION_GET")
+  obtained,
+  @JsonValue("PRESCRIPTION_PREPARED")
+  prepared,
+  @JsonValue("PRESCRIPTION_RECOGNIZED")
+  recognized,
+  @JsonValue("PRESCRIPTION_FAILURE")
+  failure,
+  @JsonValue("PRESCRIPTION_CLOSED")
+  closed,
+}
+
+extension PrescriptionStatusHelper on PrescriptionStatus {
+  String localizedDescription() {
+    switch (this) {
+      case PrescriptionStatus.obtained:
+        return LocaleKeys.prescriptionStatusObtained.tr();
+      case PrescriptionStatus.prepared:
+        return LocaleKeys.prescriptionStatusPrepared.tr();
+      case PrescriptionStatus.recognized:
+        return LocaleKeys.prescriptionStatusRecognized.tr();
+      case PrescriptionStatus.failure:
+        return LocaleKeys.prescriptionStatusFailure.tr();
+      case PrescriptionStatus.closed:
+        return LocaleKeys.prescriptionStatusClosed.tr();
+    }
+  }
+}
+
 @JsonSerializable()
 class PrescriptionDetails {
   @JsonKey(name: 'sended')
@@ -155,7 +187,7 @@ class PrescriptionDetails {
 
   // status: <str> текстовый статус ('Получен', 'Подготовлен', 'Распознан', 'Отказ', 'Проверен пользователем', Отменен пользователем, Подтвержден)
   @JsonKey(name: 'status')
-  final String status;
+  final PrescriptionStatus status;
 
   // reason: <str> причина отказа. необязательное
   @JsonKey(name: 'reason')
@@ -226,15 +258,13 @@ class PrescriptionDetails {
     if (reason != null || cashbackReason != null) {
       return CashbackColors.prescriptionStatusDeclinedColor;
     }
-    switch (status.toLowerCase()) {
-      case 'подтвержден':
+    switch (status) {
+      case PrescriptionStatus.closed:
         return CashbackColors.prescriptionStatusAcceptedColor;
-      case 'подготовлен':
+      case PrescriptionStatus.prepared:
         return CashbackColors.prescriptionStatusSentColor;
-      case 'отказ':
+      case PrescriptionStatus.failure:
         return CashbackColors.prescriptionStatusDeclinedColor;
-      case 'проверен пользователем':
-        return CashbackColors.prescriptionStatusCheckedColor;
       default:
         return CashbackColors.prescriptionStatusNeedsCheckColor;
     }
@@ -249,11 +279,11 @@ class PrescriptionDetails {
 @JsonSerializable()
 class PrescriptionDiagnosis {
   // diagnose_id <int>
-  @JsonKey(name: 'drug_id')
+  @JsonKey(name: 'diagnose_id')
   final int id;
 
   // diagnose_name <str>
-  @JsonKey(name: 'drug_name')
+  @JsonKey(name: 'diagnose_name')
   final String name;
 
   PrescriptionDiagnosis(this.id, this.name);
