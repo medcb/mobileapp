@@ -2,13 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>CFBundleLocalizations</key>
-    <array>
-        <string>ru</string>
-        <string>en</string>
-    </array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>CFBundleDisplayName</key>
 	<string>MedCashback</string>
 	<key>CFBundleExecutable</key>
@@ -17,6 +14,11 @@
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>ru</string>
+		<string>en</string>
+	</array>
 	<key>CFBundleName</key>
 	<string>med_cashback</string>
 	<key>CFBundlePackageType</key>
@@ -34,6 +36,12 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Камера используется для добавления рецептов.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Камера используется для добавления рецептов.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Галерея используется для добавления рецептов.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -41,8 +49,6 @@
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
-		<string>UIInterfaceOrientationLandscapeLeft</string>
-		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
@@ -53,11 +59,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSCameraUsageDescription</key>
-    <string>Камера используется для добавления рецептов.</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Камера используется для добавления рецептов.</string>
-    <key>NSPhotoLibraryUsageDescription</key>
-    <string>Галерея используется для добавления рецептов.</string>
 </dict>
 </plist>
