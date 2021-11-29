@@ -7,6 +7,7 @@ import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/models/json_models.dart';
 import 'package:med_cashback/network/balance_service.dart';
 import 'package:med_cashback/network/prescriptions_service.dart';
+import 'package:med_cashback/widgets/balance_history_screen.dart';
 import 'package:med_cashback/widgets/components/filled_button.dart';
 import 'package:med_cashback/widgets/payout_type_select.dart';
 import 'package:med_cashback/widgets/photo_shutter_screen.dart';
@@ -131,7 +132,16 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
     });
   }
 
-  void _openBalanceHistory() {}
+  void _openBalanceHistory() {
+    if (_balance == null) return;
+    Navigator.of(context).pushNamed(
+      RouteName.balanceHistory,
+      arguments: BalanceHistoryScreenArguments(
+        balance: _balance!,
+        onBalanceUpdated: _onBalanceUpdated,
+      ),
+    );
+  }
 
   Widget _prescriptionsList() {
     return Container(

@@ -9,4 +9,6 @@ abstract class RouteName {
   static const proxySetup = '/proxySetup';
   static const profileFillInfo = '/profileFillInfo';
   static const payoutForm = '/payoutForm';
+  static const payoutSuccess = '/payoutSuccess';
+  static const balanceHistory = '/balanceHistory';
 }

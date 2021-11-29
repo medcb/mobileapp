@@ -93,6 +93,13 @@ abstract class  LocaleKeys {
   static const balanceRubleSign = 'balanceRubleSign';
   static const balancePayout = 'balancePayout';
   static const balanceHistory = 'balanceHistory';
+  static const balanceHistoryTitle = 'balanceHistoryTitle';
+  static const balanceHistoryBalanceTitle = 'balanceHistoryBalanceTitle';
+  static const balanceHistoryStatusInProgress = 'balanceHistoryStatusInProgress';
+  static const balanceHistoryStatusCompleted = 'balanceHistoryStatusCompleted';
+  static const balanceHistoryStatusFailed = 'balanceHistoryStatusFailed';
+  static const balanceHistoryTypeFormatPhone = 'balanceHistoryTypeFormatPhone';
+  static const balanceHistoryTypeFormatWallet = 'balanceHistoryTypeFormatWallet';
   static const payoutOptionPhone = 'payoutOptionPhone';
   static const payoutOptionYoomoney = 'payoutOptionYoomoney';
   static const payoutOptionCancel = 'payoutOptionCancel';

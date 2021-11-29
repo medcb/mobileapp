@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:med_cashback/models/json_models.dart';
 import 'package:med_cashback/network/networking_client.dart';
 

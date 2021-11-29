@@ -8,12 +8,14 @@ class FilledButton extends StatelessWidget {
     required this.title,
     this.height = 44,
     this.isEnabled = true,
+    this.icon,
   }) : super(key: key);
 
   final Function() onPressed;
   final String title;
   final double height;
   final bool isEnabled;
+  final Widget? icon;
 
   @override
   Widget build(BuildContext context) {
@@ -31,13 +33,22 @@ class FilledButton extends StatelessWidget {
           ),
         ),
         onPressed: isEnabled ? onPressed : null,
-        child: Text(
-          title,
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 14,
-            color: CashbackColors.contrastTextColor,
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (icon != null) ...{
+              icon!,
+              SizedBox(width: 8),
+            },
+            Text(
+              title,
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 14,
+                color: CashbackColors.contrastTextColor,
+              ),
+            ),
+          ],
         ),
       ),
     );

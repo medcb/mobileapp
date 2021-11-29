@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/constants/route_name.dart';
+import 'package:med_cashback/widgets/balance_history_screen.dart';
 import 'package:med_cashback/widgets/login_phone_enter.dart';
 import 'package:med_cashback/widgets/main_tab_bar.dart';
 import 'package:med_cashback/widgets/payout_form_screen.dart';
+import 'package:med_cashback/widgets/payout_success_screen.dart';
 import 'package:med_cashback/widgets/photo_crop_screen.dart';
 import 'package:med_cashback/widgets/photo_shutter_screen.dart';
 import 'package:med_cashback/widgets/prescription_details_screen.dart';
@@ -98,6 +100,10 @@ class MyApp extends StatelessWidget {
             RouteName.proxySetup: (ctx) => ProxySetupScreen(),
             RouteName.payoutForm: (ctx) => PayoutFormScreen(
                 arguments: settings.arguments as PayoutFormScreenArguments),
+            RouteName.payoutSuccess: (ctx) => PayoutSuccessScreen(
+                arguments: settings.arguments as PayoutSuccessScreenArguments),
+            RouteName.balanceHistory: (ctx) => BalanceHistoryScreen(
+                arguments: settings.arguments as BalanceHistoryScreenArguments),
           };
           WidgetBuilder? builder = routes[settings.name];
           if (builder != null) {

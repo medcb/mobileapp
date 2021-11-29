@@ -229,6 +229,8 @@ BalanceHistoryItem _$BalanceHistoryItemFromJson(Map<String, dynamic> json) {
     json['amount'] as int,
     json['status'] as bool?,
     DateTime.parse(json['date'] as String),
+    _$enumDecode(_$BalanceHistoryItemTypeEnumMap, json['type']),
+    json['destination'] as String?,
   );
 }
 
@@ -237,4 +239,12 @@ Map<String, dynamic> _$BalanceHistoryItemToJson(BalanceHistoryItem instance) =>
       'amount': instance.amount,
       'status': instance.status,
       'date': instance.date.toIso8601String(),
+      'type': _$BalanceHistoryItemTypeEnumMap[instance.type],
+      'destination': instance.destination,
     };
+
+const _$BalanceHistoryItemTypeEnumMap = {
+  BalanceHistoryItemType.self: 'self',
+  BalanceHistoryItemType.phone: 'phone',
+  BalanceHistoryItemType.wallet: 'wallet',
+};

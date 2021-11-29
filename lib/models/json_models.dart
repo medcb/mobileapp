@@ -347,11 +347,27 @@ class BalanceHistoryItem {
   // date: <iso8601> UTC дата/время операции
   @JsonKey(name: 'date')
   final DateTime date;
+  // type: <str> ‘phone’, ‘wallet’, ‘self’
+  @JsonKey(name: 'type')
+  final BalanceHistoryItemType type;
+  // destination: <str> куда был вывод. последние 3 цифры номера телефона, кошелька или null если начисление
+  @JsonKey(name: 'destination')
+  final String? destination;
 
-  BalanceHistoryItem(this.amount, this.status, this.date);
+  BalanceHistoryItem(
+      this.amount, this.status, this.date, this.type, this.destination);
 
   factory BalanceHistoryItem.fromJson(Map<String, dynamic> json) =>
       _$BalanceHistoryItemFromJson(json);
 
   Map<String, dynamic> toJson() => _$BalanceHistoryItemToJson(this);
+}
+
+enum BalanceHistoryItemType {
+  @JsonValue("self")
+  self,
+  @JsonValue("phone")
+  phone,
+  @JsonValue("wallet")
+  wallet,
 }

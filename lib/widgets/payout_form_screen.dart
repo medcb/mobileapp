@@ -5,11 +5,13 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
+import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/models/json_models.dart';
 import 'package:med_cashback/network/balance_service.dart';
 import 'package:med_cashback/widgets/components/filled_button.dart';
 import 'package:med_cashback/widgets/login_phone_enter.dart';
+import 'package:med_cashback/widgets/payout_success_screen.dart';
 import 'package:med_cashback/widgets/stateful_screen.dart';
 
 enum PayoutAccountType {
@@ -124,7 +126,12 @@ class _PayoutFormScreenState extends State<PayoutFormScreen> {
     try {
       final newBalance = await balanceFuture;
       widget.arguments.onBalanceUpdated(newBalance);
-      Navigator.of(context).pop();
+      Navigator.of(context).popAndPushNamed(
+        RouteName.payoutSuccess,
+        arguments: PayoutSuccessScreenArguments(
+          historyItem: newBalance.history.last,
+        ),
+      );
     } catch (err) {
       _showSnackBar(text: err.toString());
       setState(() {
