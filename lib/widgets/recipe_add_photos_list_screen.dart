@@ -202,6 +202,11 @@ class _RecipeAddPhotosListState extends State<RecipeAddPhotosListScreen> {
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           shadowColor: Color(0),
+          backgroundColor: CashbackColors.backgroundColor,
+          leading: IconButton(
+            onPressed: () => Navigator.of(context).pop(),
+            icon: Image.asset('assets/images/back_gray_icon.png'),
+          ),
         ),
         body: SafeArea(
           child: StatefulScreen(

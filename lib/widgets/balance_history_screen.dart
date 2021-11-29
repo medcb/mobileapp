@@ -142,48 +142,52 @@ class _BalanceHistoryScreenState extends State<BalanceHistoryScreen> {
     return Scaffold(
       appBar: AppBar(
         shadowColor: Color(0),
-        actionsIconTheme: IconThemeData(
-          color: CashbackColors.accentColor,
-          opacity: 1,
-          size: 100,
+        backgroundColor: CashbackColors.backgroundColor,
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: Image.asset('assets/images/back_gray_icon.png'),
         ),
       ),
       body: StatefulScreen(
         screenState: _screenState,
         errorText: _errorText,
         onRepeat: _reloadBalance,
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _balanceHeader(),
-              Expanded(
-                child: RefreshIndicator(
-                  key: _refreshIndicatorKey,
-                  onRefresh: _reloadBalance,
-                  child: ListView.separated(
-                    itemCount: _balance.history.length,
-                    separatorBuilder: (context, index) => Container(
-                      color: CashbackColors.shadowColor,
-                      height: 1,
+        child: Container(
+          color: CashbackColors.backgroundColor,
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _balanceHeader(),
+                Expanded(
+                  child: RefreshIndicator(
+                    key: _refreshIndicatorKey,
+                    onRefresh: _reloadBalance,
+                    child: ListView.separated(
+                      itemCount: _balance.history.length,
+                      separatorBuilder: (context, index) => Container(
+                        color: CashbackColors.shadowColor,
+                        height: 1,
+                      ),
+                      itemBuilder: (context, index) => BalanceHistoryItemCell(
+                          historyItem: _balance.history[index]),
                     ),
-                    itemBuilder: (context, index) => BalanceHistoryItemCell(
-                        historyItem: _balance.history[index]),
                   ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
-                child: FilledButton(
-                  onPressed: _openPayout,
-                  title: LocaleKeys.balancePayout.tr(),
-                  icon: Image.asset(
-                    'assets/images/payout_arrow.png',
-                    color: CashbackColors.contrastTextColor,
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 16, right: 16, bottom: 16),
+                  child: FilledButton(
+                    onPressed: _openPayout,
+                    title: LocaleKeys.balancePayout.tr(),
+                    icon: Image.asset(
+                      'assets/images/payout_arrow.png',
+                      color: CashbackColors.contrastTextColor,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
