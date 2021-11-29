@@ -118,7 +118,10 @@ class CodegenLoader extends AssetLoader{
   "payoutContinue": "Продолжить",
   "payoutCancel": "Отмена",
   "payoutSuccessTitle": "Средства выведены успешно!",
-  "payoutSuccessMessage": "На номер {}"
+  "payoutSuccessMessage": "На номер {}",
+  "payoutErrorNotEnoughSum": "Минимальная сумма для вывода - {}",
+  "payoutErrorTooMuchSum": "Максимальная сумма для вывода - {}",
+  "payoutErrorNoAccountNumber": "Введите номер счета"
 };
 static const Map<String,dynamic> en_US = {
   "ok": "Ok",
@@ -224,7 +227,10 @@ static const Map<String,dynamic> en_US = {
   "payoutContinue": "Continue",
   "payoutCancel": "Cancel",
   "payoutSuccessTitle": "Your payment has been completed!",
-  "payoutSuccessMessage": "Account number: {}"
+  "payoutSuccessMessage": "Account number: {}",
+  "payoutErrorNotEnoughSum": "Minimum sum is {}",
+  "payoutErrorTooMuchSum": "Maximum sum is {}",
+  "payoutErrorNoAccountNumber": "Enter account number"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ru_RU": ru_RU, "en_US": en_US};
 }

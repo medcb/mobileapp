@@ -102,5 +102,8 @@
   "payoutContinue": "Продолжить",
   "payoutCancel": "Отмена",
   "payoutSuccessTitle": "Средства выведены успешно!",
-  "payoutSuccessMessage": "На номер {}"
+  "payoutSuccessMessage": "На номер {}",
+  "payoutErrorNotEnoughSum": "Минимальная сумма для вывода - {}",
+  "payoutErrorTooMuchSum": "Максимальная сумма для вывода - {}",
+  "payoutErrorNoAccountNumber": "Введите номер счета"
 }

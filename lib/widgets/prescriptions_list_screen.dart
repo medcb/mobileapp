@@ -118,8 +118,17 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
     showModalBottomSheet(
       context: context,
       backgroundColor: Color(0),
-      builder: (context) => PayoutTypeSelect(balance: _balance!),
+      builder: (context) => PayoutTypeSelect(
+        balance: _balance!,
+        onBalanceUpdated: _onBalanceUpdated,
+      ),
     );
+  }
+
+  void _onBalanceUpdated(Balance newBalance) {
+    setState(() {
+      _balance = newBalance;
+    });
   }
 
   void _openBalanceHistory() {}

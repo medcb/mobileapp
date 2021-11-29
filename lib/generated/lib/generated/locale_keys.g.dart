@@ -105,5 +105,8 @@ abstract class  LocaleKeys {
   static const payoutCancel = 'payoutCancel';
   static const payoutSuccessTitle = 'payoutSuccessTitle';
   static const payoutSuccessMessage = 'payoutSuccessMessage';
+  static const payoutErrorNotEnoughSum = 'payoutErrorNotEnoughSum';
+  static const payoutErrorTooMuchSum = 'payoutErrorTooMuchSum';
+  static const payoutErrorNoAccountNumber = 'payoutErrorNoAccountNumber';
 
 }

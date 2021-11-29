@@ -102,5 +102,8 @@
   "payoutContinue": "Continue",
   "payoutCancel": "Cancel",
   "payoutSuccessTitle": "Your payment has been completed!",
-  "payoutSuccessMessage": "Account number: {}"
+  "payoutSuccessMessage": "Account number: {}",
+  "payoutErrorNotEnoughSum": "Minimum sum is {}",
+  "payoutErrorTooMuchSum": "Maximum sum is {}",
+  "payoutErrorNoAccountNumber": "Enter account number"
 }

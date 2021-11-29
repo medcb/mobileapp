@@ -7,9 +7,12 @@ import 'package:med_cashback/models/json_models.dart';
 import 'package:med_cashback/widgets/payout_form_screen.dart';
 
 class PayoutTypeSelect extends StatelessWidget {
-  const PayoutTypeSelect({Key? key, required this.balance}) : super(key: key);
+  const PayoutTypeSelect(
+      {Key? key, required this.balance, required this.onBalanceUpdated})
+      : super(key: key);
 
   final Balance balance;
+  final Function(Balance) onBalanceUpdated;
 
   void _payByPhone(BuildContext context) {
     Navigator.popAndPushNamed(
@@ -18,6 +21,7 @@ class PayoutTypeSelect extends StatelessWidget {
       arguments: PayoutFormScreenArguments(
         accountType: PayoutAccountType.phone,
         balance: balance,
+        onBalanceUpdated: onBalanceUpdated,
       ),
     );
   }
@@ -29,6 +33,7 @@ class PayoutTypeSelect extends StatelessWidget {
       arguments: PayoutFormScreenArguments(
         accountType: PayoutAccountType.yoomoney,
         balance: balance,
+        onBalanceUpdated: onBalanceUpdated,
       ),
     );
   }

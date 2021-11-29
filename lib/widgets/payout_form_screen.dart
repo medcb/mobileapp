@@ -7,6 +7,8 @@ import 'package:flutter/services.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/models/json_models.dart';
+import 'package:med_cashback/network/balance_service.dart';
+import 'package:med_cashback/widgets/components/filled_button.dart';
 import 'package:med_cashback/widgets/login_phone_enter.dart';
 import 'package:med_cashback/widgets/stateful_screen.dart';
 
@@ -18,8 +20,12 @@ enum PayoutAccountType {
 class PayoutFormScreenArguments {
   final PayoutAccountType accountType;
   final Balance balance;
+  final Function(Balance) onBalanceUpdated;
 
-  PayoutFormScreenArguments({required this.accountType, required this.balance});
+  PayoutFormScreenArguments(
+      {required this.accountType,
+      required this.balance,
+      required this.onBalanceUpdated});
 }
 
 class PayoutFormScreen extends StatefulWidget {
@@ -36,6 +42,7 @@ class _PayoutFormScreenState extends State<PayoutFormScreen> {
   final CurrencyTextInputFormatter _currencyFormatter =
       CurrencyTextInputFormatter(symbol: '₽');
   late String sum;
+  String accountNumber = '';
 
   @override
   void initState() {
@@ -71,6 +78,69 @@ class _PayoutFormScreenState extends State<PayoutFormScreen> {
     }
   }
 
+  void _cancelPayout() {
+    Navigator.of(context).pop();
+  }
+
+  void _makePayout() async {
+    final amount = (double.parse(sum.replaceAll(RegExp('[^0-9]'), ''))).toInt();
+    if (amount < widget.arguments.balance.min) {
+      _showSnackBar(
+        text: LocaleKeys.payoutErrorNotEnoughSum.tr(
+          args: [
+            _currencyFormatter.format((widget.arguments.balance.min).toString())
+          ],
+        ),
+      );
+    }
+    if (amount > widget.arguments.balance.max) {
+      _showSnackBar(
+        text: LocaleKeys.payoutErrorTooMuchSum.tr(
+          args: [
+            _currencyFormatter.format((widget.arguments.balance.max).toString())
+          ],
+        ),
+      );
+      return;
+    }
+    if (accountNumber.isEmpty) {
+      _showSnackBar(text: LocaleKeys.payoutErrorNoAccountNumber.tr());
+      return;
+    }
+    Future<Balance> balanceFuture;
+    switch (widget.arguments.accountType) {
+      case PayoutAccountType.phone:
+        balanceFuture =
+            BalanceService().makePayment(amount: amount, phone: accountNumber);
+        break;
+      case PayoutAccountType.yoomoney:
+        balanceFuture = BalanceService()
+            .makePayment(amount: amount, yoomoney: accountNumber);
+        break;
+    }
+    setState(() {
+      _screenState = StatefulScreenState.loading;
+    });
+    try {
+      final newBalance = await balanceFuture;
+      widget.arguments.onBalanceUpdated(newBalance);
+      Navigator.of(context).pop();
+    } catch (err) {
+      _showSnackBar(text: err.toString());
+      setState(() {
+        _screenState = StatefulScreenState.content;
+      });
+    }
+  }
+
+  void _showSnackBar({required String text}) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(text),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -86,95 +156,131 @@ class _PayoutFormScreenState extends State<PayoutFormScreen> {
         screenState: _screenState,
         child: Container(
           color: CashbackColors.backgroundColor,
-          child: ListView(
-            padding: EdgeInsets.all(16),
-            children: [
-              Text(
-                LocaleKeys.payoutTitle.tr(),
-                style: TextStyle(
-                  color: CashbackColors.mainTextColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
-                ),
-              ),
-              SizedBox(height: 24),
-              Text(
-                LocaleKeys.payoutFieldSumTitle.tr(),
-                style: TextStyle(
-                  color: CashbackColors.mainTextColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14,
-                ),
-              ),
-              SizedBox(height: 8),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  boxShadow: [
-                    BoxShadow(
-                      color: CashbackColors.shadowColor,
-                    ),
-                    BoxShadow(
-                      color: CashbackColors.textFieldBackgroundColor,
-                      offset: Offset(0, 2),
-                      blurRadius: 8.0,
-                    ),
-                  ],
-                ),
-                child: TextFormField(
-                  keyboardType: TextInputType.numberWithOptions(
-                    decimal: true,
-                    signed: false,
+          child: SafeArea(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: ListView(
+                    padding: EdgeInsets.all(16),
+                    children: [
+                      Text(
+                        LocaleKeys.payoutTitle.tr(),
+                        style: TextStyle(
+                          color: CashbackColors.mainTextColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 18,
+                        ),
+                      ),
+                      SizedBox(height: 24),
+                      Text(
+                        LocaleKeys.payoutFieldSumTitle.tr(),
+                        style: TextStyle(
+                          color: CashbackColors.mainTextColor,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          boxShadow: [
+                            BoxShadow(
+                              color: CashbackColors.shadowColor,
+                            ),
+                            BoxShadow(
+                              color: CashbackColors.textFieldBackgroundColor,
+                              offset: Offset(0, 2),
+                              blurRadius: 8.0,
+                            ),
+                          ],
+                        ),
+                        child: TextFormField(
+                          keyboardType: TextInputType.numberWithOptions(
+                            decimal: true,
+                            signed: false,
+                          ),
+                          style: Theme.of(context).textTheme.subtitle1,
+                          autofocus: false,
+                          inputFormatters: [_currencyFormatter],
+                          initialValue: _currencyFormatter.format(sum),
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                            border: InputBorder.none,
+                          ),
+                          onChanged: (string) {
+                            sum = string;
+                          },
+                        ),
+                      ),
+                      SizedBox(height: 24),
+                      Text(
+                        _accountFieldTitle(),
+                        style: TextStyle(
+                          color: CashbackColors.mainTextColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          boxShadow: [
+                            BoxShadow(
+                              color: CashbackColors.shadowColor,
+                            ),
+                            BoxShadow(
+                              color: CashbackColors.textFieldBackgroundColor,
+                              offset: Offset(0, 2),
+                              blurRadius: 8.0,
+                            ),
+                          ],
+                        ),
+                        child: TextField(
+                          autofillHints: _accountFieldAutofillHints(),
+                          keyboardType: TextInputType.number,
+                          style: Theme.of(context).textTheme.subtitle1,
+                          autofocus: true,
+                          inputFormatters: [_accountFieldInputFormatter()],
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.symmetric(horizontal: 8),
+                            border: InputBorder.none,
+                          ),
+                          onChanged: (string) {
+                            accountNumber = string;
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  style: Theme.of(context).textTheme.subtitle1,
-                  autofocus: false,
-                  inputFormatters: [_currencyFormatter],
-                  initialValue: _currencyFormatter.format(sum),
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 8),
-                    border: InputBorder.none,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: FilledButton(
+                    height: 44,
+                    onPressed: _makePayout,
+                    title: LocaleKeys.payoutContinue.tr(),
                   ),
-                  onChanged: (string) {},
                 ),
-              ),
-              SizedBox(height: 24),
-              Text(
-                _accountFieldTitle(),
-                style: TextStyle(
-                  color: CashbackColors.mainTextColor,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              SizedBox(height: 8),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(4),
-                  boxShadow: [
-                    BoxShadow(
-                      color: CashbackColors.shadowColor,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16)
+                      .add(EdgeInsets.only(bottom: 8)),
+                  child: TextButton(
+                    onPressed: _cancelPayout,
+                    child: Text(
+                      LocaleKeys.payoutCancel.tr(),
+                      style: TextStyle(
+                        color: CashbackColors.accentColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 14,
+                      ),
                     ),
-                    BoxShadow(
-                      color: CashbackColors.textFieldBackgroundColor,
-                      offset: Offset(0, 2),
-                      blurRadius: 8.0,
-                    ),
-                  ],
-                ),
-                child: TextField(
-                  autofillHints: _accountFieldAutofillHints(),
-                  keyboardType: TextInputType.number,
-                  style: Theme.of(context).textTheme.subtitle1,
-                  autofocus: true,
-                  inputFormatters: [_accountFieldInputFormatter()],
-                  decoration: InputDecoration(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 8),
-                    border: InputBorder.none,
                   ),
-                  onChanged: (string) {},
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
