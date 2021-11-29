@@ -89,5 +89,21 @@ abstract class  LocaleKeys {
   static const prescriptionStatusRecognized = 'prescriptionStatusRecognized';
   static const prescriptionStatusFailure = 'prescriptionStatusFailure';
   static const prescriptionStatusClosed = 'prescriptionStatusClosed';
+  static const balanceTitle = 'balanceTitle';
+  static const balanceRubleSign = 'balanceRubleSign';
+  static const balancePayout = 'balancePayout';
+  static const balanceHistory = 'balanceHistory';
+  static const payoutOptionPhone = 'payoutOptionPhone';
+  static const payoutOptionYoomoney = 'payoutOptionYoomoney';
+  static const payoutOptionCancel = 'payoutOptionCancel';
+  static const payoutTitle = 'payoutTitle';
+  static const payoutFieldSumTitle = 'payoutFieldSumTitle';
+  static const payoutFieldPhoneTitle = 'payoutFieldPhoneTitle';
+  static const payoutFieldPhonePlaceholder = 'payoutFieldPhonePlaceholder';
+  static const payoutFieldYoomoneyTitle = 'payoutFieldYoomoneyTitle';
+  static const payoutContinue = 'payoutContinue';
+  static const payoutCancel = 'payoutCancel';
+  static const payoutSuccessTitle = 'payoutSuccessTitle';
+  static const payoutSuccessMessage = 'payoutSuccessMessage';
 
 }

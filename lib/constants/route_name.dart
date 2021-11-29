@@ -1,11 +1,12 @@
 abstract class RouteName {
-  static final home = '/';
-  static final addRecipe = '/addRecipe';
-  static final photoCrop = '/photoCrop';
-  static final addRecipePhotosList = '/addRecipePhotosList';
-  static final addRecipePhotoEdit = '/addRecipePhotoEdit';
-  static final addRecipeSuccess = '/addRecipeSuccess';
-  static final prescriptionDetails = '/prescriptionDetails';
-  static final proxySetup = '/proxySetup';
-  static final profileFillInfo = '/profileFillInfo';
+  static const home = '/';
+  static const addRecipe = '/addRecipe';
+  static const photoCrop = '/photoCrop';
+  static const addRecipePhotosList = '/addRecipePhotosList';
+  static const addRecipePhotoEdit = '/addRecipePhotoEdit';
+  static const addRecipeSuccess = '/addRecipeSuccess';
+  static const prescriptionDetails = '/prescriptionDetails';
+  static const proxySetup = '/proxySetup';
+  static const profileFillInfo = '/profileFillInfo';
+  static const payoutForm = '/payoutForm';
 }

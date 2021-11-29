@@ -37,6 +37,8 @@ dependencies:
   crypto: ^3.0.1
   focus_detector: ^2.0.0
   pin_code_fields: ^7.3.0
+  sums_inner: ^1.0.0+1
+  currency_text_input_formatter: ^2.1.5
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +80,9 @@ flutter:
     - assets/images/back_circle_icon.png
     - assets/images/close_circle_icon.png
     - assets/images/prescription_icon.png
+    - assets/images/payout_arrow.png
+    - assets/images/payout_icon_phone.png
+    - assets/images/payout_icon_yoomoney.png
 
   fonts:
     - family: Rubik

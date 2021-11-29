@@ -60,12 +60,6 @@ class _PrescriptionDetailsScreenState extends State<PrescriptionDetailsScreen> {
     }
   }
 
-  void _checkPrescription() async {
-    setState(() {
-      _screenState = StatefulScreenState.loading;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final prescription = widget.arguments.prescription;

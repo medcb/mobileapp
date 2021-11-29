@@ -102,7 +102,23 @@ class CodegenLoader extends AssetLoader{
   "prescriptionStatusPrepared": "Подготовлен",
   "prescriptionStatusRecognized": "Распознан",
   "prescriptionStatusFailure": "Отказ",
-  "prescriptionStatusClosed": "Подтверждён"
+  "prescriptionStatusClosed": "Подтверждён",
+  "balanceTitle": "Доступно к выводу",
+  "balanceRubleSign": "₽",
+  "balancePayout": "Вывести средства",
+  "balanceHistory": "История выводов",
+  "payoutOptionPhone": "Вывести по номеру телефона",
+  "payoutOptionYoomoney": "Вывести на ЮMoney",
+  "payoutOptionCancel": "Отмена",
+  "payoutTitle": "Вывод средств",
+  "payoutFieldSumTitle": "Сумма вывода",
+  "payoutFieldPhoneTitle": "Укажите номер телефона",
+  "payoutFieldPhonePlaceholder": "+7 (000) 000-00-00",
+  "payoutFieldYoomoneyTitle": "Укажите номер кошелька ЮMoney",
+  "payoutContinue": "Продолжить",
+  "payoutCancel": "Отмена",
+  "payoutSuccessTitle": "Средства выведены успешно!",
+  "payoutSuccessMessage": "На номер {}"
 };
 static const Map<String,dynamic> en_US = {
   "ok": "Ok",
@@ -192,7 +208,23 @@ static const Map<String,dynamic> en_US = {
   "prescriptionStatusPrepared": "Prepared",
   "prescriptionStatusRecognized": "Recognized",
   "prescriptionStatusFailure": "Failure",
-  "prescriptionStatusClosed": "Closed"
+  "prescriptionStatusClosed": "Closed",
+  "balanceTitle": "Available for withdrawal",
+  "balanceRubleSign": "₽",
+  "balancePayout": "Withdraw",
+  "balanceHistory": "Withdrawals history",
+  "payoutOptionPhone": "Phone number",
+  "payoutOptionYoomoney": "ЮMoney",
+  "payoutOptionCancel": "Cancel",
+  "payoutTitle": "Withdrawal",
+  "payoutFieldSumTitle": "Sum",
+  "payoutFieldPhoneTitle": "Phone number",
+  "payoutFieldPhonePlaceholder": "+7 (000) 000-00-00",
+  "payoutFieldYoomoneyTitle": "ЮMoney account number",
+  "payoutContinue": "Continue",
+  "payoutCancel": "Cancel",
+  "payoutSuccessTitle": "Your payment has been completed!",
+  "payoutSuccessMessage": "Account number: {}"
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"ru_RU": ru_RU, "en_US": en_US};
 }
