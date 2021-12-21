@@ -9,13 +9,6 @@ enum ImageRectSelectorStyle {
   edit,
 }
 
-class ImageRectSelectorInactiveRectModel {
-  final Rect rect;
-  final Color color;
-
-  ImageRectSelectorInactiveRectModel(this.rect, this.color);
-}
-
 class ImageRectSelector extends StatefulWidget {
   const ImageRectSelector({
     Key? key,
@@ -23,14 +16,12 @@ class ImageRectSelector extends StatefulWidget {
     required this.rectColor,
     required this.style,
     this.onRectChange,
-    this.inactiveRects,
   }) : super(key: key);
 
   final Image image;
   final Color? rectColor;
   final ImageRectSelectorStyle style;
   final Function(Rect)? onRectChange;
-  final List<ImageRectSelectorInactiveRectModel>? inactiveRects;
 
   @override
   ImageRectSelectorState createState() => ImageRectSelectorState();
@@ -233,7 +224,6 @@ class ImageRectSelectorState extends State<ImageRectSelector>
                         cropRect: cropRect,
                         rectColor: widget.rectColor,
                         style: widget.style,
-                        inactiveRects: widget.inactiveRects ?? [],
                       ),
                     );
                   },
@@ -252,7 +242,6 @@ class _ZoomableImagePainter extends CustomPainter {
     required this.cropRect,
     required this.rectColor,
     required this.style,
-    required this.inactiveRects,
   });
 
   final ui.Image image;
@@ -261,7 +250,6 @@ class _ZoomableImagePainter extends CustomPainter {
   final Rect cropRect;
   final Color? rectColor;
   final ImageRectSelectorStyle style;
-  final List<ImageRectSelectorInactiveRectModel> inactiveRects;
 
   @override
   void paint(Canvas canvas, Size canvasSize) {
@@ -284,20 +272,6 @@ class _ZoomableImagePainter extends CustomPainter {
       image: image,
       fit: BoxFit.fill,
     );
-
-    inactiveRects.forEach((inactiveRect) {
-      var paint = Paint()
-        ..strokeWidth = 1
-        ..style = PaintingStyle.stroke
-        ..color = inactiveRect.color;
-      Rect translatedRect = Rect.fromLTWH(
-        offset.dx + inactiveRect.rect.left * targetScale,
-        offset.dy + inactiveRect.rect.top * targetScale,
-        inactiveRect.rect.width * targetScale,
-        inactiveRect.rect.height * targetScale,
-      );
-      canvas.drawRect(translatedRect, paint);
-    });
 
     if (rectColor == null) {
       return;
@@ -373,16 +347,6 @@ class _ZoomableImagePainter extends CustomPainter {
         canvas.drawCircle(Offset(cropTarget.left, cropTarget.bottom), 8, paint);
         canvas.drawCircle(
             Offset(cropTarget.right, cropTarget.bottom), 8, paint);
-
-        // canvas.drawImage(ui.Image.asset('assets/images/close_circle_icon.png'),
-        //     offset, paint);
-        // paintImage(
-        //   canvas: canvas,
-        //   rect: offset & targetSize,
-        //   image: ui.Image(
-        //       image: AssetImage('assets/images/close_circle_icon.png')),
-        //   fit: BoxFit.fill,
-        // );
         break;
     }
   }

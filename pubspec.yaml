@@ -39,6 +39,7 @@ dependencies:
   pin_code_fields: ^7.3.0
   sums_inner: ^1.0.0+1
   currency_text_input_formatter: ^2.1.5
+  scrollable_positioned_list: ^0.2.3
 
 dev_dependencies:
   flutter_test:

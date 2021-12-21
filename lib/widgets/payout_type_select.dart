@@ -45,7 +45,7 @@ class PayoutTypeSelect extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 182 + MediaQuery.of(context).padding.bottom,
+      height: 184 + MediaQuery.of(context).padding.bottom,
       decoration: BoxDecoration(
         color: CashbackColors.backgroundColor,
         borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
