@@ -169,6 +169,10 @@ class _RecipeAddPhotoEditScreenState extends State<RecipeAddPhotoEditScreen> {
                 image: _image,
                 style: ImageRectSelectorStyle.edit,
                 rectColor: _selectingMarkType?.color(),
+                fillColor: _selectingMarkType?.fillColor(),
+                filledRect: _selectingMarkType != PhotoMarkType.patientName
+                    ? patientFioRect
+                    : null,
               ),
             ),
             Column(

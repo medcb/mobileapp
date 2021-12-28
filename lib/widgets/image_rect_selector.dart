@@ -15,12 +15,16 @@ class ImageRectSelector extends StatefulWidget {
     required this.image,
     required this.rectColor,
     required this.style,
+    this.fillColor,
+    this.filledRect,
     this.onRectChange,
   }) : super(key: key);
 
   final Image image;
   final Color? rectColor;
   final ImageRectSelectorStyle style;
+  final Color? fillColor;
+  final Rect? filledRect;
   final Function(Rect)? onRectChange;
 
   @override
@@ -71,7 +75,18 @@ class ImageRectSelectorState extends State<ImageRectSelector>
         setState(() {
           imageSize =
               Size(info.image.width.toDouble(), info.image.height.toDouble());
-          cropRect = Offset.zero & imageSize!;
+          switch (widget.style) {
+            case ImageRectSelectorStyle.crop:
+              cropRect = Offset.zero & imageSize!;
+              break;
+            case ImageRectSelectorStyle.edit:
+              cropRect = Rect.fromLTWH(
+                  imageSize!.width / 4,
+                  imageSize!.height / 4,
+                  imageSize!.width / 2,
+                  imageSize!.height / 2);
+              break;
+          }
 
           if (widget.onRectChange != null) {
             widget.onRectChange!(cropRect);
@@ -223,6 +238,8 @@ class ImageRectSelectorState extends State<ImageRectSelector>
                             : _scale,
                         cropRect: cropRect,
                         rectColor: widget.rectColor,
+                        fillColor: widget.fillColor,
+                        filledRect: widget.filledRect,
                         style: widget.style,
                       ),
                     );
@@ -241,6 +258,8 @@ class _ZoomableImagePainter extends CustomPainter {
     required this.scale,
     required this.cropRect,
     required this.rectColor,
+    required this.fillColor,
+    required this.filledRect,
     required this.style,
   });
 
@@ -249,6 +268,8 @@ class _ZoomableImagePainter extends CustomPainter {
   final double scale;
   final Rect cropRect;
   final Color? rectColor;
+  final Color? fillColor;
+  final Rect? filledRect;
   final ImageRectSelectorStyle style;
 
   @override
@@ -273,8 +294,29 @@ class _ZoomableImagePainter extends CustomPainter {
       fit: BoxFit.fill,
     );
 
+    if (filledRect != null) {
+      var fillPaint = Paint()
+        ..style = PaintingStyle.fill
+        ..color = CashbackColors.photoBackgroundColor;
+      canvas.drawRect(
+          Rect.fromLTWH(
+            offset.dx + filledRect!.left * targetScale,
+            offset.dy + filledRect!.top * targetScale,
+            filledRect!.width * targetScale,
+            filledRect!.height * targetScale,
+          ),
+          fillPaint);
+    }
+
     if (rectColor == null) {
       return;
+    }
+
+    if (fillColor != null) {
+      var fillPaint = Paint()
+        ..style = PaintingStyle.fill
+        ..color = fillColor!;
+      canvas.drawRect(cropTarget, fillPaint);
     }
 
     var paint = Paint()
@@ -339,7 +381,6 @@ class _ZoomableImagePainter extends CustomPainter {
               cropTarget.left, max(cropTarget.bottom - 24, cropTarget.top));
         canvas.drawPath(path, paint);
         break;
-
       case ImageRectSelectorStyle.edit:
         paint.style = PaintingStyle.fill;
         canvas.drawCircle(Offset(cropTarget.left, cropTarget.top), 8, paint);
