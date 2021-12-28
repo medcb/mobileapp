@@ -45,6 +45,7 @@ class PayoutSuccessScreen extends StatelessWidget {
                     children: [
                       Text(
                         LocaleKeys.payoutSuccessTitle.tr(),
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: CashbackColors.mainTextColor,
                           fontWeight: FontWeight.w500,
@@ -54,6 +55,7 @@ class PayoutSuccessScreen extends StatelessWidget {
                       SizedBox(height: 25),
                       Text(
                         _destinationString(),
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: CashbackColors.secondaryTextColor,
                           fontWeight: FontWeight.w400,
@@ -64,6 +66,7 @@ class PayoutSuccessScreen extends StatelessWidget {
                       Text(
                         format.format(
                             arguments.historyItem.amount.toDouble() / 100),
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           color: CashbackColors.accentColor,
                           fontWeight: FontWeight.w500,
