@@ -89,5 +89,31 @@ abstract class  LocaleKeys {
   static const prescriptionStatusRecognized = 'prescriptionStatusRecognized';
   static const prescriptionStatusFailure = 'prescriptionStatusFailure';
   static const prescriptionStatusClosed = 'prescriptionStatusClosed';
+  static const balanceTitle = 'balanceTitle';
+  static const balanceRubleSign = 'balanceRubleSign';
+  static const balancePayout = 'balancePayout';
+  static const balanceHistory = 'balanceHistory';
+  static const balanceHistoryTitle = 'balanceHistoryTitle';
+  static const balanceHistoryBalanceTitle = 'balanceHistoryBalanceTitle';
+  static const balanceHistoryStatusInProgress = 'balanceHistoryStatusInProgress';
+  static const balanceHistoryStatusCompleted = 'balanceHistoryStatusCompleted';
+  static const balanceHistoryStatusFailed = 'balanceHistoryStatusFailed';
+  static const balanceHistoryTypeFormatPhone = 'balanceHistoryTypeFormatPhone';
+  static const balanceHistoryTypeFormatWallet = 'balanceHistoryTypeFormatWallet';
+  static const payoutOptionPhone = 'payoutOptionPhone';
+  static const payoutOptionYoomoney = 'payoutOptionYoomoney';
+  static const payoutOptionCancel = 'payoutOptionCancel';
+  static const payoutTitle = 'payoutTitle';
+  static const payoutFieldSumTitle = 'payoutFieldSumTitle';
+  static const payoutFieldPhoneTitle = 'payoutFieldPhoneTitle';
+  static const payoutFieldPhonePlaceholder = 'payoutFieldPhonePlaceholder';
+  static const payoutFieldYoomoneyTitle = 'payoutFieldYoomoneyTitle';
+  static const payoutContinue = 'payoutContinue';
+  static const payoutCancel = 'payoutCancel';
+  static const payoutSuccessTitle = 'payoutSuccessTitle';
+  static const payoutSuccessMessage = 'payoutSuccessMessage';
+  static const payoutErrorNotEnoughSum = 'payoutErrorNotEnoughSum';
+  static const payoutErrorTooMuchSum = 'payoutErrorTooMuchSum';
+  static const payoutErrorNoAccountNumber = 'payoutErrorNoAccountNumber';
 
 }

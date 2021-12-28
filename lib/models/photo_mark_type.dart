@@ -46,4 +46,13 @@ extension UIValues on PhotoMarkType {
         return CashbackColors.photoMarkTypeDrugColor;
     }
   }
+
+  Color? fillColor() {
+    switch (this) {
+      case PhotoMarkType.patientName:
+        return CashbackColors.photoBackgroundColor;
+      default:
+        return null;
+    }
+  }
 }

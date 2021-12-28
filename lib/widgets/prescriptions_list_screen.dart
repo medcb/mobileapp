@@ -5,8 +5,11 @@ import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/constants/route_name.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/models/json_models.dart';
+import 'package:med_cashback/network/balance_service.dart';
 import 'package:med_cashback/network/prescriptions_service.dart';
+import 'package:med_cashback/widgets/balance_history_screen.dart';
 import 'package:med_cashback/widgets/components/filled_button.dart';
+import 'package:med_cashback/widgets/payout_type_select.dart';
 import 'package:med_cashback/widgets/photo_shutter_screen.dart';
 import 'package:med_cashback/widgets/prescription_details_screen.dart';
 import 'package:med_cashback/widgets/stateful_screen.dart';
@@ -21,12 +24,14 @@ class PrescriptionsListScreen extends StatefulWidget {
 
 class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
   StatefulScreenState _screenState = StatefulScreenState.loading;
+  String _errorText = '';
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
       new GlobalKey<RefreshIndicatorState>();
 
   var _listenPrescriptionsServiceChange;
   List<Prescription> _prescriptions = [];
+  Balance? _balance;
 
   @override
   void initState() {
@@ -46,7 +51,17 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
   }
 
   Future<void> _loadData() async {
+    try {
+      _balance = await BalanceService().loadBalance();
+    } catch (error) {
+      setState(() {
+        _errorText = error.toString();
+        _screenState = StatefulScreenState.error;
+      });
+      return;
+    }
     await PrescriptionsService.instance.reloadPrescriptions();
+    setState(() {});
   }
 
   void _prescriptionsStateChanged() {
@@ -58,6 +73,9 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
       return;
     }
     SchedulerBinding.instance!.addPostFrameCallback((_) {
+      if (_balance == null) {
+        return;
+      }
       setState(() {
         switch (PrescriptionsService.instance.state) {
           case PrescriptionsServiceLoadState.notLoaded:
@@ -73,6 +91,7 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
                 : StatefulScreenState.empty;
             break;
           case PrescriptionsServiceLoadState.error:
+            _errorText = PrescriptionsService.instance.error.toString();
             _screenState = StatefulScreenState.error;
             break;
         }
@@ -96,6 +115,34 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
     );
   }
 
+  void _openPayout() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Color(0),
+      builder: (context) => PayoutTypeSelect(
+        balance: _balance!,
+        onBalanceUpdated: _onBalanceUpdated,
+      ),
+    );
+  }
+
+  void _onBalanceUpdated(Balance newBalance) {
+    setState(() {
+      _balance = newBalance;
+    });
+  }
+
+  void _openBalanceHistory() {
+    if (_balance == null) return;
+    Navigator.of(context).pushNamed(
+      RouteName.balanceHistory,
+      arguments: BalanceHistoryScreenArguments(
+        balance: _balance!,
+        onBalanceUpdated: _onBalanceUpdated,
+      ),
+    );
+  }
+
   Widget _prescriptionsList() {
     return Container(
       decoration: BoxDecoration(
@@ -106,6 +153,7 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
         key: _refreshIndicatorKey,
         onRefresh: _loadData,
         child: ListView.separated(
+          itemCount: _prescriptions.length,
           itemBuilder: (context, index) => GestureDetector(
             onTap: () => _openPrescription(_prescriptions[index]),
             child: PrescriptionsListItem(prescription: _prescriptions[index]),
@@ -114,7 +162,6 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
             color: CashbackColors.shadowColor,
             height: 1,
           ),
-          itemCount: _prescriptions.length,
         ),
       ),
     );
@@ -125,6 +172,16 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
+        if (_balance != null) ...{
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: BalanceHeader(
+              balance: _balance!,
+              onPayoutTap: _openPayout,
+              onBalanceHistoryTap: _openBalanceHistory,
+            ),
+          ),
+        },
         Padding(
           padding: EdgeInsets.all(16.0),
           child: Text(
@@ -141,6 +198,7 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
             onRepeat: _loadData,
             screenState: _screenState,
             emptyText: LocaleKeys.prescriptionsListEmpty.tr(),
+            errorText: _errorText,
             child: _prescriptionsList(),
           ),
         ),
@@ -164,6 +222,119 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
   }
 }
 
+class BalanceHeader extends StatelessWidget {
+  const BalanceHeader(
+      {Key? key,
+      required this.balance,
+      required this.onPayoutTap,
+      required this.onBalanceHistoryTap})
+      : super(key: key);
+
+  final Balance balance;
+  final Function onPayoutTap;
+  final Function onBalanceHistoryTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final integerFormat = NumberFormat()..maximumFractionDigits = 0;
+    final fractionFormat = NumberFormat()
+      ..maximumFractionDigits = 0
+      ..minimumIntegerDigits = 2;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(
+          LocaleKeys.balanceTitle.tr(),
+          style: TextStyle(
+            color: CashbackColors.mainTextColor,
+            fontWeight: FontWeight.w500,
+            fontSize: 20,
+          ),
+        ),
+        SizedBox(height: 6),
+        RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: integerFormat.format((balance.balance / 100).floor()),
+                style: TextStyle(
+                  color: CashbackColors.accentColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 38,
+                ),
+              ),
+              TextSpan(
+                text: "," +
+                    fractionFormat.format(balance.balance % 100) +
+                    " " +
+                    LocaleKeys.balanceRubleSign.tr(),
+                style: TextStyle(
+                  color: CashbackColors.accentColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (balance.balance > 0) ...{
+          SizedBox(height: 24),
+          Row(
+            children: [
+              Container(
+                height: 44,
+                decoration: BoxDecoration(
+                  color: CashbackColors.backgroundColor,
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => onPayoutTap(),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          Image.asset('assets/images/payout_arrow.png'),
+                          SizedBox(width: 10),
+                          Text(
+                            LocaleKeys.balancePayout.tr(),
+                            style: TextStyle(
+                              color: CashbackColors.accentColor,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        },
+        Row(
+          children: [
+            TextButton(
+              onPressed: () => onBalanceHistoryTap(),
+              child: Text(
+                LocaleKeys.balanceHistory.tr(),
+                style: TextStyle(
+                  color: CashbackColors.secondaryTextColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
 class PrescriptionsListItem extends StatelessWidget {
   const PrescriptionsListItem({Key? key, required this.prescription})
       : super(key: key);
@@ -173,7 +344,6 @@ class PrescriptionsListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: CashbackColors.backgroundColor,
       child: Padding(
         padding: EdgeInsets.only(
           left: 8,

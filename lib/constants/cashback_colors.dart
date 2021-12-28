@@ -20,6 +20,7 @@ abstract class CashbackColors {
   static final buttonSecondaryDisabledBackgroundColor = Color(0x80A1A9BB);
   static final toastBackgroundColor = Color(0xff474F61);
   static final unselectedPhotoMarkTypeColor = Color(0xffEDEFF2);
+  static final yoomoneyColor = Color(0xff8600FA);
 
   static final photoMarkTypePatientNameColor = Color(0xff0080F6);
   static final photoMarkTypeDoctorSpecialityColor = Color(0xff45BC90);

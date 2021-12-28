@@ -1,12 +1,10 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/constants/constants.dart';
 import 'package:med_cashback/constants/route_name.dart';
@@ -220,13 +218,12 @@ class PhoneEnterContainer extends StatelessWidget {
   final Function(String) callback;
 
   PhoneEnterContainer(this.callback);
-  
-    void _openPrivacyPolicy() async {
+
+  void _openPrivacyPolicy() async {
     if (await canLaunch(Constants.kPrivacyPolicyURL)) {
       launch(Constants.kPrivacyPolicyURL);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -258,8 +255,7 @@ class PhoneEnterContainer extends StatelessWidget {
                     .textTheme
                     .bodyText1!
                     .apply(decoration: TextDecoration.underline),
-                recognizer: TapGestureRecognizer()
-                  ..onTap = _openPrivacyPolicy,
+                recognizer: TapGestureRecognizer()..onTap = _openPrivacyPolicy,
               )
             ],
           ),
@@ -327,8 +323,8 @@ class _PhoneEnterFieldState extends State<PhoneEnterField> {
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: this.isValidPhone()
-                    ? Theme.of(context).accentColor
-                    : Theme.of(context).disabledColor,
+                    ? CashbackColors.accentColor
+                    : CashbackColors.disabledColor,
                 borderRadius: BorderRadiusDirectional.all(Radius.circular(4)),
               ),
               child: Padding(
@@ -432,7 +428,7 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
                 LocaleKeys.loginCodeEnterChangeNumber.tr(),
                 style: TextStyle(
                   fontSize: 12,
-                  color: Theme.of(context).accentColor,
+                  color: CashbackColors.accentColor,
                 ),
               ),
             ),
@@ -478,7 +474,7 @@ class _CodeEnterContainerState extends State<CodeEnterContainer> {
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w500,
-                        color: Theme.of(context).accentColor)),
+                        color: CashbackColors.accentColor)),
               )
             : TimeLeftToResend(leftTimeToResend: _leftTimeToResend),
         SizedBox(

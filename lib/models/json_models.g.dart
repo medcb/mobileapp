@@ -205,3 +205,46 @@ Map<String, dynamic> _$PrescriptionDrugToJson(PrescriptionDrug instance) =>
       'drug_id': instance.id,
       'drug_name': instance.name,
     };
+
+Balance _$BalanceFromJson(Map<String, dynamic> json) {
+  return Balance(
+    json['balance'] as int,
+    json['min'] as int,
+    json['max'] as int,
+    (json['history'] as List<dynamic>)
+        .map((e) => BalanceHistoryItem.fromJson(e as Map<String, dynamic>))
+        .toList(),
+  );
+}
+
+Map<String, dynamic> _$BalanceToJson(Balance instance) => <String, dynamic>{
+      'balance': instance.balance,
+      'min': instance.min,
+      'max': instance.max,
+      'history': instance.history,
+    };
+
+BalanceHistoryItem _$BalanceHistoryItemFromJson(Map<String, dynamic> json) {
+  return BalanceHistoryItem(
+    json['amount'] as int,
+    json['status'] as bool?,
+    DateTime.parse(json['date'] as String),
+    _$enumDecode(_$BalanceHistoryItemTypeEnumMap, json['type']),
+    json['destination'] as String?,
+  );
+}
+
+Map<String, dynamic> _$BalanceHistoryItemToJson(BalanceHistoryItem instance) =>
+    <String, dynamic>{
+      'amount': instance.amount,
+      'status': instance.status,
+      'date': instance.date.toIso8601String(),
+      'type': _$BalanceHistoryItemTypeEnumMap[instance.type],
+      'destination': instance.destination,
+    };
+
+const _$BalanceHistoryItemTypeEnumMap = {
+  BalanceHistoryItemType.self: 'self',
+  BalanceHistoryItemType.phone: 'phone',
+  BalanceHistoryItemType.wallet: 'wallet',
+};

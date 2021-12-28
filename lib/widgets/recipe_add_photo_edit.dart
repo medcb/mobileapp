@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as imglib;
 import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
 import 'package:med_cashback/models/photo_mark_type.dart';
 import 'package:med_cashback/models/recipe_photo_data.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 import 'image_rect_selector.dart';
 
@@ -137,56 +137,6 @@ class _RecipeAddPhotoEditScreenState extends State<RecipeAddPhotoEditScreen> {
     return list;
   }
 
-  List<ImageRectSelectorInactiveRectModel> _inactiveRects() {
-    List<ImageRectSelectorInactiveRectModel> rects = [];
-
-    if (patientFioRect != null &&
-        _selectingMarkType != PhotoMarkType.patientName) {
-      rects.add(ImageRectSelectorInactiveRectModel(
-        patientFioRect!,
-        PhotoMarkType.patientName.color(),
-      ));
-    }
-
-    if (specialtyRect != null &&
-        _selectingMarkType != PhotoMarkType.doctorSpeciality) {
-      rects.add(ImageRectSelectorInactiveRectModel(
-        specialtyRect!,
-        PhotoMarkType.doctorSpeciality.color(),
-      ));
-    }
-
-    if (clinicRect != null && _selectingMarkType != PhotoMarkType.clinic) {
-      rects.add(ImageRectSelectorInactiveRectModel(
-        clinicRect!,
-        PhotoMarkType.clinic.color(),
-      ));
-    }
-
-    if (dateRect != null && _selectingMarkType != PhotoMarkType.date) {
-      rects.add(ImageRectSelectorInactiveRectModel(
-        dateRect!,
-        PhotoMarkType.date.color(),
-      ));
-    }
-
-    if (diagnoseRect != null && _selectingMarkType != PhotoMarkType.diagnose) {
-      rects.add(ImageRectSelectorInactiveRectModel(
-        diagnoseRect!,
-        PhotoMarkType.diagnose.color(),
-      ));
-    }
-
-    if (drugRect != null && _selectingMarkType != PhotoMarkType.drug) {
-      rects.add(ImageRectSelectorInactiveRectModel(
-        drugRect!,
-        PhotoMarkType.drug.color(),
-      ));
-    }
-
-    return rects;
-  }
-
   void _save() {
     _setCurrentRectToMarkTypeRect();
     widget.arguments.photoData.patientFioRect = patientFioRect;
@@ -219,7 +169,10 @@ class _RecipeAddPhotoEditScreenState extends State<RecipeAddPhotoEditScreen> {
                 image: _image,
                 style: ImageRectSelectorStyle.edit,
                 rectColor: _selectingMarkType?.color(),
-                inactiveRects: _inactiveRects(),
+                fillColor: _selectingMarkType?.fillColor(),
+                filledRect: _selectingMarkType != PhotoMarkType.patientName
+                    ? patientFioRect
+                    : null,
               ),
             ),
             Column(
@@ -298,7 +251,7 @@ class _RecipeAddPhotoEditScreenState extends State<RecipeAddPhotoEditScreen> {
   }
 }
 
-class _RecipeAddPhotoEditMarkTypesList extends StatelessWidget {
+class _RecipeAddPhotoEditMarkTypesList extends StatefulWidget {
   const _RecipeAddPhotoEditMarkTypesList({
     Key? key,
     required this.selectedMarkType,
@@ -310,6 +263,15 @@ class _RecipeAddPhotoEditMarkTypesList extends StatelessWidget {
   final List<PhotoMarkType> definedMarkTypes;
   final Function(PhotoMarkType) onSelect;
 
+  @override
+  State<_RecipeAddPhotoEditMarkTypesList> createState() =>
+      _RecipeAddPhotoEditMarkTypesListState();
+}
+
+class _RecipeAddPhotoEditMarkTypesListState
+    extends State<_RecipeAddPhotoEditMarkTypesList> {
+  final _scrollController = ItemScrollController();
+
   static const List<PhotoMarkType> _markTypes = [
     PhotoMarkType.patientName,
     PhotoMarkType.doctorSpeciality,
@@ -318,23 +280,33 @@ class _RecipeAddPhotoEditMarkTypesList extends StatelessWidget {
     PhotoMarkType.diagnose,
     PhotoMarkType.drug,
   ];
+  void _onTap(PhotoMarkType markType) {
+    widget.onSelect(markType);
+    _scrollController.scrollTo(
+      index: _markTypes.indexOf(markType),
+      alignment: 0.1,
+      curve: Curves.easeInOut,
+      duration: Duration(milliseconds: 300),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 56,
-      child: ListView.separated(
+      child: ScrollablePositionedList.separated(
+        itemScrollController: _scrollController,
         itemCount: _markTypes.length,
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.all(16),
         itemBuilder: (context, index) {
           final markType = _markTypes[index];
           return GestureDetector(
-            onTap: () => onSelect(markType),
+            onTap: () => _onTap(markType),
             child: _RecipeAddPhotoEditMarkTypesListCell(
               markType: markType,
-              isSelected: markType == selectedMarkType,
-              isDefined: definedMarkTypes.contains(markType),
+              isSelected: markType == widget.selectedMarkType,
+              isDefined: widget.definedMarkTypes.contains(markType),
             ),
           );
         },

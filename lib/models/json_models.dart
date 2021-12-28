@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:med_cashback/constants/cashback_colors.dart';
 import 'package:med_cashback/generated/lib/generated/locale_keys.g.dart';
@@ -310,4 +310,64 @@ class PrescriptionDrug {
       _$PrescriptionDrugFromJson(json);
 
   Map<String, dynamic> toJson() => _$PrescriptionDrugToJson(this);
+}
+
+@JsonSerializable()
+class Balance {
+  // balance: <int> в копейках
+  @JsonKey(name: 'balance')
+  final int balance;
+
+  @JsonKey(name: 'min')
+  final int min;
+
+  @JsonKey(name: 'max')
+  final int max;
+
+  // history: []
+  @JsonKey(name: 'history')
+  final List<BalanceHistoryItem> history;
+
+  Balance(this.balance, this.min, this.max, this.history);
+
+  factory Balance.fromJson(Map<String, dynamic> json) =>
+      _$BalanceFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BalanceToJson(this);
+}
+
+@JsonSerializable()
+class BalanceHistoryItem {
+  // amout: <int> отрицательное - списание, положительное - начисление
+  @JsonKey(name: 'amount')
+  final int amount;
+  // status: <bool> null - в процессе, false - транзакция отменена, true - транзакция завершена
+  @JsonKey(name: 'status')
+  final bool? status;
+  // date: <iso8601> UTC дата/время операции
+  @JsonKey(name: 'date')
+  final DateTime date;
+  // type: <str> ‘phone’, ‘wallet’, ‘self’
+  @JsonKey(name: 'type')
+  final BalanceHistoryItemType type;
+  // destination: <str> куда был вывод. последние 3 цифры номера телефона, кошелька или null если начисление
+  @JsonKey(name: 'destination')
+  final String? destination;
+
+  BalanceHistoryItem(
+      this.amount, this.status, this.date, this.type, this.destination);
+
+  factory BalanceHistoryItem.fromJson(Map<String, dynamic> json) =>
+      _$BalanceHistoryItemFromJson(json);
+
+  Map<String, dynamic> toJson() => _$BalanceHistoryItemToJson(this);
+}
+
+enum BalanceHistoryItemType {
+  @JsonValue("self")
+  self,
+  @JsonValue("phone")
+  phone,
+  @JsonValue("wallet")
+  wallet,
 }

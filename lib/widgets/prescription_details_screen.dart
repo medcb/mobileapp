@@ -60,12 +60,6 @@ class _PrescriptionDetailsScreenState extends State<PrescriptionDetailsScreen> {
     }
   }
 
-  void _checkPrescription() async {
-    setState(() {
-      _screenState = StatefulScreenState.loading;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final prescription = widget.arguments.prescription;
@@ -184,8 +178,16 @@ class _PrescriptionDetailsScreenState extends State<PrescriptionDetailsScreen> {
     return Scaffold(
       appBar: AppBar(
         shadowColor: Color(0),
+        backgroundColor: CashbackColors.backgroundColor,
+        leading: IconButton(
+          onPressed: () => Navigator.of(context).pop(),
+          icon: Image.asset('assets/images/back_gray_icon.png'),
+        ),
         title: Text(
           DateFormat('dd.MM.yyyy, HH:mm').format(prescription.creationDate),
+          style: TextStyle(
+            color: CashbackColors.mainTextColor,
+          ),
         ),
       ),
       body: StatefulScreen(
