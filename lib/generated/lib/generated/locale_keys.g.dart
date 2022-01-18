@@ -74,10 +74,14 @@ abstract class  LocaleKeys {
   static const profileTitle = 'profileTitle';
   static const profileAgreement = 'profileAgreement';
   static const profileLogout = 'profileLogout';
+  static const profileDeleteAccount = 'profileDeleteAccount';
   static const profileVersion = 'profileVersion';
   static const profileLogoutAlertTitle = 'profileLogoutAlertTitle';
   static const profileLogoutAlertYes = 'profileLogoutAlertYes';
   static const profileLogoutAlertNo = 'profileLogoutAlertNo';
+  static const profileDeleteAccountAlertTitle = 'profileDeleteAccountAlertTitle';
+  static const profileDeleteAccountAlertYes = 'profileDeleteAccountAlertYes';
+  static const profileDeleteAccountAlertNo = 'profileDeleteAccountAlertNo';
   static const prescriptionDetailsSpecialty = 'prescriptionDetailsSpecialty';
   static const prescriptionDetailsDate = 'prescriptionDetailsDate';
   static const prescriptionDetailsClinic = 'prescriptionDetailsClinic';
@@ -111,7 +115,6 @@ abstract class  LocaleKeys {
   static const payoutContinue = 'payoutContinue';
   static const payoutCancel = 'payoutCancel';
   static const payoutSuccessTitle = 'payoutSuccessTitle';
-  static const payoutSuccessMessage = 'payoutSuccessMessage';
   static const payoutErrorNotEnoughSum = 'payoutErrorNotEnoughSum';
   static const payoutErrorTooMuchSum = 'payoutErrorTooMuchSum';
   static const payoutErrorNoAccountNumber = 'payoutErrorNoAccountNumber';

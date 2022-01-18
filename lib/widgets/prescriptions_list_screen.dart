@@ -61,7 +61,9 @@ class _PrescriptionsListScreenState extends State<PrescriptionsListScreen> {
       return;
     }
     await PrescriptionsService.instance.reloadPrescriptions();
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   void _prescriptionsStateChanged() {

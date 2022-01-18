@@ -151,6 +151,14 @@ class AuthService with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> deleteAccount() async {
+    await NetworkingClient.fetch<Null>(
+      'forget',
+       fromJsonT: (_) => null,
+    );
+    await clearAuthData();
+  }
+
   String _stripPhoneSymbols(String phone) {
     return phone.replaceAll(RegExp(r'[^\d\+]+'), '');
   }

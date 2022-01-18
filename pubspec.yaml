@@ -86,6 +86,8 @@ flutter:
     - assets/images/payout_icon_yoomoney.png
     - assets/images/payout_success_ok.png
     - assets/images/back_gray_icon.png
+    - assets/images/delete.png
+    - assets/images/logout.png
 
   fonts:
     - family: Rubik
